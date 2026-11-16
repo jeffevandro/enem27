@@ -1,0 +1,14 @@
+node_modules/
+.wrangler/
+generated/
+cloudflare/worker-pronto.js
+cloudflare/worker-pronto.txt
+cloudflare/banco-de-dados.sql
+*.bak
+planilha-apps-script.txt
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+*.log
+

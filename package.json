@@ -1,0 +1,12 @@
+{
+  "name": "revisao-enem27",
+  "version": "1.0.0",
+  "private": true,
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "build": "node preparar-cloudflare.cjs && node verificar-nuvem.mjs && node conferir-configuracao.cjs",
+    "test": "node preparar-cloudflare.cjs && node verificar-nuvem.mjs",
+    "deploy": "node conferir-configuracao.cjs && wrangler deploy"
+  },
+  "devDependencies": { "wrangler": "^4.0.0" }
+}

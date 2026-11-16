@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "revisao-enem27",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-16",
+  "workers_dev": true,
+  "preview_urls": false,
+  "keep_vars": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "enem27",
+      "database_id": "ceac643d-6eee-461d-b4c2-b7a4aa65ffa9"
+    }
+  ]
+}

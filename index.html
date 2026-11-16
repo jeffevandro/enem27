@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0F0F0F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Revisão ENEM 2027</title>
+<style>
+  :root {
+    --bg: #0F0F0F;
+    --surface: #1A1A1A;
+    --surface-light: #252525;
+    --text: #F2F2F2;
+    --text-muted: #9E9E9E;
+    --border: #303030;
+    --green-done: #1E6B2B;
+    --green-done-border: #2E9E40;
+    --accent: #1E4E79;
+    --footer-h: 56px;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    padding-bottom: calc(var(--footer-h) + 20px);
+    overflow-x: hidden;
+  }
+
+  /* Header Windows Phone Metro Style */
+  header {
+    padding: 16px 16px 10px 16px;
+    background-color: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid #202020;
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .app-subtitle {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .sync-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sync-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #555;
+    display: inline-block;
+  }
+
+  .sync-dot.active {
+    background-color: #2E9E40;
+  }
+
+  h1.metro-title {
+    margin: 4px 0 0 0;
+    font-size: 30px;
+    font-weight: 300;
+    letter-spacing: -0.4px;
+    line-height: 1.15;
+  }
+
+  .breadcrumb-bar {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 5px;
+  }
+
+  main {
+    padding: 12px 16px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* Metro Tiles Grid (Home) */
+  .tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .metro-tile {
+    aspect-ratio: 1.25 / 1;
+    padding: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.08s ease, opacity 0.1s ease;
+    border: 1px solid rgba(255,255,255,0.08);
+    text-align: left;
+    color: #F5F5F5;
+    overflow: hidden;
+  }
+
+  .metro-tile:active {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+
+  .tile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .tile-icon-wrap {
+    width: 30px;
+    height: 30px;
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tile-icon-wrap svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .tile-stats-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .tile-pct {
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.32);
+    padding: 2px 6px;
+  }
+
+  .tile-count {
+    font-size: 11px;
+    opacity: 0.78;
+  }
+
+  .tile-bottom {
+    z-index: 2;
+    width: 100%;
+  }
+
+  .tile-name {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .tile-bar {
+    height: 3px;
+    background: rgba(0,0,0,0.35);
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  .tile-bar-fill {
+    height: 100%;
+    background: rgba(255,255,255,0.85);
+    transition: width 0.3s ease;
+  }
+
+  /* Theme List (Level 2) */
+  .theme-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .theme-card {
+    background: var(--surface);
+    border-left: 6px solid var(--accent);
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.1s ease;
+  }
+
+  .theme-card:active {
+    background: var(--surface-light);
+  }
+
+  .theme-card-info {
+    flex: 1;
+    padding-right: 12px;
+  }
+
+  .theme-card-title {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+
+  .theme-card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .theme-card-arrow {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--text-muted);
+  }
+
+  /* Quiz Launch Card */
+  .quiz-launch-card {
+    margin-top: 8px;
+    background: #1A2634;
+    border: 1px solid #2D4A68;
+    border-left: 6px solid #2E7D32;
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.12s ease;
+  }
+
+  .quiz-launch-card:active {
+    background: #223346;
+  }
+
+  .quiz-launch-badge {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #1E5631;
+    color: #DDF3E4;
+    padding: 2px 7px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .quiz-launch-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 3px;
+  }
+
+  .quiz-launch-sub {
+    font-size: 12px;
+    color: #B8C7D9;
+  }
+
+  /* Video Launch Card */
+  .video-launch-card {
+    margin-top: 2px;
+    background: #24191C;
+    border: 1px solid #4F2C35;
+    border-left: 6px solid #A82838;
+    padding: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.12s ease;
+  }
+
+  .video-launch-card:active {
+    background: #302025;
+  }
+
+  .video-launch-badge {
+    display: inline-block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #7A1C28;
+    color: #FDE8EB;
+    padding: 2px 7px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  /* Video Player & Thumbs Grid */
+  .video-player-box {
+    background: #141414;
+    border: 1px solid #2F2F2F;
+    margin-bottom: 18px;
+  }
+
+  .video-iframe-wrap {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+  }
+
+  .video-iframe-wrap iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .video-player-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: #1B1B1B;
+    border-top: 1px solid #2A2A2A;
+  }
+
+  .video-player-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #E5E5E5;
+  }
+
+  .video-close-btn {
+    background: #2C2C2C;
+    border: 1px solid #484848;
+    color: #FFF;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .video-thumbs-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 14px;
+  }
+
+  @media (min-width: 500px) {
+    .video-thumbs-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .video-thumb-card {
+    background: var(--surface);
+    border: 1px solid #2E2E2E;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease, border-color 0.15s ease;
+  }
+
+  .video-thumb-card:active {
+    transform: scale(0.98);
+  }
+
+  .video-thumb-card.playing {
+    border: 2px solid #A82838;
+  }
+
+  .video-thumb-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #0A0A0A;
+    overflow: hidden;
+  }
+
+  .video-thumb-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+  }
+
+  .video-thumb-card:hover .video-play-overlay {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .video-play-circle {
+    width: 48px;
+    height: 34px;
+    background: rgba(168, 40, 56, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  .video-play-triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px 0 7px 13px;
+    border-color: transparent transparent transparent #FFFFFF;
+    margin-left: 2px;
+  }
+
+  .video-thumb-footer {
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .video-thumb-num {
+    font-size: 13px;
+    font-weight: 600;
+    color: #EAEAEA;
+  }
+
+  .video-thumb-action {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #D4848E;
+    font-weight: 700;
+  }
+
+  /* Subthemes List (Level 3) */
+  .group-block {
+    margin-bottom: 22px;
+  }
+
+  .group-header {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px 10px;
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    margin-bottom: 8px;
+    color: #F2F2F2;
+  }
+
+  .subtheme-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 8px;
+    border-bottom: 1px solid #222222;
+    background: #141414;
+  }
+
+  .subtheme-text {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.35;
+    color: #E6E6E6;
+  }
+
+  .controls-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  /* Three Squares */
+  .rev-box {
+    width: 28px;
+    height: 28px;
+    background-color: #E8E8E8;
+    border: 2px solid #999999;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+  }
+
+  .rev-box:active {
+    transform: scale(0.9);
+  }
+
+  .rev-box.checked {
+    background-color: var(--green-done);
+    border-color: var(--green-done-border);
+  }
+
+  .rev-box.checked::after {
+    content: "";
+    width: 6px;
+    height: 12px;
+    border: solid #FFFFFF;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+  }
+
+  /* Save Button per row */
+  .row-save-btn {
+    background-color: #262626;
+    color: #E0E0E0;
+    border: 1px solid #484848;
+    padding: 0 10px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    transition: background-color 0.15s ease;
+  }
+
+  .row-save-btn.dirty {
+    background-color: #1E4E79;
+    border-color: #3A7BB8;
+    color: #FFF;
+  }
+
+  .row-save-btn.saved-flash {
+    background-color: #1E6B2B;
+    border-color: #2E9E40;
+    color: #FFF;
+  }
+
+  /* Quiz View Styles */
+  .quiz-card {
+    background: var(--surface);
+    border: 1px solid #2C2C2C;
+    padding: 16px;
+    margin-bottom: 16px;
+    user-select: text;
+  }
+
+  .quiz-q-header {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #7FA8D1;
+    margin-bottom: 8px;
+  }
+
+  .quiz-q-stem {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #EAEAEA;
+    white-space: pre-line;
+    margin-bottom: 14px;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quiz-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 12px;
+    background: #131313;
+    border: 1px solid #333;
+    cursor: pointer;
+    text-align: left;
+    color: #E0E0E0;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: background 0.1s ease, border-color 0.1s ease;
+  }
+
+  .quiz-opt:active {
+    background: #1F1F1F;
+  }
+
+  .quiz-opt.selected {
+    background: #1A334D;
+    border-color: #3D73A8;
+    color: #FFFFFF;
+  }
+
+  .quiz-opt.correct-ans {
+    background: #163B20;
+    border-color: #2E9E40;
+    color: #FFFFFF;
+  }
+
+  .quiz-opt.wrong-ans {
+    background: #421818;
+    border-color: #B83A3A;
+    color: #FFD6D6;
+  }
+
+  .quiz-opt-letter {
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #262626;
+    border: 1px solid #444;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .quiz-opt.selected .quiz-opt-letter {
+    background: #2B5B8A;
+    border-color: #5A96D1;
+  }
+
+  .quiz-opt.correct-ans .quiz-opt-letter {
+    background: #1E6B2B;
+    border-color: #3BC453;
+  }
+
+  .quiz-opt.wrong-ans .quiz-opt-letter {
+    background: #8A2424;
+    border-color: #D95353;
+  }
+
+  .quiz-explanation {
+    margin-top: 12px;
+    padding: 12px;
+    background: #121A14;
+    border-left: 4px solid #2E9E40;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #D8E8DC;
+  }
+
+  .quiz-explanation.wrong-exp {
+    background: #1C1313;
+    border-left-color: #B83A3A;
+    color: #EAD8D8;
+  }
+
+  .quiz-submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #1E5631;
+    border: 1px solid #2E854B;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  .quiz-submit-btn:active {
+    background: #164225;
+  }
+
+  .quiz-score-box {
+    background: #18222C;
+    border: 1px solid #2E4863;
+    border-left: 6px solid #2E9E40;
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+
+  .quiz-score-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9BB4CC;
+    margin-bottom: 6px;
+  }
+
+  .quiz-score-big {
+    font-size: 32px;
+    font-weight: 300;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+  }
+
+  .quiz-score-grid {
+    display: flex;
+    gap: 14px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .quiz-retry-btn {
+    background: #262626;
+    border: 1px solid #4A4A4A;
+    color: #FFF;
+    padding: 9px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Fixed Footer */
+  footer.metro-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--footer-h);
+    background-color: #191919;
+    border-top: 1px solid #2E2E2E;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    z-index: 30;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .footer-home-btn {
+    background: #2A2A2A;
+    color: #F0F0F0;
+    border: 1px solid #484848;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .footer-home-btn:active {
+    background: #383838;
+  }
+
+  .footer-disc-badge {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 10px;
+    color: #F5F5F5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
+  .footer-back-btn {
+    background: transparent;
+    color: #BDBDBD;
+    border: 1px solid #3E3E3E;
+    padding: 7px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Toast / Date Popup */
+  .toast {
+    position: fixed;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1E4E79;
+    color: #FFFFFF;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.65);
+    border: 1px solid #3D73A8;
+    text-align: center;
+    max-width: 90%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .toast.show {
+    opacity: 1;
+  }
+
+  /* Modal Backup / Cloud */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.84);
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .modal-backdrop.open {
+    display: flex;
+  }
+
+  .modal-box {
+    background: #1A1A1A;
+    border: 1px solid #3A3A3A;
+    width: 100%;
+    max-width: 500px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 18px;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #2C2C2C;
+    border: 1px solid #4A4A4A;
+    color: #FFF;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .modal-title {
+    font-size: 20px;
+    font-weight: 300;
+    margin: 0 0 12px 0;
+    padding-right: 36px;
+  }
+
+  .field-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .text-input {
+    width: 100%;
+    background: #101010;
+    border: 1px solid #484848;
+    color: #FFF;
+    padding: 10px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .btn-primary {
+    flex: 1;
+    background: #1E4E79;
+    color: #FFF;
+    border: 1px solid #356EA1;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-secondary {
+    background: #2A2A2A;
+    color: #FFF;
+    border: 1px solid #484848;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-green {
+    width: 100%;
+    background: #1E5631;
+    color: #FFF;
+    border: 1px solid #2E854B;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  .info-card {
+    background: #121212;
+    border: 1px solid #2C2C2C;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #CCCCCC;
+    margin-bottom: 14px;
+  }
+
+  .hint-bar {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: #171717;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    border-left: 3px solid #1E6B2B;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top-row">
+    <span class="app-subtitle" id="headerSubtitle">Organizador de Estudos</span>
+    <button class="sync-btn" onclick="openModal()">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncLabel">Conectando...</span>
+    </button>
+  </div>
+  <h1 class="metro-title" id="headerTitle">Revisão ENEM 2027</h1>
+  <div class="breadcrumb-bar" id="breadcrumbBar">Escolha uma disciplina para começar</div>
+</header>
+
+<main id="appContainer"></main>
+
+<div class="toast" id="toastBox"></div>
+
+<footer class="metro-footer" id="metroFooter" style="display:none;">
+  <div class="footer-left">
+    <button class="footer-home-btn" onclick="goHome()">&#8962; Tela Inicial</button>
+    <div class="footer-disc-badge" id="footerDiscBadge" onclick="goDiscipline()"></div>
+  </div>
+  <button class="footer-back-btn" id="footerBackBtn" onclick="goBack()">Voltar</button>
+</footer>
+
+<!-- Conta na nuvem -->
+<div class="modal-backdrop" id="backupModal" onclick="if(event.target===this) closeModal()">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+    <button class="modal-close" onclick="closeModal()" aria-label="Fechar">&#10005;</button>
+    <h2 class="modal-title" id="accountTitle">Minha conta na nuvem</h2>
+    <p id="accountEmail" style="overflow-wrap:anywhere;"></p>
+    <p id="cloudStatus" role="status" aria-live="polite" style="font-size:13px;line-height:1.5;"></p>
+    <p style="font-size:13px;line-height:1.6;color:#CCC;">Suas revisões ficam no banco de dados da nuvem. Entre com o mesmo e-mail em outro aparelho para continuar. Para gravar, marque os quadrados e toque em Salvar. É necessário estar conectado à internet.</p>
+    <p style="font-size:13px;line-height:1.6;color:#CCC;">Alterações ainda não salvas são perdidas ao fechar ou recarregar a página.</p>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="refreshCloud()">Atualizar dados da nuvem</button>
+      <button class="btn-secondary" onclick="signOut()">Sair da conta</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CURRICULUM = [{"id": "historia", "name": "História", "color": "#1E4E79", "themes": [{"name": "História Geral", "groups": [{"title": "1. Pré-História:", "subthemes": ["1.1 Paleolítico", "1.2 Neolítico", "1.3 Revolução agrícola e surgimento das primeiras sociedades sedentárias"]}, {"title": "2. Antiguidade:", "subthemes": ["2.1 Civilizações hidráulicas: Egito e Mesopotâmia", "2.2 Grécia Antiga", "2.3 Roma Antiga"]}, {"title": "3. Idade Média:", "subthemes": ["3.1 Feudalismo", "3.2 Igreja Católica", "3.3 Império Bizantino", "3.4 Islamismo", "3.5 Cruzadas"]}, {"title": "4. Idade Moderna:", "subthemes": ["4.1 Renascimento Cultural e Científico", "4.2 Reformas Religiosas", "4.3 Absolutismo Monárquico", "4.4 Mercantilismo", "4.5 Expansão Marítima Europeia", "4.6 Iluminismo", "4.7 Revolução Gloriosa (1688-1689): parlamentarismo inglês e limitação do poder monárquico"]}, {"title": "5. Idade Contemporânea:", "subthemes": ["5.1 Revolução Industrial", "5.2 Revolução Francesa", "5.3 Era Napoleônica", "5.4 Independência dos Estados Unidos (1776): Iluminismo e formação do Estado norte-americano", "5.5 Independências na América", "5.6 Revoluções liberais do século XIX (1820, 1830 e 1848)", "5.7 Imperialismo e Neocolonialismo", "5.8 Primeira Guerra Mundial", "5.9 Revolução Russa (1917) e formação da União Soviética", "5.10 Crise de 1929", "5.11 Fascismo e Nazismo", "5.12 Segunda Guerra Mundial", "5.13 Guerra Fria", "5.14 Revolução Chinesa (1949)", "5.15 Revolução Cubana (1959)", "5.16 Capitalismo e Socialismo: conflitos ideológicos e modelos econômicos", "5.17 Descolonização Afro-Asiática", "5.18 Ditaduras na América Latina e redemocratização", "5.19 Movimentos de resistência e direitos civis nos séculos XX e XXI", "5.20 Nova Ordem Mundial"]}, {"title": "6. História da África e das Américas:", "subthemes": ["6.1 Sociedades africanas pré-coloniais: reinos, impérios, comércio e escravidão", "6.2 Civilizações pré-colombianas: maias, astecas e incas", "6.3 Conquista e colonização da América: exploração colonial, relações com povos indígenas e resistências"]}]}, {"name": "História do Brasil", "groups": [{"title": "1. Período Colonial:", "subthemes": ["1.1 Povos indígenas do Brasil", "1.2 Economia açucareira", "1.3 Mineração", "1.4 Escravidão africana", "1.5 Invasões estrangeiras", "1.6 Revoltas nativistas e emancipacionistas", "1.7 Resistências indígenas e africanas: conflitos, quilombos e preservação cultural", "1.8 Bandeirantismo e expansão territorial: entradas, bandeiras e interiorização"]}, {"title": "2. Período Imperial:", "subthemes": ["2.1 Vinda da Família Real Portuguesa", "2.2 Independência do Brasil", "2.3 Primeiro Reinado", "2.4 Período Regencial", "2.5 Revoltas regenciais: Cabanagem, Balaiada, Sabinada e Revolução Farroupilha", "2.6 Segundo Reinado", "2.7 Economia cafeeira", "2.8 Guerra do Paraguai", "2.9 Movimento abolicionista: participação de escravizados, libertos, intelectuais e organizações", "2.10 Abolição Escravatura"]}, {"title": "3. Período Republicano:", "subthemes": ["3.1 República da Espada", "3.2 República Oligárquica (República Velha)", "3.3 Guerra de Canudos (1896-1897)", "3.4 Guerra do Contestado (1912-1916)", "3.5 Revolta da Vacina (1904) e Revolta da Chibata (1910)", "3.6 Tenentismo e Coluna Prestes", "3.7 Industrialização brasileira e formação da classe trabalhadora", "3.8 Era Vargas", "3.9 Trabalhismo e direitos sociais durante a Era Vargas", "3.10 República Populista (1945-1964)", "3.11 Ditadura Militar (1964-1985)", "3.12 Resistência à Ditadura Militar: movimentos sociais, censura, repressão e mobilizações políticas", "3.13 Redemocratização", "3.14 Constituição de 1988: cidadania e ampliação dos direitos", "3.15 Nova República"]}]}]}, {"id": "geografia", "name": "Geografia", "color": "#1E5631", "themes": [{"name": "Geografia Física e Cartografia", "groups": [{"title": "1. Cartografia:", "subthemes": ["1.1 Escalas cartográficas", "1.2 Projeções cartográficas", "1.3 Fusos horários", "1.4 Geotecnologias: sensoriamento remoto, imagens de satélite, GPS e Sistemas de Informação Geográfica"]}, {"title": "2. Estrutura e dinâmica da Terra:", "subthemes": ["2.1 Estrutura geológica", "2.2 Relevo", "2.3 Solos", "2.4 Placas tectônicas", "2.5 Terremotos e vulcanismo", "2.6 Formação e transformação do relevo"]}, {"title": "3. Climatologia e hidrografia:", "subthemes": ["3.1 Climas mundiais e brasileiros", "3.2 Massas de ar e frentes frias", "3.3 El Niño e La Niña", "3.4 Hidrografia e recursos hídricos"]}, {"title": "4. Paisagens naturais:", "subthemes": ["4.1 Domínios morfoclimáticos brasileiros", "4.2 Biomas mundiais"]}]}, {"name": "Questões Ambientais", "groups": [{"title": "1. Mudanças e impactos ambientais:", "subthemes": ["1.1 Aquecimento global", "1.2 Desmatamento", "1.3 Ilhas de calor", "1.4 Chuva ácida", "1.5 Desertificação", "1.6 Queimadas", "1.7 Erosão e assoreamento", "1.8 Perda de biodiversidade"]}, {"title": "2. Recursos naturais e sustentabilidade:", "subthemes": ["2.1 Matrizes energéticas renováveis e não renováveis", "2.2 Recursos hídricos", "2.3 Sustentabilidade", "2.4 Fontes de energia no Brasil: hidrelétricas, petróleo, gás natural, solar e eólica"]}]}, {"name": "Geografia Humana e Econômica", "groups": [{"title": "1. Demografia:", "subthemes": ["1.1 Crescimento populacional", "1.2 Pirâmides etárias", "1.3 Migrações", "1.4 Indicadores socioeconômicos: PIB, IDH, coeficiente de Gini e desenvolvimento"]}, {"title": "2. Urbanização:", "subthemes": ["2.1 Metropolização", "2.2 Segregação socioespacial", "2.3 Problemas urbanos", "2.4 Redes urbanas e hierarquia das cidades: metrópoles, cidades médias e fluxos"]}, {"title": "3. Agropecuária e espaço rural:", "subthemes": ["3.1 Estrutura fundiária", "3.2 Agronegócio", "3.3 Agricultura familiar", "3.4 Revolução Verde", "3.5 Reforma agrária e conflitos no campo"]}, {"title": "4. Economia e território:", "subthemes": ["4.1 Industrialização", "4.2 Divisão Internacional do Trabalho (DIT)"]}]}, {"name": "Geopolítica e Globalização", "groups": [{"title": "1. Relações internacionais:", "subthemes": ["1.1 Globalização", "1.2 Blocos econômicos", "1.3 Comércio internacional", "1.4 Conflitos territoriais, étnicos e religiosos", "1.5 Organizações internacionais: ONU, OMC e FMI"]}]}, {"name": "Geografia do Brasil", "groups": [{"title": "1. Território e regionalização:", "subthemes": ["1.1 Regionalização do território brasileiro: regiões do IBGE e outras divisões regionais", "1.2 Formação territorial do Brasil: ocupação, fronteiras e organização espacial", "1.3 Desigualdades regionais brasileiras: economia, sociedade e infraestrutura"]}]}]}, {"id": "filosofia", "name": "Filosofia", "color": "#4A2C6B", "themes": [{"name": "História da Filosofia", "groups": [{"title": "1. Filosofia Antiga:", "subthemes": ["1.1 Pré-socráticos", "1.2 Sofistas: relativismo e retórica", "1.3 Sócrates", "1.4 Platão", "1.5 Aristóteles", "1.6 Filosofia Helenística: estoicismo, epicurismo e ceticismo"]}, {"title": "2. Filosofia Medieval:", "subthemes": ["2.1 Patrística: Santo Agostinho", "2.2 Escolástica: São Tomás de Aquino"]}, {"title": "3. Filosofia Moderna:", "subthemes": ["3.1 Racionalismo: René Descartes", "3.2 Empirismo: John Locke e David Hume", "3.3 Criticismo: Immanuel Kant", "3.4 Contratualismo: Hobbes, Locke e Rousseau", "3.5 Pensamento político de Maquiavel", "3.6 Idealismo alemão: Hegel e a dialética"]}, {"title": "4. Filosofia Contemporânea:", "subthemes": ["4.1 Existencialismo: Jean-Paul Sartre", "4.2 Fenomenologia", "4.3 Escola de Frankfurt: Adorno, Horkheimer e Habermas", "4.4 Michel Foucault", "4.5 Friedrich Nietzsche", "4.6 Hannah Arendt", "4.7 Filosofia marxista: materialismo histórico, ideologia e crítica ao capitalismo", "4.8 Filosofia feminista: Simone de Beauvoir e reflexões sobre gênero", "4.9 Filosofias africanas e pensamentos indígenas", "4.10 Bioética"]}]}, {"name": "Áreas Temáticas", "groups": [{"title": "1. Problemas filosóficos:", "subthemes": ["1.1 Ética", "1.2 Política", "1.3 Teoria do Conhecimento (Epistemologia)", "1.4 Estética", "1.5 Filosofia da Ciência", "1.6 Lógica e argumentação: raciocínio lógico e falácias", "1.7 Filosofia política contemporânea: democracia, justiça social, liberdade e direitos humanos"]}]}]}, {"id": "sociologia", "name": "Sociologia", "color": "#8C4214", "themes": [{"name": "Fundamentos e Teorias Sociológicas", "groups": [{"title": "1. Clássicos da Sociologia:", "subthemes": ["1.1 Émile Durkheim: fato social e solidariedade", "1.2 Max Weber: ação social, burocracia e tipos de dominação", "1.3 Karl Marx: luta de classes, mais-valia e alienação"]}, {"title": "2. Socialização e instituições:", "subthemes": ["2.1 Socialização primária e secundária", "2.2 Instituições sociais: família, escola, religião e Estado"]}, {"title": "3. Sociologia Brasileira e Contemporânea:", "subthemes": ["3.1 Gilberto Freyre, Florestan Fernandes e Sérgio Buarque de Holanda", "3.2 Pierre Bourdieu: capital cultural, habitus e reprodução das desigualdades"]}]}, {"name": "Cultura e Sociedade", "groups": [{"title": "1. Cultura e identidades:", "subthemes": ["1.1 Indústria cultural", "1.2 Cultura de massa", "1.3 Etnocentrismo e relativismo cultural", "1.4 Identidade e patrimônio", "1.5 Globalização e transformações culturais", "1.6 Religião e sociedade: secularização e influência das instituições religiosas"]}]}, {"name": "Trabalho, Estratificação e Desigualdades", "groups": [{"title": "1. Trabalho e organização produtiva:", "subthemes": ["1.1 Divisão social do trabalho", "1.2 Fordismo, taylorismo e toyotismo", "1.3 Precarização do trabalho"]}, {"title": "2. Estratificação e exclusão social:", "subthemes": ["2.1 Desigualdade social", "2.2 Mobilidade social", "2.3 Exclusão social", "2.4 Racismo estrutural e desigualdades raciais", "2.5 Relações de gênero e desigualdades sociais"]}]}, {"name": "Política e Cidadania", "groups": [{"title": "1. Estado e direitos:", "subthemes": ["1.1 Estado e democracia", "1.2 Direitos humanos", "1.3 Direitos civis, políticos e sociais"]}, {"title": "2. Movimentos sociais:", "subthemes": ["2.1 Movimento negro", "2.2 Movimento feminista", "2.3 Movimento indígena", "2.4 Movimento LGBTQIA+", "2.5 Movimento ambientalista"]}]}]}, {"id": "portugues", "name": "Língua Portuguesa", "color": "#7A1C28", "themes": [{"name": "Leitura, Interpretação e Produção de Sentidos", "groups": [{"title": "1. Interpretação e compreensão de textos:", "subthemes": ["1.1 Inferência", "1.2 Pressupostos e subentendidos", "1.3 Intertextualidade", "1.4 Paráfrase e paródia"]}, {"title": "2. Gêneros e tipologias textuais:", "subthemes": ["2.1 Textos narrativos, descritivos, dissertativos, injuntivos e expositivos", "2.2 Gêneros digitais", "2.3 Gêneros jornalísticos", "2.4 Gêneros publicitários", "2.5 Gêneros literários"]}, {"title": "3. Argumentação:", "subthemes": ["3.1 Tese e argumentos", "3.2 Contra-argumentos", "3.3 Persuasão e recursos de convencimento", "3.4 Estratégias argumentativas e identificação do público-alvo"]}, {"title": "4. Análise crítica do discurso:", "subthemes": ["4.1 Posicionamentos ideológicos e intencionalidade", "4.2 Efeitos de sentido", "4.3 Identificação de fatos e opiniões", "4.4 Leitura crítica de textos midiáticos"]}, {"title": "5. Linguagens e textos multimodais:", "subthemes": ["5.1 Linguagem verbal, não verbal e multimodal", "5.2 Interpretação de imagens, charges, cartuns, tirinhas e propagandas"]}, {"title": "6. Discurso e comunicação:", "subthemes": ["6.1 Discurso direto, indireto e indireto livre", "6.2 Elementos da comunicação: emissor, receptor, mensagem, código, canal e contexto"]}]}, {"name": "Recursos da Linguagem", "groups": [{"title": "1. Funções da Linguagem:", "subthemes": ["1.1 Referencial", "1.2 Emotiva", "1.3 Conativa", "1.4 Fática", "1.5 Metalinguística", "1.6 Poética"]}, {"title": "2. Figuras de Linguagem:", "subthemes": ["2.1 Metáfora e metonímia", "2.2 Ironia", "2.3 Antítese e paradoxo", "2.4 Hipérbole e eufemismo", "2.5 Personificação e outras figuras"]}, {"title": "3. Variação Linguística:", "subthemes": ["3.1 Variações regionais, sociais, históricas e situacionais", "3.2 Norma-padrão e linguagem coloquial", "3.3 Preconceito linguístico"]}, {"title": "4. Semântica e Estilística:", "subthemes": ["4.1 Sinonímia e antonímia", "4.2 Polissemia e ambiguidade", "4.3 Denotação e conotação"]}]}, {"name": "Organização e Gramática do Texto", "groups": [{"title": "1. Coesão e Coerência:", "subthemes": ["1.1 Conectivos: conjunções, preposições e pronomes", "1.2 Referenciação", "1.3 Progressão temática"]}, {"title": "2. Gramática aplicada ao texto:", "subthemes": ["2.1 Morfossintaxe", "2.2 Pontuação", "2.3 Concordância verbal e nominal", "2.4 Regência", "2.5 Crase", "2.6 Efeitos de sentido das escolhas gramaticais"]}]}]}, {"id": "literatura", "name": "Literatura", "color": "#7D2452", "themes": [{"name": "Teoria e Análise Literária", "groups": [{"title": "1. Teoria Literária:", "subthemes": ["1.1 Gêneros épico, lírico e dramático", "1.2 Prosa e poesia", "1.3 Interpretação de textos literários e relações entre literatura, sociedade e identidade nacional"]}]}, {"name": "História da Literatura", "groups": [{"title": "1. Escolas Literárias do Brasil e de Portugal:", "subthemes": ["1.1 Trovadorismo", "1.2 Humanismo", "1.3 Classicismo", "1.4 Quinhentismo", "1.5 Barroco", "1.6 Arcadismo", "1.7 Romantismo", "1.8 Realismo", "1.9 Naturalismo", "1.10 Parnasianismo", "1.11 Simbolismo", "1.12 Pré-Modernismo"]}, {"title": "2. Modernismo:", "subthemes": ["2.1 Semana de Arte Moderna de 1922", "2.2 Vanguardas europeias", "2.3 Primeira fase do Modernismo", "2.4 Segunda fase do Modernismo e geração de 1930", "2.5 Terceira fase do Modernismo e geração de 1945"]}, {"title": "3. Literatura Contemporânea:", "subthemes": ["3.1 Poesia concreta", "3.2 Poesia marginal", "3.3 Tropicalismo", "3.4 Literatura brasileira pós-1970", "3.5 Literatura indígena e afro-brasileira", "3.6 Literatura africana de língua portuguesa"]}]}, {"name": "Literatura e Cultura Brasileira", "groups": [{"title": "1. Autores, obras e manifestações:", "subthemes": ["1.1 Principais autores e obras da literatura brasileira: contexto histórico e características", "1.2 Literatura de cordel", "1.3 Literatura oral e tradições populares", "1.4 Regionalismo na literatura brasileira"]}]}]}, {"id": "lingua_estrangeira", "name": "Língua Estrangeira", "color": "#165B5E", "themes": [{"name": "Compreensão e Interpretação de Textos", "groups": [{"title": "1. Leitura e Interpretação:", "subthemes": ["1.1 Compreensão global e específica de textos jornalísticos e literários", "1.2 Tirinhas e charges", "1.3 Letras de música", "1.4 Infográficos", "1.5 Estratégias de leitura: skimming, scanning e palavras-chave"]}, {"title": "2. Linguagem e comunicação:", "subthemes": ["2.1 Intenção comunicativa em anúncios e campanhas", "2.2 Intenção comunicativa em textos digitais"]}]}, {"name": "Vocabulário, Estruturas e Cultura", "groups": [{"title": "1. Vocabulário e Semântica:", "subthemes": ["1.1 Cognatos e falsos cognatos", "1.2 Expressões idiomáticas", "1.3 Conectivos", "1.4 Sentido das palavras no contexto"]}, {"title": "2. Aspectos Linguísticos:", "subthemes": ["2.1 Tempos e estruturas verbais em contextos comunicativos"]}, {"title": "3. Aspectos Culturais:", "subthemes": ["3.1 Manifestações culturais dos países de língua inglesa ou espanhola"]}]}]}, {"id": "artes", "name": "Artes", "color": "#5B2C6F", "themes": [{"name": "História da Arte", "groups": [{"title": "1. Períodos e Movimentos Artísticos:", "subthemes": ["1.1 Arte na Pré-História", "1.2 Arte na Antiguidade", "1.3 Arte na Idade Média", "1.4 Renascimento", "1.5 Barroco", "1.6 Neoclassicismo", "1.7 Arte Moderna", "1.8 Arte Contemporânea"]}, {"title": "2. Arte Brasileira:", "subthemes": ["2.1 Arte indígena brasileira", "2.2 Arte afro-brasileira", "2.3 Barroco brasileiro: Aleijadinho, Mestre Ataíde e arte colonial", "2.4 Modernismo brasileiro: Tarsila do Amaral, Anita Malfatti, Di Cavalcanti e outros representantes", "2.5 Arte popular e manifestações regionais", "2.6 Arte urbana: grafite e intervenções urbanas"]}]}, {"name": "Linguagens Artísticas e Patrimônio", "groups": [{"title": "1. Manifestações Artísticas:", "subthemes": ["1.1 Artes visuais", "1.2 Música", "1.3 Teatro", "1.4 Dança", "1.5 Cinema", "1.6 Fotografia"]}, {"title": "2. Patrimônio e Leitura de Obras:", "subthemes": ["2.1 Patrimônio cultural material e imaterial", "2.2 Análise de obras: composição, elementos visuais, contexto histórico e função social"]}]}]}, {"id": "educacao_fisica", "name": "Educação Física", "color": "#3B6221", "themes": [{"name": "Cultura Corporal de Movimento", "groups": [{"title": "1. Práticas Corporais:", "subthemes": ["1.1 Esportes", "1.2 Jogos", "1.3 Lutas", "1.4 Ginásticas", "1.5 Danças", "1.6 Esporte adaptado e inclusão de pessoas com deficiência"]}, {"title": "2. Corpo, Cultura e Sociedade:", "subthemes": ["2.1 Padrões estéticos e mídia", "2.2 Práticas corporais, identidade e relações de gênero", "2.3 Lazer e qualidade de vida", "2.4 Influência da mídia sobre padrões corporais e comportamento"]}, {"title": "3. Saúde e Atividade Física:", "subthemes": ["3.1 Saúde e sedentarismo", "3.2 Doping", "3.3 Atividade física e prevenção de doenças", "3.4 Atividade física e promoção da saúde"]}]}]}, {"id": "tics", "name": "TICs", "color": "#1B587A", "themes": [{"name": "Cultura Digital", "groups": [{"title": "1. Sociedade e Comunicação:", "subthemes": ["1.1 Redes sociais", "1.2 Algoritmos", "1.3 Fake news e desinformação", "1.4 Inclusão digital", "1.5 Evolução dos meios de comunicação", "1.6 Impacto das tecnologias nas relações sociais e no trabalho"]}, {"title": "2. Tecnologias e Ética:", "subthemes": ["2.1 Inteligência artificial", "2.2 Proteção de dados pessoais", "2.3 Privacidade digital", "2.4 Ética no uso das tecnologias"]}]}]}, {"id": "biologia", "name": "Biologia", "color": "#215E2B", "themes": [{"name": "Ecologia", "groups": [{"title": "1. Ecossistemas e Interações:", "subthemes": ["1.1 Cadeias e teias alimentares", "1.2 Fluxo de energia", "1.3 Ciclos biogeoquímicos: água, carbono, nitrogênio e oxigênio", "1.4 Relações ecológicas", "1.5 Dinâmica de populações", "1.6 Sucessão ecológica"]}, {"title": "2. Impactos e Conservação Ambiental:", "subthemes": ["2.1 Eutrofização", "2.2 Magnificação trófica", "2.3 Poluição", "2.4 Conservação da biodiversidade", "2.5 Unidades de conservação e recuperação de ecossistemas", "2.6 Biomas brasileiros: Amazônia, Cerrado, Caatinga, Mata Atlântica, Pantanal e Pampa"]}]}, {"name": "Citologia e Bioquímica", "groups": [{"title": "1. Bioquímica Celular:", "subthemes": ["1.1 Água e sais minerais", "1.2 Carboidratos e lipídios", "1.3 Proteínas e vitaminas", "1.4 Ácidos nucleicos: DNA e RNA"]}, {"title": "2. Estruturas e Processos Celulares:", "subthemes": ["2.1 Organelas citoplasmáticas", "2.2 Membrana plasmática e transportes", "2.3 Respiração celular", "2.4 Fermentação", "2.5 Fotossíntese", "2.6 Divisão celular: mitose e meiose"]}, {"title": "3. Biologia Molecular:", "subthemes": ["3.1 Replicação do DNA", "3.2 Transcrição e tradução", "3.3 Código genético e síntese proteica"]}]}, {"name": "Genética e Biotecnologia", "groups": [{"title": "1. Genética:", "subthemes": ["1.1 Leis de Mendel", "1.2 Heredogramas", "1.3 Sistema ABO e fator Rh", "1.4 Herança ligada ao sexo", "1.5 Mutações"]}, {"title": "2. Biotecnologia:", "subthemes": ["2.1 Engenharia genética", "2.2 Transgênicos", "2.3 Clonagem", "2.4 Células-tronco", "2.5 Terapia gênica"]}]}, {"name": "Evolução e Origem da Vida", "groups": [{"title": "1. Origem da Vida:", "subthemes": ["1.1 Hipóteses sobre o surgimento da vida", "1.2 Evolução das primeiras células"]}, {"title": "2. Teorias Evolutivas:", "subthemes": ["2.1 Lamarckismo", "2.2 Darwinismo", "2.3 Neodarwinismo", "2.4 Seleção natural", "2.5 Especiação", "2.6 Evidências da evolução", "2.7 Evolução humana e principais processos evolutivos dos hominínios"]}]}, {"name": "Classificação, Botânica e Zoologia", "groups": [{"title": "1. Classificação Biológica:", "subthemes": ["1.1 Taxonomia e nomenclatura científica", "1.2 Sistemática e relações filogenéticas"]}, {"title": "2. Botânica:", "subthemes": ["2.1 Briófitas e pteridófitas", "2.2 Gimnospermas e angiospermas", "2.3 Fisiologia vegetal: hormônios e transpiração"]}, {"title": "3. Zoologia:", "subthemes": ["3.1 Características gerais dos filos animais"]}]}, {"name": "Histologia, Fisiologia e Embriologia", "groups": [{"title": "1. Histologia Animal:", "subthemes": ["1.1 Tecido epitelial", "1.2 Tecido conjuntivo", "1.3 Tecido muscular", "1.4 Tecido nervoso"]}, {"title": "2. Fisiologia Humana e Animal:", "subthemes": ["2.1 Sistema digestório", "2.2 Sistema respiratório", "2.3 Sistema circulatório", "2.4 Sistema excretor", "2.5 Sistema nervoso", "2.6 Sistema endócrino", "2.7 Sistema imunológico", "2.8 Sistema reprodutor"]}, {"title": "3. Embriologia e Reprodução:", "subthemes": ["3.1 Fecundação", "3.2 Desenvolvimento embrionário", "3.3 Folhetos embrionários", "3.4 Anexos embrionários", "3.5 Métodos contraceptivos e saúde sexual"]}]}, {"name": "Microbiologia e Saúde", "groups": [{"title": "1. Microbiologia:", "subthemes": ["1.1 Características gerais de vírus", "1.2 Características gerais de bactérias", "1.3 Características gerais de protozoários", "1.4 Características gerais de fungos"]}, {"title": "2. Programas de Saúde:", "subthemes": ["2.1 Doenças causadas por vírus, bactérias, protozoários, fungos e vermes: sintomas, transmissão e profilaxia", "2.2 Vacinas e soros", "2.3 Infecções sexualmente transmissíveis (ISTs)"]}]}]}, {"id": "quimica", "name": "Química", "color": "#7D5611", "themes": [{"name": "Química Geral e Inorgânica", "groups": [{"title": "1. Matéria e Transformações:", "subthemes": ["1.1 Propriedades da matéria", "1.2 Separação de misturas", "1.3 Leis ponderais: Lei de Lavoisier e Lei de Proust", "1.4 Balanceamento de equações químicas"]}, {"title": "2. Estrutura Atômica e Ligações:", "subthemes": ["2.1 Modelos atômicos", "2.2 Tabela Periódica", "2.3 Ligações iônicas, covalentes e metálicas", "2.4 Geometria molecular", "2.5 Polaridade", "2.6 Forças intermoleculares"]}, {"title": "3. Funções Inorgânicas:", "subthemes": ["3.1 Ácidos", "3.2 Bases", "3.3 Sais", "3.4 Óxidos", "3.5 Reações de neutralização"]}]}, {"name": "Físico-Química", "groups": [{"title": "1. Estequiometria:", "subthemes": ["1.1 Cálculos de massa, quantidade de matéria (mol) e volume", "1.2 Pureza e rendimento", "1.3 Reagente limitante"]}, {"title": "2. Soluções:", "subthemes": ["2.1 Concentração comum", "2.2 Molaridade", "2.3 Diluição e mistura de soluções", "2.4 Solubilidade e curvas de solubilidade", "2.5 Produto de solubilidade"]}, {"title": "3. Propriedades Coligativas:", "subthemes": ["3.1 Tonoscopia", "3.2 Ebulioscopia", "3.3 Crioscopia", "3.4 Osmose"]}, {"title": "4. Estudo dos Gases:", "subthemes": ["4.1 Leis dos gases", "4.2 Transformações gasosas", "4.3 Equação geral dos gases e equação de Clapeyron"]}, {"title": "5. Termoquímica:", "subthemes": ["5.1 Reações endotérmicas e exotérmicas", "5.2 Entalpia", "5.3 Lei de Hess", "5.4 Energia de ligação"]}, {"title": "6. Cinética Química e Equilíbrio:", "subthemes": ["6.1 Velocidade das reações", "6.2 Catalisadores", "6.3 Princípio de Le Chatelier", "6.4 pH e pOH", "6.5 Hidrólise salina"]}, {"title": "7. Eletroquímica:", "subthemes": ["7.1 Pilhas", "7.2 Eletrólise", "7.3 Oxirredução", "7.4 Corrosão"]}, {"title": "8. Radioatividade:", "subthemes": ["8.1 Emissões alfa, beta e gama", "8.2 Meia-vida", "8.3 Fissão e fusão nuclear"]}]}, {"name": "Química Orgânica", "groups": [{"title": "1. Estrutura dos Compostos Orgânicos:", "subthemes": ["1.1 Classificação de cadeias carbônicas", "1.2 Funções orgânicas: hidrocarbonetos, álcoois, fenóis e éteres", "1.3 Funções orgânicas: aldeídos, cetonas, ácidos carboxílicos e ésteres", "1.4 Funções orgânicas: aminas e amidas"]}, {"title": "2. Isomeria e Reações Orgânicas:", "subthemes": ["2.1 Isomeria plana e espacial", "2.2 Reações de adição, substituição e eliminação", "2.3 Oxidação", "2.4 Esterificação e saponificação", "2.5 Polímeros"]}]}, {"name": "Química Ambiental e Aplicada", "groups": [{"title": "1. Química Ambiental:", "subthemes": ["1.1 Tratamento de água e esgoto", "1.2 Chuva ácida", "1.3 Efeito estufa", "1.4 Camada de ozônio", "1.5 Combustíveis fósseis e biocombustíveis"]}, {"title": "2. Química no Cotidiano:", "subthemes": ["2.1 Química dos alimentos: conservação, aditivos e transformações", "2.2 Química industrial: produção de substâncias de importância econômica", "2.3 Química dos materiais: metais, ligas metálicas e propriedades", "2.4 Química e saúde: medicamentos e aplicações de substâncias químicas"]}]}]}, {"id": "fisica", "name": "Física", "color": "#1B3B73", "themes": [{"name": "Fundamentos da Física", "groups": [{"title": "1. Grandezas e Medidas:", "subthemes": ["1.1 Sistema Internacional de Unidades: unidades fundamentais e derivadas", "1.2 Notação científica e ordem de grandeza", "1.3 Grandezas escalares e vetoriais", "1.4 Representação, decomposição e operações com vetores"]}]}, {"name": "Mecânica", "groups": [{"title": "1. Cinemática:", "subthemes": ["1.1 Movimento Retilíneo Uniforme (MRU)", "1.2 Movimento Retilíneo Uniformemente Variado (MRUV)", "1.3 Queda livre", "1.4 Lançamento oblíquo", "1.5 Movimento Circular Uniforme (MCU)", "1.6 Gráficos de posição, velocidade e aceleração em função do tempo"]}, {"title": "2. Dinâmica:", "subthemes": ["2.1 Leis de Newton", "2.2 Força peso, normal, de atrito, elástica e centrípeta", "2.3 Trabalho e potência", "2.4 Energia mecânica: cinética e potencial", "2.5 Impulso e quantidade de movimento"]}, {"title": "3. Estática e Hidrostática:", "subthemes": ["3.1 Equilíbrio de corpos extensos", "3.2 Torque (momento de força)", "3.3 Densidade e pressão", "3.4 Teorema de Stevin", "3.5 Princípio de Pascal", "3.6 Empuxo: Princípio de Arquimedes"]}, {"title": "4. Gravitação Universal:", "subthemes": ["4.1 Lei da Gravitação Universal de Newton", "4.2 Leis de Kepler", "4.3 Movimento dos planetas e órbitas", "4.4 Astronomia e fenômenos gravitacionais"]}]}, {"name": "Termologia e Termodinâmica", "groups": [{"title": "1. Temperatura e Calor:", "subthemes": ["1.1 Escalas termométricas", "1.2 Dilatação térmica", "1.3 Calorimetria: calor sensível e latente", "1.4 Condução, convecção e irradiação"]}, {"title": "2. Termodinâmica:", "subthemes": ["2.1 Estudo dos gases", "2.2 Leis da Termodinâmica", "2.3 Máquinas térmicas"]}]}, {"name": "Ondulatória e Acústica", "groups": [{"title": "1. Ondas:", "subthemes": ["1.1 Amplitude, frequência, comprimento de onda e velocidade", "1.2 Reflexão, refração, difração e interferência", "1.3 Polarização e ressonância"]}, {"title": "2. Acústica:", "subthemes": ["2.1 Fenômenos acústicos", "2.2 Efeito Doppler"]}]}, {"name": "Óptica Geométrica", "groups": [{"title": "1. Luz e Formação de Imagens:", "subthemes": ["1.1 Reflexão da luz", "1.2 Espelhos planos e esféricos", "1.3 Refração", "1.4 Lentes esféricas"]}, {"title": "2. Óptica da Visão:", "subthemes": ["2.1 Miopia", "2.2 Hipermetropia", "2.3 Astigmatismo"]}]}, {"name": "Eletricidade e Eletromagnetismo", "groups": [{"title": "1. Eletrostática:", "subthemes": ["1.1 Carga elétrica", "1.2 Lei de Coulomb", "1.3 Campo e potencial elétrico"]}, {"title": "2. Eletrodinâmica:", "subthemes": ["2.1 Corrente elétrica", "2.2 Leis de Ohm", "2.3 Potência e consumo de energia elétrica", "2.4 Associação de resistores", "2.5 Geradores e receptores", "2.6 Circuitos de corrente contínua e alternada", "2.7 Instrumentos de medição", "2.8 Efeito Joule", "2.9 Capacitores e armazenamento de energia elétrica"]}, {"title": "3. Eletromagnetismo:", "subthemes": ["3.1 Campo magnético", "3.2 Força magnética", "3.3 Indução eletromagnética: leis de Faraday e Lenz"]}]}]}, {"id": "matematica", "name": "Matemática", "color": "#7E2018", "themes": [{"name": "Números, Operações e Álgebra", "groups": [{"title": "1. Matemática Básica:", "subthemes": ["1.1 Operações fundamentais", "1.2 Frações", "1.3 Potenciação e radiciação", "1.4 Múltiplos e divisores: MMC e MDC", "1.5 Sistemas de medidas e conversões de unidades"]}, {"title": "2. Conjuntos Numéricos:", "subthemes": ["2.1 Números naturais, inteiros, racionais, irracionais e reais", "2.2 Desigualdades numéricas", "2.3 Notação científica e ordem de grandeza"]}, {"title": "3. Expressões Algébricas e Equações:", "subthemes": ["3.1 Produtos notáveis", "3.2 Fatoração algébrica", "3.3 Polinômios e operações algébricas", "3.4 Equações do 1º grau", "3.5 Equações do 2º grau", "3.6 Sistemas de equações lineares", "3.7 Inequações do 1º e do 2º grau"]}]}, {"name": "Razão, Proporção e Matemática Financeira", "groups": [{"title": "1. Razão e Proporcionalidade:", "subthemes": ["1.1 Razão e proporção", "1.2 Regra de três simples e composta", "1.3 Escalas cartográficas", "1.4 Grandezas direta e inversamente proporcionais", "1.5 Porcentagem", "1.6 Aumentos e descontos sucessivos"]}, {"title": "2. Matemática Financeira:", "subthemes": ["2.1 Juros simples", "2.2 Juros compostos"]}]}, {"name": "Estatística, Probabilidade e Combinatória", "groups": [{"title": "1. Estatística:", "subthemes": ["1.1 Leitura e interpretação de gráficos e tabelas", "1.2 Média aritmética e média ponderada", "1.3 Mediana e moda", "1.4 Variância e desvio padrão", "1.5 População, amostra e representatividade", "1.6 Distribuição de frequências", "1.7 Interpretação crítica de pesquisas e dados estatísticos", "1.8 Tendências, estimativas e previsões a partir de gráficos"]}, {"title": "2. Probabilidade:", "subthemes": ["2.1 Cálculo de probabilidades", "2.2 União e intersecção de eventos", "2.3 Probabilidade condicional"]}, {"title": "3. Análise Combinatória:", "subthemes": ["3.1 Princípio Fundamental da Contagem", "3.2 Permutação simples e com repetição", "3.3 Arranjo e combinação"]}]}, {"name": "Funções e Sequências Numéricas", "groups": [{"title": "1. Funções:", "subthemes": ["1.1 Função afim (1º grau)", "1.2 Função quadrática (2º grau): raízes, vértice, máximos e mínimos", "1.3 Função exponencial", "1.4 Função logarítmica", "1.5 Funções trigonométricas", "1.6 Funções polinomiais", "1.7 Funções racionais"]}, {"title": "2. Sequências Numéricas:", "subthemes": ["2.1 Progressão Aritmética (PA)", "2.2 Progressão Geométrica (PG)"]}]}, {"name": "Geometria e Trigonometria", "groups": [{"title": "1. Geometria Plana:", "subthemes": ["1.1 Polígonos", "1.2 Triângulos e semelhança", "1.3 Congruência de triângulos", "1.4 Teorema de Pitágoras e relações métricas", "1.5 Teorema de Tales", "1.6 Ângulos e posições relativas de retas", "1.7 Quadriláteros", "1.8 Circunferência e círculo", "1.9 Cálculo de áreas e perímetros", "1.10 Simetria de figuras planas"]}, {"title": "2. Geometria Espacial:", "subthemes": ["2.1 Prismas, cubos e paralelepípedos", "2.2 Cilindros, cones, pirâmides, esferas e troncos", "2.3 Cálculo de área total e volume", "2.4 Projeções ortogonais", "2.5 Simetria de sólidos geométricos"]}, {"title": "3. Geometria Analítica:", "subthemes": ["3.1 Distância entre dois pontos", "3.2 Ponto médio", "3.3 Equação da reta", "3.4 Paralelismo e perpendicularidade no plano cartesiano", "3.5 Equação da circunferência"]}, {"title": "4. Trigonometria:", "subthemes": ["4.1 Seno, cosseno e tangente no triângulo retângulo", "4.2 Lei dos Senos", "4.3 Lei dos Cossenos", "4.4 Ciclo trigonométrico"]}]}]}, {"id": "redacao", "name": "Redação", "color": "#3E4C59", "themes": [{"name": "Estrutura e Produção Textual", "groups": [{"title": "1. Texto dissertativo-argumentativo:", "subthemes": ["1.1 Redação em prosa", "1.2 Introdução, desenvolvimento e conclusão", "1.3 Até 30 linhas no texto definitivo; textos com sete linhas ou menos recebem nota zero por insuficiência", "1.4 Projeto de texto: planejamento, tese e organização dos argumentos"]}, {"title": "2. Construção da Argumentação:", "subthemes": ["2.1 Repertório sociocultural pertinente e produtivo", "2.2 Exemplificação e comparação", "2.3 Relações de causa e consequência", "2.4 Fundamentação dos argumentos", "2.5 Progressão argumentativa e unidade temática"]}]}, {"name": "Competências Avaliadas", "groups": [{"title": "1. Cinco Competências:", "subthemes": ["1.1 Domínio da modalidade escrita formal da língua portuguesa", "1.2 Compreensão da proposta e aplicação de conceitos de diferentes áreas do conhecimento", "1.3 Seleção, relação, organização e interpretação de informações, fatos, opiniões e argumentos em defesa de um ponto de vista", "1.4 Uso de mecanismos linguísticos de construção da argumentação e coesão", "1.5 Proposta de intervenção para o problema: agente, ação, meio ou modo, efeito e detalhamento, respeitando os direitos humanos"]}]}, {"name": "Critérios de Avaliação", "groups": [{"title": "1. Avaliação da Redação:", "subthemes": ["1.1 Situações de nota zero: fuga ao tema, insuficiência textual, inadequação ao tipo textual e outras situações previstas pelo Inep", "1.2 Análise de redações avaliadas e identificação das características de textos com bom desempenho"]}]}]}];
+const QUIZZES = {"historia": [{"num": 1, "stem": "No século XVI, os aldeamentos organizados por missionários no Brasil reuniam indígenas de diferentes comunidades. Neles, a catequese e a disciplina do trabalho procuravam modificar costumes e formas de organização social. Entretanto, indígenas também buscaram essas povoações para obter proteção contra determinados inimigos, estabeleceram alianças, preservaram práticas culturais e, em diversas ocasiões, abandonaram os aldeamentos.\n\nA experiência descrita permite compreender as relações entre colonizadores e povos indígenas como um processo marcado pela", "options": [{"letter": "A", "text": "Continuidade integral da autonomia política das comunidades submetidas à catequese."}, {"letter": "B", "text": "Uniformização das experiências indígenas mediante acordos duradouros com os europeus."}, {"letter": "C", "text": "Subordinação dos colonos às decisões indígenas sobre trabalho e ocupação territorial."}, {"letter": "D", "text": "Imposição de projetos coloniais acompanhada de negociações e resistências indígenas."}, {"letter": "E", "text": "Ausência de interferência indígena na formação das relações sociais da América portuguesa."}], "correct": "D", "explanation": "a colonização portuguesa procurou submeter comunidades indígenas à catequese, à reorganização do trabalho e ao controle territorial. Os povos indígenas, porém, não foram sujeitos passivos: negociaram alianças, adaptaram-se a circunstâncias diversas e resistiram às imposições coloniais. Assim, os aldeamentos expressam relações assimétricas de poder, mas não uma experiência uniforme."}, {"num": 2, "stem": "Na Atenas do século V a.C., os cidadãos podiam reunir-se na Assembleia para deliberar sobre questões da pólis. Essa participação direta, entretanto, não se estendia a mulheres, estrangeiros residentes e pessoas escravizadas, que estavam excluídos do corpo cívico.\n\nA organização política ateniense expressava a coexistência entre", "options": [{"letter": "A", "text": "Representação parlamentar e igualdade jurídica entre os habitantes."}, {"letter": "B", "text": "Participação política direta e restrições sociais à cidadania."}, {"letter": "C", "text": "Sufrágio universal masculino e predomínio do poder monárquico."}, {"letter": "D", "text": "Autonomia dos estrangeiros e ausência de distinções legais."}, {"letter": "E", "text": "Igualdade econômica e exclusividade das decisões militares."}], "correct": "B", "explanation": "a democracia ateniense admitia a deliberação direta dos cidadãos, especialmente na Assembleia, mas o corpo cívico era restrito. Mulheres, metecos e pessoas escravizadas estavam excluídos dos direitos políticos. A participação direta, portanto, coexistia com hierarquias e mecanismos de exclusão incompatíveis com o princípio contemporâneo de cidadania universal."}, {"num": 3, "stem": "Nos séculos XVI e XVII, a produção de açúcar na América portuguesa exigia terras, engenhos, equipamentos e numerosos trabalhadores escravizados. O produto era destinado sobretudo aos circuitos mercantis atlânticos. Ao mesmo tempo, pessoas submetidas ao cativeiro desenvolveram formas de resistência, como fugas, formação de quilombos e negociações cotidianas.\n\nA organização da economia açucareira colonial, considerando as relações apresentadas, caracterizou-se pela", "options": [{"letter": "A", "text": "Articulação entre grande propriedade, comércio atlântico, coerção do trabalho e resistência dos escravizados."}, {"letter": "B", "text": "Predominância da produção familiar destinada à troca entre comunidades do interior da colônia."}, {"letter": "C", "text": "Substituição gradual do trabalho compulsório por relações salariais nos principais engenhos exportadores."}, {"letter": "D", "text": "Autossuficiência dos estabelecimentos rurais, que dispensavam investimentos e conexões comerciais externos."}, {"letter": "E", "text": "Transferência da administração dos engenhos para trabalhadores que conquistavam a liberdade por negociação."}], "correct": "A", "explanation": "o complexo açucareiro associava latifúndios, investimentos em engenhos e trabalho escravizado à circulação de mercadorias e capitais no Atlântico. A coerção era constitutiva dessa economia, mas as pessoas escravizadas atuavam historicamente por meio de negociações, fugas e outras resistências. Nem o isolamento econômico nem a generalização do trabalho livre explicam o sistema colonial."}, {"num": 4, "stem": "“Os homens nascem e são livres e iguais em direitos. [...] O princípio de toda a soberania reside, essencialmente, na nação.”\n\nDeclaração dos Direitos do Homem e do Cidadão, França, 1789, artigos 1º e 3º (excerto).\n\nEmbora a declaração adotasse uma linguagem universalista, a cidadania política não foi estendida imediatamente a mulheres e a todos os habitantes dos territórios coloniais franceses. Considerando essa tensão e as concepções iluministas que influenciaram a Revolução, o alcance histórico do documento consistiu em", "options": [{"letter": "A", "text": "Preservar distinções jurídicas de nascimento como fundamento indispensável da liberdade política."}, {"letter": "B", "text": "Reconhecer a transmissão hereditária do trono como fonte original da soberania da nação."}, {"letter": "C", "text": "Definir os direitos naturais como concessões condicionadas à autoridade das corporações religiosas."}, {"letter": "D", "text": "Assegurar participação política igualitária a todos os grupos sociais da metrópole e das colônias."}, {"letter": "E", "text": "Contestar privilégios estamentais com princípios universalistas, apesar de limites à cidadania efetiva."}], "correct": "E", "explanation": "a declaração de 1789 afirmou a igualdade de direitos e situou a soberania na nação, contestando privilégios de nascimento e fundamentos do poder dinástico. Em diálogo com ideias iluministas, apresentou princípios universalistas, mas sua aplicação política foi historicamente limitada. Mulheres e diferentes populações coloniais não obtiveram imediatamente cidadania efetiva em condições de igualdade."}, {"num": 5, "stem": "Durante o século XVI, traduções da Bíblia e textos de reformadores circularam em várias regiões europeias, favorecidos pela imprensa. Em diferentes principados, governantes apoiaram a Reforma Protestante, intervieram na organização das igrejas locais e entraram em conflito com autoridades que defendiam a unidade católica.\n\nA relação entre a circulação de ideias religiosas e a atuação dos governantes evidencia", "options": [{"letter": "A", "text": "A restauração da autoridade papal sobre as igrejas reformadas por meio da difusão de livros."}, {"letter": "B", "text": "O estabelecimento imediato da separação entre instituições religiosas e governos europeus."}, {"letter": "C", "text": "A redefinição das autoridades religiosas em disputas associadas à consolidação de poderes políticos territoriais."}, {"letter": "D", "text": "A eliminação da influência dos príncipes nas práticas e na administração das comunidades protestantes."}, {"letter": "E", "text": "A transformação das divergências doutrinárias em controvérsias exclusivamente ligadas ao comércio."}], "correct": "C", "explanation": "a Reforma Protestante questionou a autoridade religiosa católica e favoreceu a criação e a reorganização de igrejas em diversos territórios. Governantes apoiaram reformas por convicções religiosas e interesses políticos, intervindo no funcionamento das instituições eclesiásticas. Por isso, as controvérsias doutrinárias estiveram relacionadas à disputa e à consolidação de poderes na Europa moderna."}, {"num": 6, "stem": "A Conferência de Berlim (1884–1885) estabeleceu, entre outras disposições, regras relativas ao reconhecimento de novas ocupações coloniais na África. Nas décadas seguintes, potências europeias ampliaram o controle de territórios e construíram ferrovias que, em várias colônias, ligavam áreas produtoras de minerais e produtos agrícolas aos portos de exportação. Fronteiras coloniais frequentemente desconsideraram organizações políticas e territorialidades africanas.\n\nA configuração territorial descrita expressa uma lógica de domínio baseada na", "options": [{"letter": "A", "text": "Articulação prioritária das economias africanas em mercados internos integrados e autônomos."}, {"letter": "B", "text": "Preservação das fronteiras políticas africanas como requisito para a exploração comercial europeia."}, {"letter": "C", "text": "Distribuição equilibrada da infraestrutura colonial para favorecer a industrialização das comunidades locais."}, {"letter": "D", "text": "Apropriação de recursos e organização de corredores de transporte voltados aos interesses metropolitanos."}, {"letter": "E", "text": "Transferência progressiva da soberania territorial às populações africanas em troca de concessões comerciais."}], "correct": "D", "explanation": "a expansão colonial europeia subordinou numerosos territórios africanos a interesses de extração e exportação de riquezas. Em diversas colônias, ferrovias e portos foram organizados para conectar áreas produtoras ao comércio externo, enquanto fronteiras impostas afetavam territorialidades existentes. A infraestrutura descrita servia prioritariamente à dominação política e à circulação de recursos para mercados metropolitanos."}, {"num": 7, "stem": "Depois da separação política de Portugal, em 1822, o Brasil manteve a monarquia e a escravidão. O reconhecimento da autoridade de D. Pedro I não ocorreu de maneira uniforme, e houve conflitos armados em diferentes províncias, como Bahia e Maranhão. Setores proprietários defendiam a autonomia do novo Estado, mas temiam mudanças sociais profundas.\n\nA combinação de permanências e conflitos indica que a Independência brasileira envolveu", "options": [{"letter": "A", "text": "Ruptura dos vínculos políticos coloniais sem desmonte imediato das hierarquias sociais e econômicas."}, {"letter": "B", "text": "Participação unânime das províncias em um projeto político republicano e descentralizador."}, {"letter": "C", "text": "Substituição da grande propriedade por pequenas unidades rurais organizadas por trabalhadores livres."}, {"letter": "D", "text": "Extinção do tráfico de africanos escravizados como medida inaugural do governo independente."}, {"letter": "E", "text": "Eliminação das disputas entre grupos regionais mediante reconhecimento imediato da autoridade imperial."}], "correct": "A", "explanation": "a Independência encerrou o vínculo político colonial com Portugal, mas preservou a monarquia, a grande propriedade e a escravidão. O processo envolveu interesses de setores proprietários e resistências regionais, de modo que a construção da unidade imperial foi conflituosa. A separação de 1822 não equivaleu, portanto, a uma revolução social generalizada."}, {"num": 8, "stem": "Em numerosos senhorios da Europa medieval, camponeses cultivavam parcelas das quais retiravam parte de sua subsistência. Em contrapartida, deviam prestar serviços nas terras senhoriais e entregar determinadas parcelas da produção. Os senhores também exerciam atribuições judiciais e de mando em seus domínios.\n\nAs relações descritas revelam que a sociedade feudal se estruturava pela", "options": [{"letter": "A", "text": "Contratação salarial generalizada entre trabalhadores rurais e proprietários."}, {"letter": "B", "text": "Submissão de todos os senhorios a uma administração estatal centralizada."}, {"letter": "C", "text": "Associação entre acesso à terra, obrigações costumeiras e poderes senhoriais locais."}, {"letter": "D", "text": "Livre circulação de camponeses entre propriedades isentas de encargos."}, {"letter": "E", "text": "Supressão das distinções de condição social entre nobres e dependentes."}], "correct": "C", "explanation": "em muitos senhorios medievais, o acesso dos camponeses à terra estava condicionado a obrigações em trabalho e produtos. Os senhores exerciam também funções de mando e justiça em seus domínios. O feudalismo articulava, assim, relações agrárias e poderes locais, sem corresponder ao trabalho assalariado generalizado nem à centralização estatal moderna."}, {"num": 9, "stem": "Nas décadas anteriores a 1888, a contestação da escravidão ganhou força no Brasil. Pessoas escravizadas recorreram a fugas, ações judiciais e redes de solidariedade. Abolicionistas organizaram campanhas, jornais e mecanismos de auxílio, enquanto leis de emancipação gradual preservavam restrições importantes. A pressão social cresceu até a aprovação da Lei Áurea.\n\nConsiderando a participação desses sujeitos históricos e a situação dos libertos após 1888, o processo abolicionista evidencia que", "options": [{"letter": "A", "text": "A centralidade das leis imperiais tornou as iniciativas dos escravizados irrelevantes para a emancipação."}, {"letter": "B", "text": "A assinatura da Lei Áurea integrou os libertos às estruturas de propriedade antes controladas pelos senhores."}, {"letter": "C", "text": "A via parlamentar substituiu as ações coletivas e assegurou igualdade de oportunidades econômicas."}, {"letter": "D", "text": "A sucessão de reformas graduais garantiu a inserção material imediata da população anteriormente escravizada."}, {"letter": "E", "text": "O fim legal do cativeiro resultou de pressões sociais sem assegurar automaticamente inclusão econômica."}], "correct": "E", "explanation": "a abolição resultou de disputas políticas e da mobilização de escravizados, libertos, associações e lideranças abolicionistas. A Lei Áurea, promulgada em 1888, encerrou juridicamente a escravidão, mas não estabeleceu políticas abrangentes de acesso à terra e à renda para os libertos. A conquista da liberdade legal não correspondeu à superação imediata das desigualdades estruturais."}, {"num": 10, "stem": "Com a expansão das fábricas têxteis na Inglaterra, entre o final do século XVIII e o século XIX, o ritmo de trabalho passou a ser organizado por máquinas, supervisores e horários definidos pelos empregadores. A concentração de trabalhadores nos estabelecimentos industriais favoreceu também a organização de associações e reivindicações coletivas.\n\nUma consequência social desse processo foi a", "options": [{"letter": "A", "text": "Recuperação da autonomia artesanal sobre todas as etapas e os horários da produção."}, {"letter": "B", "text": "Intensificação da disciplina fabril e surgimento de conflitos coletivos relativos ao trabalho."}, {"letter": "C", "text": "Redução da concentração operária nas cidades com a dispersão das fábricas pelo campo."}, {"letter": "D", "text": "Eliminação das diferenças de remuneração e das jornadas prolongadas pela mecanização."}, {"letter": "E", "text": "Restauração do controle das corporações de ofício sobre os novos estabelecimentos industriais."}], "correct": "B", "explanation": "a mecanização e a concentração da produção nas fábricas intensificaram a supervisão, a disciplina dos horários e a dependência do salário. As novas condições de trabalho estimularam associações operárias e reivindicações por limites de jornada e melhorias remuneratórias. A expansão do sistema fabril não significou autonomia generalizada dos trabalhadores nem desaparecimento imediato das desigualdades laborais."}, {"num": 11, "stem": "Na Primeira República brasileira, o voto não era secreto. Em muitos municípios, lideranças locais intermediavam empregos, proteção e acesso a recursos, pressionando eleitores a apoiar determinados candidatos. Essas práticas coexistiam com instituições republicanas formalmente representativas.\n\nA contradição apontada no texto revela o funcionamento de um sistema político caracterizado pela", "options": [{"letter": "A", "text": "Competição partidária independente das relações de dependência econômica e pessoal dos eleitores."}, {"letter": "B", "text": "Substituição dos vínculos de favor por formas impessoais e universais de distribuição de recursos públicos."}, {"letter": "C", "text": "Articulação entre clientelismo, poder das elites locais e restrições à participação política autônoma."}, {"letter": "D", "text": "Garantia do sigilo eleitoral como mecanismo de redução da influência dos chefes políticos municipais."}, {"letter": "E", "text": "Ampliação da representação dos trabalhadores rurais por meio de organizações eleitorais autônomas."}], "correct": "C", "explanation": "o coronelismo articulava poder econômico local, clientelismo e influência sobre o comportamento eleitoral. Com o voto aberto e diferentes formas de dependência pessoal, chefes políticos conseguiam pressionar eleitores e favorecer candidaturas aliadas. Isso limitava a autonomia do voto e evidenciava a distância entre as instituições republicanas e a efetiva democratização das relações políticas."}, {"num": 12, "stem": "“Art. 1º Ficam prohibidas as acquisições de terras devolutas por outro titulo que não seja o de compra.”\n\nBRASIL. Lei nº 601, de 18 de setembro de 1850 (Lei de Terras), artigo 1º, grafia da época (excerto).\n\nNo século XIX, a expansão da cafeicultura ampliou a demanda por terras. Considerando a regra legal e as desigualdades de recursos entre os grupos sociais, qual efeito histórico-geográfico essa política podia favorecer?", "options": [{"letter": "A", "text": "A imposição de barreiras econômicas ao acesso legal às terras devolutas, reforçando a concentração fundiária."}, {"letter": "B", "text": "A conversão automática de qualquer ocupação informal em propriedade reconhecida e livre de disputas."}, {"letter": "C", "text": "A proibição de comprar grandes extensões rurais, com a finalidade de conter a expansão da cafeicultura."}, {"letter": "D", "text": "A distribuição gratuita e generalizada de terras públicas aos trabalhadores rurais sem propriedade."}, {"letter": "E", "text": "A substituição dos proprietários privados por organizações comunitárias de controle territorial e produção."}], "correct": "A", "explanation": "a Lei de Terras de 1850 estabeleceu a compra como regra de aquisição das terras devolutas, com exceções previstas na própria legislação. Em uma sociedade marcada pela desigualdade de renda e pela expansão da grande lavoura, tal exigência dificultava o acesso de grupos sem capital e favorecia a concentração fundiária. A lei não instituiu uma distribuição gratuita e universal de terras públicas."}, {"num": 13, "stem": "Na França dos séculos XVII e XVIII, a imagem pública do rei afirmava a concentração da autoridade na Coroa. A administração real, entretanto, continuava a lidar com privilégios fiscais, autoridades locais, cargos ocupados por nobres e a necessidade de obter recursos junto a grupos influentes. O contraste entre a representação do poder e seu funcionamento concreto revela uma característica da construção dos Estados modernos.\n\nEssa característica consistiu na", "options": [{"letter": "A", "text": "Supressão simultânea dos privilégios locais e na igualdade fiscal entre todos os súditos."}, {"letter": "B", "text": "Incapacidade da monarquia de estabelecer instituições próprias para arrecadar recursos."}, {"letter": "C", "text": "Subordinação do poder executivo à soberania de assembleias eleitas por sufrágio amplo."}, {"letter": "D", "text": "Centralização do poder real por meio de negociações e acomodações com elites estabelecidas."}, {"letter": "E", "text": "Substituição das estruturas dinásticas pelo controle popular das decisões administrativas."}], "correct": "D", "explanation": "a formação das monarquias modernas envolveu fortalecimento de instrumentos fiscais, militares e administrativos, mas não significou a eliminação automática de todos os poderes intermediários. Reis mobilizavam alianças com nobres, comerciantes e elites locais para arrecadar recursos e exercer sua autoridade. A centralização foi um processo de negociações e conflitos, variável conforme o reino e o período."}, {"num": 14, "stem": "Em 1943, durante o Estado Novo, a Consolidação das Leis do Trabalho (CLT) reuniu normas relativas aos contratos, à jornada e a outros direitos trabalhistas. Na mesma época, o funcionamento dos sindicatos reconhecidos oficialmente estava sujeito a regras e mecanismos de fiscalização do Estado. A propaganda governamental apresentava as conquistas sociais como iniciativas do presidente.\n\nA política trabalhista desse período articulou", "options": [{"letter": "A", "text": "Direitos sociais e autonomia sindical plena, sem interferência dos órgãos governamentais."}, {"letter": "B", "text": "Ampliação da proteção legal dos trabalhadores urbanos e controle estatal da organização sindical."}, {"letter": "C", "text": "Universalização imediata da legislação trabalhista a todas as ocupações rurais e domésticas."}, {"letter": "D", "text": "Negociação exclusivamente privada das condições de trabalho e retração da atuação do governo."}, {"letter": "E", "text": "Substituição da legislação social pela livre concorrência entre associações profissionais independentes."}], "correct": "B", "explanation": "a política trabalhista varguista consolidou direitos importantes, sobretudo para parcelas do trabalho urbano formal, mas combinou proteção jurídica com mecanismos de controle sobre a organização sindical. Durante o Estado Novo, o governo utilizou a legislação e a propaganda para fortalecer seu vínculo político com os trabalhadores. A CLT não assegurou autonomia sindical plena nem cobertura imediata e igual para todas as categorias."}, {"num": 15, "stem": "O assassinato do arquiduque Francisco Ferdinando, em Sarajevo, em junho de 1914, provocou uma grave crise entre a Áustria-Hungria e a Sérvia. O conflito rapidamente se ampliou devido à mobilização de diferentes potências europeias, em um contexto anterior de alianças militares, nacionalismos e disputas imperiais.\n\nA passagem de uma crise regional para uma guerra de grandes proporções demonstra a", "options": [{"letter": "A", "text": "Capacidade das alianças europeias de manter isolados os confrontos políticos dos Bálcãs."}, {"letter": "B", "text": "Superação das rivalidades coloniais pela cooperação diplomática entre as potências industrializadas."}, {"letter": "C", "text": "Substituição dos interesses nacionais por uma disputa exclusivamente religiosa na Europa."}, {"letter": "D", "text": "Neutralização dos antagonismos políticos pelo equilíbrio estabelecido entre os blocos militares."}, {"letter": "E", "text": "Conexão entre rivalidades estruturais e mecanismos de escalada internacional de um conflito localizado."}], "correct": "E", "explanation": "o atentado de Sarajevo foi o estopim de uma crise internacional, mas não explica isoladamente a Primeira Guerra Mundial. Alianças militares, rivalidades imperialistas e nacionalismos agravaram o conflito entre Áustria-Hungria e Sérvia e favoreceram a entrada de outras potências. O caso evidencia como tensões estruturais converteram um confronto regional em guerra de grande escala."}, {"num": 16, "stem": "O Ato Institucional nº 5, de dezembro de 1968, ampliou os instrumentos de repressão da ditadura militar brasileira, permitindo medidas como a suspensão de direitos políticos e a cassação de mandatos. No ambiente cultural, artistas e produtores enfrentaram censura e, em alguns casos, recorreram a metáforas e formas indiretas de crítica.\n\nA relação entre autoritarismo e produção cultural, nesse contexto, indica que", "options": [{"letter": "A", "text": "A restrição à circulação de críticas estimulou também a busca de estratégias simbólicas de resistência."}, {"letter": "B", "text": "A ampliação das garantias individuais permitiu a divulgação irrestrita de manifestações de oposição."}, {"letter": "C", "text": "A fiscalização das manifestações artísticas substituiu integralmente as demais formas de repressão política."}, {"letter": "D", "text": "A censura se limitou à proteção de informações militares, sem interferência em debates públicos."}, {"letter": "E", "text": "A produção artística tornou-se homogênea, sem diferenças de posicionamento em relação ao regime."}], "correct": "A", "explanation": "o AI-5 aprofundou o autoritarismo e restringiu garantias políticas, enquanto a censura dificultava a circulação de críticas ao regime. Parte dos artistas passou a usar alusões, metáforas e outras estratégias de expressão que permitiam abordar problemas públicos sob vigilância. Isso não significa que toda produção cultural tenha assumido a mesma posição ou que a repressão se limitasse à esfera artística."}, {"num": 17, "stem": "“Tupi, or not tupi that is the question. [...] Só me interessa o que não é meu. Lei do homem. Lei do antropófago.”\n\nANDRADE, Oswald de. “Manifesto Antropófago”. Revista de Antropofagia, ano 1, nº 1, maio de 1928 (excerto).\n\nAo transformar uma referência a Shakespeare e associá-la à metáfora da antropofagia, o autor formulou, no contexto das experiências modernistas brasileiras, uma proposta cultural de", "options": [{"letter": "A", "text": "Reprodução dos padrões acadêmicos europeus como condição de modernização artística do país."}, {"letter": "B", "text": "Isolamento da cultura nacional em relação às influências artísticas e intelectuais estrangeiras."}, {"letter": "C", "text": "Retomada das convenções literárias do século XIX para preservar uma identidade nacional imutável."}, {"letter": "D", "text": "Valorização exclusiva das formas eruditas tradicionais como expressão legítima da sociedade brasileira."}, {"letter": "E", "text": "Apropriação crítica e transformação de referências culturais para repensar a identidade nacional."}], "correct": "E", "explanation": "no “Manifesto Antropófago”, Oswald de Andrade transformou referências estrangeiras em material para uma criação cultural situada no Brasil. A metáfora da antropofagia propunha absorver, reinterpretar e recriar influências, em vez de simplesmente copiá-las ou rejeitá-las. Tal projeto integrou os debates modernistas sobre identidade nacional, tradição e renovação artística na década de 1920."}, {"num": 18, "stem": "As Leis de Nuremberg, aprovadas pelo regime nazista em 1935, retiraram dos judeus alemães a condição de cidadãos do Reich e estabeleceram restrições a casamentos e relações entre judeus e pessoas classificadas pelo Estado como de “sangue alemão”. Durante a Segunda Guerra Mundial, a perseguição antissemita foi radicalizada até o genocídio.\n\nA legislação apresentada exemplifica a utilização do Estado para", "options": [{"letter": "A", "text": "Proteger liberdades individuais contra as decisões de autoridades administrativas."}, {"letter": "B", "text": "Separar as identidades religiosas dos critérios de pertencimento à comunidade política."}, {"letter": "C", "text": "Garantir a igualdade civil entre grupos mediante a uniformização das regras eleitorais."}, {"letter": "D", "text": "Transformar uma ideologia racial em normas de exclusão jurídica e perseguição sistemática."}, {"letter": "E", "text": "Abandonar concepções étnicas de nacionalidade em favor de direitos políticos universais."}], "correct": "D", "explanation": "as Leis de Nuremberg institucionalizaram a discriminação antissemita ao transformar critérios raciais nazistas em normas que retiravam direitos e restringiam relações pessoais. Elas integraram a escalada de perseguições que culminou no genocídio durante a Segunda Guerra Mundial. Tratava-se de exclusão patrocinada pelo Estado, não de proteção universal da cidadania."}, {"num": 19, "stem": "Na Conferência de Bandung, realizada na Indonésia em 1955, países asiáticos e africanos defenderam a soberania, a cooperação e a oposição ao colonialismo. Alguns participantes mantinham relações próximas com potências ocidentais; outros seguiam orientações socialistas ou buscavam distanciamento dos blocos. Ainda assim, compartilharam reivindicações sobre sua posição internacional.\n\nNo contexto da Guerra Fria, essa articulação revela a", "options": [{"letter": "A", "text": "Formação de uma aliança militar que subordinava as demandas anticoloniais à segurança ocidental."}, {"letter": "B", "text": "Afirmação de agendas afro-asiáticas comuns sem exigir alinhamento político uniforme às superpotências."}, {"letter": "C", "text": "Exigência de adoção de um único sistema econômico como condição para a independência nacional."}, {"letter": "D", "text": "Conquista de neutralidade diplomática efetiva por todos os participantes, independentemente de alianças anteriores."}, {"letter": "E", "text": "Aceitação das administrações coloniais como garantia para o reconhecimento internacional de novos Estados."}], "correct": "B", "explanation": "a Conferência de Bandung reuniu países que buscavam afirmar soberania, combater o colonialismo e ampliar a cooperação afro-asiática em plena Guerra Fria. Embora não constituíssem um bloco homogêneo, os participantes reivindicavam agendas próprias, que não se reduziam à escolha entre Estados Unidos e União Soviética. Esse posicionamento ajudou a fortalecer a articulação política do mundo pós-colonial."}, {"num": 20, "stem": "Durante os debates da Assembleia Nacional Constituinte de 1987–1988, entidades sindicais, organizações de mulheres, movimentos negros, indígenas e associações comunitárias participaram da apresentação de demandas e propostas. A Constituição de 1988 ampliou garantias e instituiu mecanismos de participação política, embora persistissem profundas desigualdades na sociedade.\n\nA experiência histórica descrita demonstra que a construção da cidadania democrática depende da", "options": [{"letter": "A", "text": "Substituição da participação coletiva pelo exercício do voto em intervalos eleitorais regulares."}, {"letter": "B", "text": "Retirada das demandas sociais do debate institucional para preservar a neutralidade das decisões estatais."}, {"letter": "C", "text": "Atuação organizada de grupos sociais na conquista de direitos, cuja efetivação exige processos continuados."}, {"letter": "D", "text": "Superação imediata das desigualdades materiais pela simples promulgação de novos direitos constitucionais."}, {"letter": "E", "text": "Redução da ação dos movimentos sociais após a criação de instituições de representação política."}], "correct": "C", "explanation": "a redemocratização brasileira incluiu a atuação de movimentos sociais que apresentaram reivindicações e procuraram influenciar a elaboração da Constituição de 1988. A ampliação de direitos e mecanismos de participação foi uma conquista histórica, mas a efetivação da cidadania também depende de políticas, organização e disputas posteriores. O reconhecimento jurídico, por si só, não extingue desigualdades sociais."}]};
+const REVIEW_VIDEOS = {
+  "historia": [
+    "-8gzAYNfeXM",
+    "q7E4XrfGGnE",
+    "PdBlDPUrnm0",
+    "N6YxYbdvkNg",
+    "cKPcV8FR-qE",
+    "TqHP4j0Wnmo",
+    "9C1ivPHbWfI"
+  ]
+};
+const DISC_ICONS = {"historia": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M3 21h18M5 21V7l7-4 7 4v14M9 21v-8h6v8M8 10h.01M12 10h.01M16 10h.01\"/></svg>", "geografia": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18\"/></svg>", "filosofia": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z\"/></svg>", "sociologia": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"9\" cy=\"7\" r=\"3\"/><circle cx=\"17\" cy=\"9\" r=\"2.5\"/><path d=\"M3 20v-2a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v2M15 13h2a4 4 0 0 1 4 4v3\"/></svg>", "portugues": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20\"/><path d=\"M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z\"/><path d=\"M9 7h6M9 11h4\"/></svg>", "literatura": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z\"/><path d=\"M16 8L2 22M17.5 15H9\"/></svg>", "lingua_estrangeira": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"/><path d=\"M8 9h8M8 13h5\"/></svg>", "artes": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><path d=\"M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z\"/></svg>", "educacao_fisica": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"13\" cy=\"5\" r=\"2\"/><path d=\"M7 21l3-6 3 2 4-5M6 12l4-2 3 2 4-1\"/></svg>", "tics": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"/><rect x=\"9\" y=\"9\" width=\"6\" height=\"6\"/><path d=\"M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3\"/></svg>", "biologia": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M2 15c6.667-6 13.333 0 20-6M9 22c1.798-1.998 2.518-3.995 2.807-5.993M15 2c-1.798 1.998-2.518 3.995-2.807 5.993M17 6l-2.5-2.5M14 8l-1-1M7 18l2.5 2.5M3.5 14.5l.5.5M20 9l.5.5\"/></svg>", "quimica": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M9 3h6M10 3v5.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V3M7 14h10\"/></svg>", "fisica": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><circle cx=\"12\" cy=\"12\" r=\"2\"/><ellipse cx=\"12\" cy=\"12\" rx=\"10\" ry=\"4\" transform=\"rotate(30 12 12)\"/><ellipse cx=\"12\" cy=\"12\" rx=\"10\" ry=\"4\" transform=\"rotate(-30 12 12)\"/></svg>", "matematica": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"/><path d=\"M8 6h8M8 10h2M14 10h2M8 14h2M14 14h2M8 18h2M14 18h2\"/></svg>", "redacao": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\"><path d=\"M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"/></svg>"};
+
+let savedData = {};
+let versions = {};
+let draftData = {};
+let accountEmail = '';
+let cloudReady = false;
+let cloudLoading = false;
+let cloudError = '';
+const savingKeys = new Set();
+
+let currentView = "home"; // "home" | "discipline" | "theme" | "quiz" | "videos"
+let selectedDisciplineId = null;
+let selectedThemeIndex = null;
+let activeVideoId = null;
+let toastTimer = null;
+
+// Quiz state
+let quizUserAnswers = {}; // { qNum: "A" }
+let quizSubmitted = false;
+
+async function api(path, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+  try {
+    const response = await fetch(path, { ...options, credentials: 'same-origin', cache: 'no-store', redirect: 'manual', signal: controller.signal });
+    if (response.type === 'opaqueredirect' || response.status === 401 || response.status === 403 || response.status === 302) {
+      throw new Error('Sua sessão terminou. Use Sair da conta e entre novamente.');
+    }
+    const type = response.headers.get('Content-Type') || '';
+    if (!type.includes('application/json')) throw new Error('Entre novamente na sua conta para continuar.');
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Não foi possível acessar a nuvem.');
+    return result;
+  } catch (error) {
+    if (error.name === 'AbortError') throw new Error('A confirmação demorou. Atualize os dados da nuvem para verificar se a revisão foi salva.');
+    if (error instanceof TypeError) throw new Error('Sem conexão com a nuvem. Verifique a internet e tente novamente.');
+    throw error;
+  } finally { clearTimeout(timer); }
+}
+
+async function loadState() {
+  if (cloudLoading || savingKeys.size) return;
+  cloudLoading = true;
+  cloudReady = false;
+  cloudError = '';
+  updateSyncIndicator();
+  render();
+  try {
+    const result = await api('/api/state');
+    if (!result || typeof result.email !== 'string' || !result.data || !result.versions) throw new Error('Resposta inválida da nuvem.');
+    savedData = result.data;
+    versions = result.versions;
+    accountEmail = result.email;
+    cloudReady = true;
+  } catch (error) {
+    cloudError = error.message;
+  } finally {
+    cloudLoading = false;
+    updateSyncIndicator();
+    render();
+  }
+}
+
+function updateSyncIndicator() {
+  const busy = savingKeys.size > 0;
+  document.getElementById('syncDot').classList.toggle('active', cloudReady && !cloudError && !busy);
+  document.getElementById('syncLabel').textContent = cloudLoading ? 'Conectando...' : busy ? 'Salvando...' : cloudError ? 'Verificar conexão' : cloudReady ? 'Minha conta' : 'Conectar';
+  document.getElementById('accountEmail').textContent = accountEmail || 'Conta ainda não conectada';
+  document.getElementById('cloudStatus').textContent = cloudError || (cloudLoading ? 'Carregando suas revisões...' : busy ? 'Aguardando confirmação do banco...' : cloudReady ? 'Conectado. As revisões salvas foram confirmadas pelo banco.' : 'Conecte sua conta para começar.');
+}
+
+async function refreshCloud() {
+  if (savingKeys.size || cloudLoading) { showToast('Aguarde a operação atual.'); return; }
+  if (Object.keys(draftData).length && !confirm('Atualizar descarta as marcações que você ainda não salvou. Continuar?')) return;
+  draftData = {};
+  await loadState();
+}
+
+function signOut() {
+  if (savingKeys.size) { showToast('Aguarde o término do salvamento.'); return; }
+  if (Object.keys(draftData).length && !confirm('Sair descarta as marcações que você ainda não salvou. Continuar?')) return;
+  savedData = {}; versions = {}; draftData = {}; accountEmail = ''; cloudReady = false;
+  window.location.assign('/cdn-cgi/access/logout');
+}
+
+function showToast(msg, duration = 2600) {
+  const box = document.getElementById("toastBox");
+  box.textContent = msg;
+  box.classList.add("show");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    box.classList.remove("show");
+  }, duration);
+}
+
+function formatTodayBR() {
+  const now = new Date();
+  const d = String(now.getDate()).padStart(2, "0");
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const y = now.getFullYear();
+  return `${d}/${m}/${y}`;
+}
+
+function makeKey(discId, themeIdx, groupIdx, subIdx) {
+  return `${discId}|${themeIdx}|${groupIdx}|${subIdx}`;
+}
+
+function getDisciplineStats(disc) {
+  let totalSubthemes = 0;
+  let totalChecks = 0;
+  disc.themes.forEach((th, tIdx) => {
+    th.groups.forEach((gr, gIdx) => {
+      gr.subthemes.forEach((_, sIdx) => {
+        totalSubthemes++;
+        const k = makeKey(disc.id, tIdx, gIdx, sIdx);
+        const arr = savedData[k] || [null, null, null];
+        totalChecks += arr.filter(Boolean).length;
+      });
+    });
+  });
+  const maxChecks = totalSubthemes * 3;
+  const pct = maxChecks > 0 ? Math.round((totalChecks / maxChecks) * 100) : 0;
+  return { totalSubthemes, totalChecks, maxChecks, pct };
+}
+
+function getThemeStats(discId, theme, tIdx) {
+  let totalSubthemes = 0;
+  let totalChecks = 0;
+  theme.groups.forEach((gr, gIdx) => {
+    gr.subthemes.forEach((_, sIdx) => {
+      totalSubthemes++;
+      const k = makeKey(discId, tIdx, gIdx, sIdx);
+      const arr = savedData[k] || [null, null, null];
+      totalChecks += arr.filter(Boolean).length;
+    });
+  });
+  const maxChecks = totalSubthemes * 3;
+  const pct = maxChecks > 0 ? Math.round((totalChecks / maxChecks) * 100) : 0;
+  return { totalSubthemes, totalChecks, maxChecks, pct };
+}
+
+function render() {
+  const container = document.getElementById("appContainer");
+  const titleEl = document.getElementById("headerTitle");
+  const subEl = document.getElementById("headerSubtitle");
+  const breadEl = document.getElementById("breadcrumbBar");
+  const footer = document.getElementById("metroFooter");
+  const footerBadge = document.getElementById("footerDiscBadge");
+
+  if (!cloudReady) {
+    footer.style.display = 'none';
+    container.innerHTML = '<div class="info-card"><h2>Suas revisões na nuvem</h2><p id="connectionMessage"></p><button class="btn-primary" onclick="loadState()">Tentar novamente</button> <button class="btn-secondary" onclick="signOut()">Entrar novamente</button></div>';
+    document.getElementById('connectionMessage').textContent = cloudLoading ? 'Carregando sua conta...' : cloudError || 'Conectando à sua conta...';
+    return;
+  }
+
+  if (currentView === "home") {
+    subEl.textContent = "Organizador de Estudos";
+    titleEl.textContent = "Revisão ENEM 2027";
+    breadEl.textContent = "15 disciplinas • Toque para abrir os temas";
+    footer.style.display = "none";
+
+    let html = '<div class="tiles-grid">';
+    CURRICULUM.forEach(disc => {
+      const st = getDisciplineStats(disc);
+      const iconSvg = DISC_ICONS[disc.id] || "";
+      html += `
+        <button class="metro-tile" style="background-color:${disc.color};" onclick="openDiscipline('${disc.id}')">
+          <div class="tile-top">
+            <div class="tile-icon-wrap">${iconSvg}</div>
+            <div class="tile-stats-right">
+              <span class="tile-pct">${st.pct}%</span>
+              <span class="tile-count">${st.totalSubthemes} itens</span>
+            </div>
+          </div>
+          <div class="tile-bottom">
+            <div class="tile-name">${disc.name}</div>
+            <div class="tile-bar"><div class="tile-bar-fill" style="width:${st.pct}%;"></div></div>
+          </div>
+        </button>
+      `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  const disc = CURRICULUM.find(d => d.id === selectedDisciplineId);
+  footer.style.display = "flex";
+  footerBadge.textContent = disc.name;
+  footerBadge.style.backgroundColor = disc.color;
+
+  if (currentView === "discipline") {
+    subEl.textContent = "Disciplina";
+    titleEl.textContent = disc.name;
+    breadEl.textContent = "Selecione um tema para revisar";
+
+    let html = '<div class="theme-list">';
+    disc.themes.forEach((th, tIdx) => {
+      const st = getThemeStats(disc.id, th, tIdx);
+      html += `
+        <div class="theme-card" style="border-left-color:${disc.color};" onclick="openTheme(${tIdx})">
+          <div class="theme-card-info">
+            <div class="theme-card-title">${th.name}</div>
+            <div class="theme-card-meta">${st.totalSubthemes} subtemas • ${st.totalChecks}/${st.maxChecks} revisões (${st.pct}%)</div>
+          </div>
+          <div class="theme-card-arrow">&#8250;</div>
+        </div>
+      `;
+    });
+
+    if (QUIZZES[disc.id] && QUIZZES[disc.id].length > 0) {
+      html += `
+        <div class="quiz-launch-card" onclick="openQuiz('${disc.id}')">
+          <div>
+            <span class="quiz-launch-badge">Simulado Estilo ENEM</span>
+            <div class="quiz-launch-title">Teste seus conhecimentos</div>
+            <div class="quiz-launch-sub">${QUIZZES[disc.id].length} questões de múltipla escolha com gabarito comentado</div>
+          </div>
+          <div class="theme-card-arrow">&#8250;</div>
+        </div>
+      `;
+    }
+
+    if (REVIEW_VIDEOS[disc.id] && REVIEW_VIDEOS[disc.id].length > 0) {
+      html += `
+        <div class="video-launch-card" onclick="openVideos('${disc.id}')">
+          <div>
+            <span class="video-launch-badge">Videoaulas</span>
+            <div class="quiz-launch-title">Vídeos indicados para revisão</div>
+            <div class="quiz-launch-sub">${REVIEW_VIDEOS[disc.id].length} vídeos selecionados para assistir dentro do aplicativo</div>
+          </div>
+          <div class="theme-card-arrow">&#8250;</div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === "videos") {
+    const videoIds = REVIEW_VIDEOS[disc.id] || [];
+    subEl.textContent = disc.name;
+    titleEl.textContent = "Vídeos indicados para revisão";
+    breadEl.textContent = "Toque em uma miniatura para assistir aqui mesmo";
+
+    let html = "";
+
+    if (activeVideoId) {
+      const playingIdx = videoIds.indexOf(activeVideoId) + 1;
+      html += `
+        <div class="video-player-box" id="videoPlayerBox">
+          <div class="video-iframe-wrap">
+            <iframe
+              src="https://www.youtube.com/embed/${activeVideoId}?autoplay=1&rel=0"
+              title="Vídeo de revisão ${playingIdx}"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="video-player-bar">
+            <span class="video-player-label">Assistindo: Vídeo ${playingIdx} de ${videoIds.length}</span>
+            <button class="video-close-btn" onclick="closeVideoPlayer()">Fechar Player</button>
+          </div>
+        </div>
+      `;
+    }
+
+    html += '<div class="video-thumbs-grid">';
+    videoIds.forEach((vid, idx) => {
+      const isPlaying = activeVideoId === vid;
+      html += `
+        <div class="video-thumb-card ${isPlaying ? 'playing' : ''}" onclick="playReviewVideo('${vid}')">
+          <div class="video-thumb-img-wrap">
+            <img src="https://i.ytimg.com/vi/${vid}/hqdefault.jpg" alt="Vídeo ${idx + 1}" loading="lazy">
+            <div class="video-play-overlay">
+              <div class="video-play-circle">
+                <div class="video-play-triangle"></div>
+              </div>
+            </div>
+          </div>
+          <div class="video-thumb-footer">
+            <span class="video-thumb-num">Vídeo ${idx + 1}</span>
+            <span class="video-thumb-action">${isPlaying ? 'Em reprodução' : 'Assistir'}</span>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === "quiz") {
+    const questions = QUIZZES[disc.id] || [];
+    subEl.textContent = disc.name;
+    titleEl.textContent = "Teste seus conhecimentos";
+    breadEl.textContent = `${questions.length} questões estilo ENEM • Marque uma alternativa por questão`;
+
+    let html = "";
+
+    if (quizSubmitted) {
+      let correctCount = 0;
+      questions.forEach(q => {
+        if (quizUserAnswers[q.num] === q.correct) correctCount++;
+      });
+      const wrongCount = questions.length - correctCount;
+      const pct = Math.round((correctCount / questions.length) * 100);
+
+      html += `
+        <div class="quiz-score-box">
+          <div class="quiz-score-title">Resultado do Simulado — ${disc.name}</div>
+          <div class="quiz-score-big">${pct}% de aproveitamento</div>
+          <div class="quiz-score-grid">
+            <span style="color:#4CD964; font-weight:600;">&#10003; Acertos: ${correctCount}</span>
+            <span style="color:#FF6B6B; font-weight:600;">&#10007; Erros: ${wrongCount}</span>
+          </div>
+          <button class="quiz-retry-btn" onclick="resetQuiz()">Refazer Simulado</button>
+        </div>
+      `;
+    }
+
+    questions.forEach(q => {
+      const chosen = quizUserAnswers[q.num] || null;
+      const isRight = chosen === q.correct;
+
+      html += `<div class="quiz-card">`;
+      html += `<div class="quiz-q-header">Questão ${q.num} de ${questions.length}</div>`;
+      html += `<div class="quiz-q-stem">${q.stem}</div>`;
+      html += `<div class="quiz-options">`;
+
+      q.options.forEach(opt => {
+        let cls = "quiz-opt";
+        if (!quizSubmitted) {
+          if (chosen === opt.letter) cls += " selected";
+        } else {
+          if (opt.letter === q.correct) {
+            cls += " correct-ans";
+          } else if (chosen === opt.letter && chosen !== q.correct) {
+            cls += " wrong-ans";
+          }
+        }
+
+        html += `
+          <button class="${cls}" onclick="selectQuizOption(${q.num}, '${opt.letter}')">
+            <span class="quiz-opt-letter">${opt.letter}</span>
+            <span>${opt.text}</span>
+          </button>
+        `;
+      });
+
+      html += `</div>`;
+
+      if (quizSubmitted) {
+        const expClass = isRight ? "quiz-explanation" : "quiz-explanation wrong-exp";
+        const statusTag = isRight
+          ? `<strong>&#10003; Você acertou! (Gabarito: ${q.correct})</strong>`
+          : `<strong>&#10007; Você marcou ${chosen || "nenhuma"} — Gabarito oficial: ${q.correct}</strong>`;
+        html += `
+          <div class="${expClass}">
+            ${statusTag}<br><br>
+            <strong>Explicação:</strong> ${q.explanation}
+          </div>
+        `;
+      }
+
+      html += `</div>`;
+    });
+
+    if (!quizSubmitted) {
+      html += `
+        <button class="quiz-submit-btn" onclick="submitQuiz()">Enviar Respostas</button>
+      `;
+    }
+
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === "theme") {
+    const theme = disc.themes[selectedThemeIndex];
+    subEl.textContent = disc.name;
+    titleEl.textContent = theme.name;
+    breadEl.textContent = "Marque os quadrados verdes e toque em Salvar";
+
+    let html = `
+      <div class="hint-bar">
+        Dica: Segure o dedo por 1 segundo sobre um quadrado verde já salvo para ver a data da revisão.
+      </div>
+    `;
+
+    theme.groups.forEach((gr, gIdx) => {
+      html += `<div class="group-block">`;
+      html += `<div class="group-header" style="border-left-color:${disc.color};">${gr.title}</div>`;
+
+      gr.subthemes.forEach((subName, sIdx) => {
+        const key = makeKey(disc.id, selectedThemeIndex, gIdx, sIdx);
+        const savedArr = savedData[key] || [null, null, null];
+        const currentBoolArr = draftData[key] ? draftData[key] : savedArr.map(v => Boolean(v));
+        const isDirty = Boolean(draftData[key]);
+
+        html += `<div class="subtheme-row">`;
+        html += `<div class="subtheme-text">${subName}</div>`;
+        html += `<div class="controls-wrap">`;
+
+        for (let boxIdx = 0; boxIdx < 3; boxIdx++) {
+          const checkedClass = currentBoolArr[boxIdx] ? "checked" : "";
+          html += `
+            <div class="rev-box ${checkedClass}"
+                 data-key="${key}"
+                 data-box="${boxIdx}"
+                 onclick="toggleBox('${key}', ${boxIdx})"
+                 onpointerdown="startHold('${key}', ${boxIdx})"
+                 onpointerup="cancelHold()"
+                 onpointerleave="cancelHold()"
+                 onpointercancel="cancelHold()"></div>
+          `;
+        }
+
+        html += `
+          <button class="row-save-btn ${isDirty ? 'dirty' : ''}"
+                  id="savebtn_${key}"
+                  onclick="saveSubtheme('${key}', ${gIdx}, ${sIdx})">Salvar</button>
+        `;
+        html += `</div></div>`;
+      });
+
+      html += `</div>`;
+    });
+
+    container.innerHTML = html;
+    window.scrollTo(0, 0);
+  }
+}
+
+function openDiscipline(discId) {
+  selectedDisciplineId = discId;
+  selectedThemeIndex = null;
+  activeVideoId = null;
+  currentView = "discipline";
+  render();
+}
+
+function openTheme(tIdx) {
+  selectedThemeIndex = tIdx;
+  currentView = "theme";
+  render();
+}
+
+function openQuiz(discId) {
+  selectedDisciplineId = discId;
+  quizUserAnswers = {};
+  quizSubmitted = false;
+  currentView = "quiz";
+  render();
+}
+
+function openVideos(discId) {
+  selectedDisciplineId = discId;
+  activeVideoId = null;
+  currentView = "videos";
+  render();
+}
+
+function playReviewVideo(videoId) {
+  activeVideoId = videoId;
+  render();
+}
+
+function closeVideoPlayer() {
+  activeVideoId = null;
+  render();
+}
+
+function selectQuizOption(qNum, letter) {
+  if (quizSubmitted) return;
+  quizUserAnswers[qNum] = letter;
+  const cards = document.querySelectorAll(".quiz-card");
+  const card = cards[qNum - 1];
+  if (card) {
+    const opts = card.querySelectorAll(".quiz-opt");
+    opts.forEach(btn => {
+      const l = btn.querySelector(".quiz-opt-letter").textContent.trim();
+      btn.classList.toggle("selected", l === letter);
+    });
+  }
+}
+
+function submitQuiz() {
+  const questions = QUIZZES[selectedDisciplineId] || [];
+  const answeredCount = Object.keys(quizUserAnswers).length;
+  if (answeredCount < questions.length) {
+    const missing = questions.length - answeredCount;
+    showToast(`Faltam ${missing} questão(ões) para responder.`, 2800);
+    return;
+  }
+  quizSubmitted = true;
+  render();
+}
+
+function resetQuiz() {
+  quizUserAnswers = {};
+  quizSubmitted = false;
+  render();
+}
+
+function goHome() {
+  currentView = "home";
+  selectedDisciplineId = null;
+  selectedThemeIndex = null;
+  activeVideoId = null;
+  render();
+}
+
+function goDiscipline() {
+  if (selectedDisciplineId) {
+    currentView = "discipline";
+    selectedThemeIndex = null;
+    activeVideoId = null;
+    render();
+  }
+}
+
+function goBack() {
+  if (currentView === "theme" || currentView === "quiz" || currentView === "videos") {
+    goDiscipline();
+  } else {
+    goHome();
+  }
+}
+
+let holdTimer = null;
+let didLongPress = false;
+
+function startHold(key, boxIdx) {
+  didLongPress = false;
+  if (holdTimer) clearTimeout(holdTimer);
+  holdTimer = setTimeout(() => {
+    didLongPress = true;
+    const savedArr = savedData[key] || [null, null, null];
+    const dateStr = savedArr[boxIdx];
+    if (dateStr) {
+      showToast(`Revisado em ${dateStr}`, 3200);
+    } else {
+      showToast("Quadrado ainda não salvo", 2000);
+    }
+  }, 650);
+}
+
+function cancelHold() {
+  if (holdTimer) {
+    clearTimeout(holdTimer);
+    holdTimer = null;
+  }
+}
+
+function toggleBox(key, boxIdx) {
+  if (!cloudReady || cloudLoading || savingKeys.has(key)) return;
+  if (didLongPress) {
+    didLongPress = false;
+    return;
+  }
+  const savedArr = savedData[key] || [null, null, null];
+  if (!draftData[key]) {
+    draftData[key] = savedArr.map(v => Boolean(v));
+  }
+  draftData[key][boxIdx] = !draftData[key][boxIdx];
+
+  const boxes = document.querySelectorAll(`.rev-box[data-key="${CSS.escape(key)}"]`);
+  if (boxes[boxIdx]) {
+    boxes[boxIdx].classList.toggle("checked", draftData[key][boxIdx]);
+  }
+  const saveBtn = document.getElementById(`savebtn_${key}`);
+  if (saveBtn) {
+    saveBtn.classList.add("dirty");
+  }
+}
+
+async function saveSubtheme(key) {
+  if (!cloudReady || cloudLoading || savingKeys.has(key)) return;
+  const prevSaved = savedData[key] || [null, null, null];
+  const currentBool = draftData[key] || prevSaved.map(Boolean);
+  const today = formatTodayBR();
+  const dates = currentBool.map((checked, i) => checked ? prevSaved[i] || today : null);
+  savingKeys.add(key);
+  cloudError = '';
+  updateSyncIndicator();
+  const button = document.getElementById('savebtn_' + key);
+  if (button) { button.disabled = true; button.textContent = 'Salvando...'; }
+  try {
+    const result = await api('/api/revision', { method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, dates, version: versions[key] || 0 }) });
+    savedData[key] = result.dates;
+    versions[key] = result.version;
+    delete draftData[key];
+    showToast('Revisão salva na nuvem!');
+  } catch (error) {
+    cloudError = error.message;
+    showToast('Salvamento não confirmado. ' + error.message, 6500);
+  } finally {
+    savingKeys.delete(key);
+    updateSyncIndicator();
+    render();
+  }
+}
+
+function openModal() { document.getElementById('backupModal').classList.add('open'); updateSyncIndicator(); }
+function closeModal() { document.getElementById('backupModal').classList.remove('open'); }
+
+window.addEventListener('beforeunload', event => {
+  if (savingKeys.size || Object.keys(draftData).length) { event.preventDefault(); event.returnValue = ''; }
+});
+window.addEventListener('pageshow', event => { if (event.persisted) window.location.reload(); });
+loadState();
+</script>
+</body>
+</html>

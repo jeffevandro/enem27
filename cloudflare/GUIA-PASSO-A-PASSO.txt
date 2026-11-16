@@ -1,0 +1,271 @@
+CONFIGURAR O APP REVISÃO ENEM 2027 NA CLOUDFLARE
+Guia para a primeira configuração — atualizado em 16/11/2026
+
+Você fará a configuração pelo navegador. Não precisa usar comandos.
+Se uma etapa já estiver concluída, confira os dados e avance sem criar outra
+aplicação, outro Worker ou outro banco com a mesma finalidade.
+
+Use os nomes dos botões em inglês como referência. A tradução e a posição
+de alguns menus podem variar. Abaixo estão os caminhos e os campos relevantes.
+
+ANTES DE COMEÇAR
+
+O app foi preparado localmente. Ele ainda depende desta configuração para
+funcionar na sua conta. Você mesmo fará as publicações pelo botão Deploy.
+
+No computador, abra a pasta D:\ENEM27\cloudflare.
+Arquivos necessários:
+  worker-pronto.txt — código completo para colar no Worker.
+  banco-de-dados.sql — comando que cria a tabela no banco.
+Abra os arquivos com o Bloco de Notas. Use Ctrl+A e Ctrl+C para copiar tudo.
+worker-pronto.js tem o mesmo conteúdo de worker-pronto.txt; use apenas um deles.
+
+Se quiser preservar registros antigos, exporte o backup na versão anterior
+do app antes de substituí-la. Os dados antigos não são transferidos
+automaticamente. A cópia do código anterior não contém os dados dos celulares.
+
+1. ENTRAR NA CONTA E IDENTIFICAR OS DOIS PAINÉIS
+
+Abra https://dash.cloudflare.com e entre na sua conta.
+Se houver mais de uma conta, selecione aquela em que criará o app.
+
+Você usará dois ambientes:
+  Painel principal da conta: banco D1, Worker, código e variáveis.
+  Zero Trust/Cloudflare One: e-mails autorizados e código de entrada.
+
+Para entrar no segundo, use Zero Trust no menu do painel principal.
+Para voltar, mantenha o painel principal em outra aba do navegador.
+Não é necessário comprar um domínio: usaremos o endereço workers.dev.
+
+2. CONFIGURAR O ZERO TRUST E ANOTAR O DOMÍNIO DA EQUIPE
+
+Caminho: Painel principal > Zero Trust.
+
+Se aparecer a configuração inicial, clique em Get started.
+Escolha um nome para a equipe e conclua a ativação no plano adequado ao grupo.
+Se escolher Free, confira as condições apresentadas antes de confirmar.
+Não precisa instalar WARP nem configurar Tunnel para este app.
+
+Para consultar depois:
+Zero Trust > Settings > Team name and domain.
+Procure Team domain. Em interfaces diferentes, essa informação fica dentro
+de Settings, na área com o nome/domínio da equipe.
+
+Anote o domínio completo apresentado, por exemplo:
+minha-equipe.cloudflareaccess.com
+É um exemplo: use o domínio real da SUA equipe nas etapas seguintes.
+
+3. HABILITAR O CÓDIGO ENVIADO POR E-MAIL
+
+Caminho: Zero Trust > Integrations > Identity providers.
+
+Em Your identity providers, clique em Add new identity provider.
+Escolha One-time PIN.
+Conclua a inclusão clicando em Save/Add, conforme o botão mostrado.
+Se esse método já estiver listado, não precisa adicioná-lo novamente.
+Em interfaces antigas, procure Settings > Authentication > Login methods.
+
+Conferência: One-time PIN aparece na lista de provedores.
+Isso habilita o método de login; os e-mails autorizados serão definidos
+na política da aplicação, na etapa 7.
+
+4. CRIAR O BANCO DE DADOS
+
+Caminho: Painel principal > Storage & databases > D1 SQL Database.
+
+Clique em Create database.
+No campo Database name, digite enem27.
+Conclua em Create.
+Abra o banco enem27 e clique na aba Console.
+Abra banco-de-dados.sql no Bloco de Notas, copie TODO o conteúdo e cole
+na caixa de comandos do Console. Clique em Execute/Run.
+Abra Tables ou a lista de tabelas do banco e confira se existe revisions.
+
+Se o banco enem27 já existir, abra-o em vez de criar outro.
+Não precisa preencher os registros manualmente: o app fará isso ao salvar.
+
+5. CRIAR O WORKER E COLOCAR O APP
+
+Caminho: Painel principal > Workers & Pages > Create application.
+Se Workers & Pages estiver agrupado, procure dentro de Compute.
+
+Escolha Create Worker/Start with Hello World, conforme as opções disponíveis.
+No nome do Worker, use revisao-enem27 ou outro nome disponível.
+Conclua a criação/Deploy.
+Na página do Worker, clique em Edit code.
+Selecione o arquivo principal do exemplo inicial, geralmente worker.js.
+Apague TODO o código de exemplo.
+Abra worker-pronto.txt no Bloco de Notas, copie TODO o conteúdo e cole
+no editor do Worker. Clique em Deploy/Save and deploy.
+
+Anote o endereço de produção, parecido com:
+https://revisao-enem27.seu-subdominio.workers.dev
+Use o endereço mostrado no SEU Worker, não este exemplo.
+
+Se abrir agora e aparecer uma mensagem pedindo ACCESS_TEAM_DOMAIN e ACCESS_AUD,
+isso é esperado: a configuração ainda não terminou.
+O Worker já contém o app completo. Não envie index.html separadamente.
+
+6. CONECTAR O WORKER AO BANCO D1
+
+Caminho: Painel principal > Workers & Pages > revisao-enem27 > Bindings.
+
+Clique em Add binding.
+Selecione D1 database e avance, se houver Next/Add binding.
+Preencha:
+  Variable name/Binding name: DB
+  D1 database: enem27
+Salve em Add binding/Save.
+Se o painel pedir Deploy, conclua a publicação.
+
+Conferência: o banco enem27 aparece nos bindings com o nome DB.
+Use DB em maiúsculas, exatamente assim.
+
+7. PROTEGER O WORKER E DEFINIR OS E-MAILS AUTORIZADOS
+
+Caminho: Painel principal > Workers & Pages > revisao-enem27 > Access.
+
+Clique em Protect this Worker behind Access.
+Escolha All traffic, para proteger produção e previews.
+Escolha/configure a política disponível e clique em Apply Access.
+Se inicialmente só houver opção por conta/domínio, configure a proteção
+e ajuste a política da aplicação para os e-mails exatos logo abaixo.
+
+Agora vá a:
+Zero Trust > Access controls > Applications.
+Em algumas interfaces: Zero Trust > Access > Applications.
+
+Abra a aplicação que acabou de ser criada para o Worker.
+Clique em Edit/Configure e abra Policies.
+Edite a política existente ou clique em Add a policy.
+Preencha:
+  Policy name: Pessoas autorizadas
+  Action: Allow
+  Include > Selector: Emails
+  Value: seu endereço de e-mail completo
+Inclua os demais convidados usando os campos/botões de adicionar valores.
+Salve a política e a aplicação.
+
+Remova políticas Allow anteriores que liberem pessoas fora do seu grupo.
+Não use Bypass. Confira que a política Pessoas autorizadas está associada
+a ESTA aplicação, não apenas salva na lista geral de políticas.
+
+Na configuração da aplicação, localize os provedores de login/Identity
+providers e confira se One-time PIN está habilitado. Salve.
+Uma duração de sessão de 24 horas é uma opção inicial; escolha a duração
+que preferir entre as oferecidas no painel.
+
+SE NÃO HOUVER A ABA ACCESS NO WORKER
+
+Use Zero Trust > Access controls > Applications > Add an application >
+Self-hosted. Dê o nome Revisão ENEM 2027.
+Adicione o hostname completo do Worker em Public hostname/Application domain.
+Use o domínio workers.dev anotado na etapa 5, sem https://.
+Se necessário, escolha Switch to custom input para digitar o hostname.
+Deixe Path vazio para proteger TODO o endereço, incluindo /api/*.
+Adicione a política Allow > Include > Emails descrita acima e habilite
+One-time PIN. Salve a aplicação.
+No painel principal > Workers & Pages > seu Worker > Settings > Domains &
+Routes, desative Preview URLs se não estiverem protegidas pelo Access.
+Não crie uma segunda aplicação se a proteção da aba Access já criou uma.
+
+8. COPIAR O IDENTIFICADOR AUD DA APLICAÇÃO
+
+Caminho atual: Zero Trust > Access controls > Applications > aplicação do
+Worker > Edit > Additional settings.
+
+Copie o campo Application Audience (AUD) Tag e guarde seu valor completo.
+Em outras versões do painel, esse campo aparece em Overview/Basic information.
+Copie o AUD, não o Application ID e não o Account ID.
+
+Agora você deve ter anotado:
+  Domínio da equipe: ... .cloudflareaccess.com
+  Application Audience (AUD) Tag: sequência de caracteres copiada do painel
+
+9. CADASTRAR AS DUAS VARIÁVEIS NO WORKER
+
+Caminho: Painel principal > Workers & Pages > revisao-enem27 > Settings >
+Variables and Secrets > Add.
+
+Primeira variável:
+  Type: Text
+  Variable name: ACCESS_TEAM_DOMAIN
+  Value: domínio real da sua equipe, por exemplo minha-equipe.cloudflareaccess.com
+  Sem https:// e sem barra no final.
+Clique em Save/Add/Deploy, conforme o painel apresentar.
+
+Repita o mesmo caminho para a segunda variável:
+  Type: Text
+  Variable name: ACCESS_AUD
+  Value: valor completo do AUD copiado na etapa 8
+  Sem aspas e sem colchetes.
+Salve e conclua o Deploy solicitado.
+
+Use as variáveis de execução do Worker, não variáveis de Build.
+Os nomes acima correspondem ao código deste app; não substitua por outros
+nomes que possam aparecer em exemplos genéricos da Cloudflare.
+
+10. TESTAR O APP
+
+Caminho: Painel principal > Workers & Pages > revisao-enem27 > Overview >
+endereço workers.dev de produção/Visit.
+
+Copie o endereço e abra em uma janela privativa do navegador.
+Deve aparecer o login da Cloudflare.
+Digite um e-mail incluído na política e solicite o código.
+Abra sua caixa de e-mail, copie o código recebido e confirme no login.
+
+Dentro do app, abra uma disciplina e um tema.
+Marque um quadrado e toque em Salvar.
+Aguarde Revisão salva na nuvem! e recarregue a página.
+A marcação deve continuar no lugar.
+Entre com o mesmo e-mail em outro aparelho: a revisão deve aparecer.
+Entre com outro e-mail autorizado: ele deve ver seus próprios registros.
+
+11. ADICIONAR OUTROS CONVIDADOS DEPOIS
+
+Caminho: Zero Trust > Access controls > Applications > aplicação do Worker >
+Edit > Policies > Pessoas autorizadas > Edit.
+
+Acrescente os e-mails em Include > Emails e salve a política/aplicação.
+Compartilhe o endereço de produção do app.
+Os convidados não precisam de conta na Cloudflare: entram com e-mail e código.
+
+USO DIÁRIO E DADOS ANTIGOS
+
+Precisa de internet para salvar. Alterações ainda não confirmadas não ficam
+armazenadas no celular e podem ser perdidas ao fechar a página.
+O navegador mantém o cookie necessário para a sessão de acesso.
+Em Minha conta, use Atualizar dados da nuvem para buscar mudanças de outro
+aparelho; use Sair da conta para encerrar a sessão.
+Se houver conflito entre aparelhos, atualize e refaça a marcação.
+Se a confirmação demorar, atualize para conferir se a gravação chegou ao banco.
+
+Não há importação automática das revisões da planilha ou do aparelho.
+Preserve backups antigos para uma eventual transferência específica.
+
+SE ALGO NÃO FUNCIONAR
+
+Configure ACCESS_TEAM_DOMAIN e ACCESS_AUD: refaça a conferência das etapas 8 e 9.
+Conecte o banco D1 com o nome DB: confira a etapa 6.
+Erro ao acessar o banco: confira se criou revisions no banco ligado ao Worker.
+Não foi possível validar seu acesso: confira domínio e AUD e entre novamente.
+Código não chega: confira spam, o e-mail digitado e a política da etapa 7.
+Tela sem login da Cloudflare: confira se protegeu produção/All traffic.
+
+FONTES DOS CAMINHOS DO PAINEL
+
+https://developers.cloudflare.com/cloudflare-one/setup/
+https://developers.cloudflare.com/cloudflare-one/integrations/identity-providers/one-time-pin/
+https://developers.cloudflare.com/d1/get-started/
+https://developers.cloudflare.com/workers/configuration/cloudflare-access/
+https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/
+https://developers.cloudflare.com/workers/configuration/environment-variables/
+
+MANUTENÇÃO DO CÓDIGO (PARA FUTURAS ALTERAÇÕES)
+
+Após editar index.html ou worker.mjs, execute na pasta D:\ENEM27:
+node preparar-cloudflare.cjs
+node verificar-nuvem.mjs
+Substitua o código do Worker pelo novo worker-pronto.txt e publique pessoalmente.
+Não é necessário recriar o banco a cada atualização do app.

@@ -1,0 +1,91 @@
+REPOSITÓRIO GITHUB PARA O APP REVISÃO ENEM 2027
+
+ESTADO ATUAL
+Os arquivos locais foram preparados para conectar o Worker atual ao GitHub.
+O Database ID informado pelo usuário já foi preenchido em wrangler.jsonc,
+apontando para o banco enem27 existente. O comando de preparação confere o
+formato do identificador antes da publicação.
+Nenhuma conexão com GitHub ou publicação foi realizada pelo assistente.
+
+1. ANOTAR O IDENTIFICADOR DO BANCO ATUAL
+Caminho: painel principal Cloudflare > Storage & databases > D1 SQL Database
+> enem27 > Overview > Database ID.
+Copie o identificador completo. Ele não é uma senha.
+Informe esse valor ao assistente para preencher wrangler.jsonc.
+Não crie outro banco. É esse vínculo que mantém os registros existentes.
+
+2. CRIAR O REPOSITÓRIO LOCAL NO GITHUB DESKTOP
+Abra o GitHub Desktop e entre na sua conta GitHub se necessário.
+Menu File > New repository.
+Name: ENEM27
+Local path: D:\
+Com isso, a pasta resultante deve ser exatamente D:\ENEM27, que já contém o app.
+Confira o caminho antes de clicar em Create repository.
+Não use D:\ENEM27 como Local path nessa tela, pois isso pode criar uma pasta
+extra D:\ENEM27\ENEM27.
+Não selecione um modelo de Git ignore nem substitua o .gitignore existente.
+
+Alternativa, se preferir selecionar a pasta diretamente:
+File > Add local repository > Choose > D:\ENEM27.
+Se disser que ainda não é um repositório, use o link para criar um naquele local
+e confira que o caminho final é D:\ENEM27.
+
+Se os arquivos aparecerem em Changes, faça o primeiro commit usando o resumo
+Versão inicial do app na nuvem e clique em Commit to main.
+
+3. ENVIAR O REPOSITÓRIO PRIVADO AO GITHUB
+No GitHub Desktop, clique em Publish repository.
+Name: enem27 (ou mantenha ENEM27).
+Mantenha Keep this code private marcado.
+Clique em Publish repository.
+Isso envia o código ao GitHub. Ainda não conecta o Worker nem altera o app no ar.
+
+4. CONECTAR O WORKER QUE JÁ EXISTE
+Somente depois de preencher o Database ID e passar os testes locais.
+Caminho: Cloudflare > Workers & Pages > revisao-enem27 > Settings > Builds.
+Pode aparecer Build no singular ou uma área Git repository dentro de Builds.
+Clique em Connect/Connect repository e selecione GitHub.
+Autorize a integração Cloudflare Workers and Pages para o repositório enem27.
+Se possível, escolha Only select repositories e selecione apenas esse projeto.
+Volte à Cloudflare e selecione o repositório.
+
+Não use Create application: vamos conectar o Worker atual, não criar outro.
+
+5. PREENCHER A CONFIGURAÇÃO DA PUBLICAÇÃO
+Production branch/Git branch: main (ou a ramificação principal efetiva).
+Root directory: raiz do repositório; deixe vazio se o painel permitir ou use /.
+Build command: npm run build
+Deploy command: npm run deploy
+Desative builds/publicações de ramificações que não sejam a principal, caso
+essa opção esteja disponível. Os endereços de preview estão desativados no arquivo.
+Conclua a conexão. O painel pode iniciar a primeira publicação imediatamente.
+Quando necessário, envie uma nova alteração pelo GitHub Desktop para dispará-la.
+
+O nome do Worker no arquivo é revisao-enem27, igual ao Worker atual.
+keep_vars preserva ACCESS_AUD e ACCESS_TEAM_DOMAIN já cadastrados no painel.
+DB aponta para o identificador do banco existente.
+Nenhum comando deste fluxo recria tabelas ou apaga registros.
+
+6. CONFERIR A PRIMEIRA PUBLICAÇÃO
+No Worker, abra Builds/Deployments e acompanhe até Success/Successful.
+Abra o endereço de produção habitual e teste login, leitura das revisões antigas,
+salvamento de uma revisão e recarregamento da página.
+O acesso continua sendo configurado em Zero Trust > Access controls > Applications.
+
+7. COMO SERÃO AS PRÓXIMAS MUDANÇAS
+Peça a alteração ao assistente, que editará e verificará a pasta D:\ENEM27.
+No GitHub Desktop, confira Changes, escreva um resumo, clique em Commit to main
+e depois Push origin.
+Esse envio à ramificação principal dispara a publicação automática na Cloudflare.
+O assistente não fará o envio nem a publicação por você.
+Não é mais necessário colar o worker-pronto.txt manualmente no painel.
+Depois desta conexão, prefira manter as mudanças do código no repositório:
+edições manuais do código no painel podem ser substituídas no próximo envio.
+
+Arquivos gerados, backups antigos e o código da planilha ficam fora do GitHub
+por meio do .gitignore. Os arquivos de origem e a configuração são enviados.
+
+Referências:
+https://developers.cloudflare.com/workers/ci-cd/builds/#connect-an-existing-worker
+https://developers.cloudflare.com/workers/ci-cd/builds/configuration/
+https://developers.cloudflare.com/workers/wrangler/configuration/#source-of-truth
