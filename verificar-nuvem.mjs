@@ -48,7 +48,20 @@ const forgedParts = alice.split('.');
 forgedParts[1] = encode({ email: 'bob@example.com', iss: 'https://' + env.ACCESS_TEAM_DOMAIN, aud: [env.ACCESS_AUD], sub: 'bob', iat: Math.floor(Date.now()/1000), exp: Math.floor(Date.now()/1000)+3600 });
 assert.equal((await request('/api/state', forgedParts.join('.'))).status, 401);
 assert.equal((await worker.fetch(new Request('https://app.example.com/'), {})).status, 503);
-assert.equal((await request('/', alice)).status, 200);
+// O YouTube exige a origem no Referer para reproduzir vídeos incorporados (erro 153).
+for (const path of ['/', '/index.html']) {
+  for (const method of ['GET', 'HEAD']) {
+    const page = await request(path, alice, undefined, {}, method);
+    assert.equal(page.status, 200);
+    assert.equal(page.headers.get('Referrer-Policy'), 'strict-origin-when-cross-origin');
+    assert.equal(page.headers.get('Content-Security-Policy'), "frame-ancestors 'none'");
+    if (method === 'GET') {
+      assert.match(await page.text(), /<iframe\s+src="https:\/\/www\.youtube\.com\/embed\/[^\"]+"\s+title="[^\"]+"\s+referrerpolicy="strict-origin-when-cross-origin"/);
+    } else {
+      assert.equal(await page.text(), '');
+    }
+  }
+}
 assert.equal((await request('/api/revision', alice, { key, dates, version: 0 }, { Origin: 'https://outro.example.com' })).status, 403);
 assert.equal((await request('/api/revision', alice, { key, dates: ['31/02/2026', null, null], version: 0 })).status, 400);
 assert.equal((await request('/api/revision', alice, { key: 'invalido', dates, version: 0 })).status, 400);

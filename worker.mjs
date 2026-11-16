@@ -134,7 +134,7 @@ export default {
       if ((url.pathname === '/' || url.pathname === '/index.html') && (request.method === 'GET' || request.method === 'HEAD')) {
         return new Response(request.method === 'HEAD' ? null : APP_HTML, { headers: {
           'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store',
-          'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'same-origin',
+          'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'strict-origin-when-cross-origin',
           'Content-Security-Policy': "frame-ancestors 'none'"
         }});
       }
