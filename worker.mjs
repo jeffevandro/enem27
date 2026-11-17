@@ -79,9 +79,9 @@ export default {
     try {
       const url = new URL(request.url);
       const email = await authenticate(request, env);
-      if (url.pathname === '/audio/ferro-fumaca-e-revolucao.mp3' &&
+      if ((url.pathname === '/audio/ferro-fumaca-e-revolucao.mp3' || url.pathname === '/figurinhas/zumbi-palmares.jpg') &&
           (request.method === 'GET' || request.method === 'HEAD')) {
-        if (!env.ASSETS) throw new HttpError(503, 'O áudio está indisponível. Tente novamente mais tarde.');
+        if (!env.ASSETS) throw new HttpError(503, 'O arquivo está indisponível. Tente novamente mais tarde.');
         const response = await env.ASSETS.fetch(request);
         const headers = new Headers(response.headers);
         headers.set('Cache-Control', 'private, no-store');
