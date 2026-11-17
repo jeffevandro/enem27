@@ -130,11 +130,11 @@ export default {
           catch { throw new HttpError(400, 'Dados inválidos.'); }
           if (url.pathname === '/api/sticker') {
             const bank = body && Object.hasOwn(SPEED_BANKS, body.discipline) ? SPEED_BANKS[body.discipline] : null;
-            if (!bank || !Number.isFinite(body.elapsedMs) || body.elapsedMs < 0 || body.elapsedMs > 120000 ||
+            if (!bank || !Number.isFinite(body.elapsedMs) || body.elapsedMs < 0 || body.elapsedMs > 150000 ||
                 !Array.isArray(body.answers) || body.answers.length !== 10 ||
                 new Set(body.answers.map(a => a?.id)).size !== 10 ||
                 !body.answers.every(a => a && bank.some(q => q.id === a.id && q.answer === a.answer))) {
-              throw new HttpError(400, 'A figurinha exige dez acertos em até dois minutos.');
+              throw new HttpError(400, 'A figurinha exige dez acertos em até dois minutos e trinta segundos.');
             }
             await env.DB.prepare(`INSERT INTO revisions (user_email, item_key, dates_json, version)
               VALUES (?, ?, ?, 1) ON CONFLICT(user_email, item_key) DO NOTHING

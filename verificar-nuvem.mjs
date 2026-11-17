@@ -133,8 +133,8 @@ assert.equal((await request('/api/revision', alice, { key, dates, version: 2, pa
 const broken = { ...env, DB: { prepare() { throw new Error('Falha simulada'); } } };
 assert.equal((await worker.fetch(new Request('https://app.example.com/api/state', { headers: { 'Cf-Access-Jwt-Assertion': alice } }), broken)).status, 500);
 for (const discipline of ['historia', 'geografia']) {
-  const award = { discipline, elapsedMs: 119999, answers: SPEED_BANKS[discipline].slice(0, 10).map(q => ({ id: q.id, answer: q.answer })) };
-  assert.equal((await request('/api/sticker', alice, { ...award, elapsedMs: 120001 })).status, 400);
+  const award = { discipline, elapsedMs: 149999, answers: SPEED_BANKS[discipline].slice(0, 10).map(q => ({ id: q.id, answer: q.answer })) };
+  assert.equal((await request('/api/sticker', alice, { ...award, elapsedMs: 150001 })).status, 400);
   assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.slice(0, 9) })).status, 400);
   assert.equal((await request('/api/sticker', alice, { ...award, answers: Array(10).fill(award.answers[0]) })).status, 400);
   assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.map(a => ({ ...a, answer: 'X' })) })).status, 400);
@@ -200,14 +200,14 @@ assert.equal(run('selectedDisciplineId'), 'historia');
 run("openDiscipline('historia')");
 assert(historyPage.indexOf("onclick=\"openSpeedQuiz('historia')\"") > historyPage.indexOf('onclick="openMusic()"'));
 run('openSpeedQuiz()');
-assert.match(element('appContainer').innerHTML, /dois minutos/);
+assert.match(element('appContainer').innerHTML, /dois minutos e trinta segundos/);
 assert.match(element('appContainer').innerHTML, /Começar quiz/);
 assert.equal(run('speedQuestionBank().length'), 20);
 assert.equal(run('HISTORY_SPEED_QUESTIONS.map(q => q.answer).join(\'\')'), 'CADBDBACBDCADBACBDCA');
 run('startSpeedQuiz()');
 assert.equal(run('speedRound.questions.length'), 10);
 assert.equal(run('new Set(speedRound.questions.map(q => q.id)).size'), 10);
-assert.match(element('appContainer').innerHTML, /2:00/);
+assert.match(element('appContainer').innerHTML, /2:30/);
 run('speedRound.deadline = Date.now() + 61000; tickSpeedQuiz()');
 assert.equal(run('speedRound.finished'), false);
 assert.equal(element('speedQuizClock').textContent, '1:01');
@@ -250,7 +250,7 @@ assert.equal(run("speedQuestionBank().map(q => q.answer).join('')"), 'BDACBDCACD
 run('startSpeedQuiz()');
 assert.equal(run('speedRound.questions.length'), 10);
 assert(run('speedRound.questions.every(q => q.id.startsWith("geografia-"))'));
-assert.match(element('appContainer').innerHTML, /2:00/);
+assert.match(element('appContainer').innerHTML, /2:30/);
 const geographyIds = run('speedRound.questions.map(q => q.id)');
 run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
 assert.equal(run('speedRound.finished'), false);
@@ -311,13 +311,13 @@ for (const discipline of ['historia', 'geografia']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
-  for (const elapsed of [0, 30000, 60000, 90000, 119000, 119999]) {
+  for (const elapsed of [0, 30000, 60000, 90000, 120000, 149000, 149999]) {
     quizNow = startedAt + elapsed;
     run('tickSpeedQuiz()');
-    assert.equal(run('speedRound.finished'), false, discipline + ' não encerra antes de 120 segundos');
+    assert.equal(run('speedRound.finished'), false, discipline + ' não encerra antes de 150 segundos');
   }
   assert.equal(element('speedQuizClock').textContent, '0:01');
-  quizNow = startedAt + 120000;
+  quizNow = startedAt + 150000;
   run('tickSpeedQuiz()');
   assert.equal(run('speedRound.finished'), true);
   assert.equal(run('speedRound.expired'), true);
@@ -326,11 +326,11 @@ for (const discipline of ['historia', 'geografia']) {
 // Dez acertos aguardando o fim do prazo também conquistam a figurinha.
 ctx.fetch = async () => Response.json({ discipline: 'geografia', unlocked: true });
 run("earnedStickers = {}; openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)");
-quizNow += 120200;
+quizNow += 150200;
 run('tickSpeedQuiz()');
 await run('speedRound.stickerSavePromise');
 assert.equal(run('earnedStickers.geografia'), true);
-assert.equal(run('speedRound.elapsedMs'), 120000);
+assert.equal(run('speedRound.elapsedMs'), 150000);
 ctx.Date = realDate;
 run("openModal()"); assert(classes.get('backupModal').has('open'));
 run("closeModal()"); assert(!classes.get('backupModal').has('open'));

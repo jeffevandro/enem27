@@ -1459,7 +1459,7 @@ function startSpeedQuiz() {
   const questions = shuffleSpeedQuestions(unused.length >= 10 ? unused : bank).slice(0, 10);
   previousSpeedIdsByDiscipline[selectedDisciplineId] = questions.map(q => q.id);
   const startedAt = Date.now();
-  speedRound = { discipline: selectedDisciplineId, questions, answers: {}, startedAt, deadline: startedAt + 120000, finished: false, expired: false };
+  speedRound = { discipline: selectedDisciplineId, questions, answers: {}, startedAt, deadline: startedAt + 150000, finished: false, expired: false };
   render();
   window.scrollTo(0, 0);
   speedTimer = setInterval(tickSpeedQuiz, 200);
@@ -1502,7 +1502,7 @@ function finishSpeedQuiz(expired) {
   const perfect = speedRound.questions.every((q, i) => speedRound.answers[i] === q.answer);
   if (perfect && !earnedStickers[speedRound.discipline]) {
     speedRound.stickerStatus = 'saving';
-    speedRound.stickerSavePromise = saveQuizSticker(speedRound, Math.min(elapsedMs, 120000));
+    speedRound.stickerSavePromise = saveQuizSticker(speedRound, Math.min(elapsedMs, 150000));
   }
   stopSpeedTimer();
   render();
@@ -1542,7 +1542,7 @@ function speedQuizMarkup() {
   if (!speedRound) {
     const ready = speedQuestionBank().length >= 20;
     return `<section class="info-card"><h2>${quizTitle}</h2>
-      <p>Dez perguntas, quatro alternativas e dois minutos para responder e revisar suas escolhas. Após responder às dez perguntas, clique em Concluir quiz para ver o resultado. Ao completar dois minutos, o quiz será encerrado automaticamente.</p>
+      <p>Dez perguntas, quatro alternativas e dois minutos e trinta segundos para responder e revisar suas escolhas. Após responder às dez perguntas, clique em Concluir quiz para ver o resultado. Ao completar dois minutos e trinta segundos, o quiz será encerrado automaticamente.</p>
       <p>Na próxima tentativa, você receberá dez perguntas diferentes da rodada anterior.</p>
       ${ready ? '<button type="button" class="quiz-retry-btn" onclick="startSpeedQuiz()">Começar quiz</button>' : `<p role="status">Em breve! O quiz aguarda a inclusão das 20 questões de ${speedQuizEscape(disciplineName)}.</p>`}</section>`;
   }
@@ -1815,7 +1815,7 @@ function render() {
     footerBadge.style.display = 'none';
     container.innerHTML = `<section class="sticker-album-intro" aria-labelledby="stickerAlbumInstructions">
       <h2 id="stickerAlbumInstructions">Como ganhar as figurinhas:</h2>
-      <p>Acerte as dez perguntas do quiz de uma matéria dentro do tempo estabelecido para conquistar a figurinha dessa disciplina. Nos quizzes de História e Geografia, o desafio é acertar todas em até dois minutos.</p>
+      <p>Acerte as dez perguntas do quiz de uma matéria dentro do tempo estabelecido para conquistar a figurinha dessa disciplina. Nos quizzes de História e Geografia, o desafio é acertar todas em até dois minutos e trinta segundos.</p>
     </section><div class="sticker-album-grid">` + CURRICULUM.map(disc => `<figure class="sticker-album-card">
       ${ALBUM_STICKERS[disc.id] && earnedStickers[disc.id] ? `<button type="button" class="sticker-album-slot" onclick="openStickerBiography('${disc.id}')" aria-label="Ler sobre ${speedQuizEscape(ALBUM_STICKERS[disc.id].name)}" aria-haspopup="dialog">
         <img src="${ALBUM_STICKERS[disc.id].image}" width="800" height="1040" alt="Figurinha ilustrada de ${speedQuizEscape(ALBUM_STICKERS[disc.id].name)}" decoding="async">
@@ -1919,7 +1919,7 @@ function render() {
 
     if (SPEED_QUESTION_BANKS[disc.id]) {
       html += `<button type="button" class="video-launch-card" onclick="openSpeedQuiz('${disc.id}')">
-        <span><span class="quiz-launch-title" style="display:block">Quiz de ${disc.name} (dez perguntas em 2 minutos)</span></span>
+        <span><span class="quiz-launch-title" style="display:block">Quiz de ${disc.name} (dez perguntas em 2 minutos e 30 segundos)</span></span>
         <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
     }
     html += '</div>';
@@ -1931,7 +1931,7 @@ function render() {
   if (currentView === 'speedQuiz') {
     subEl.textContent = disc.name;
     titleEl.textContent = `Quiz de ${disc.name}`;
-    breadEl.textContent = 'Dez perguntas em 2 minutos';
+    breadEl.textContent = 'Dez perguntas em 2 minutos e 30 segundos';
     container.innerHTML = speedQuizMarkup();
     return;
   }
