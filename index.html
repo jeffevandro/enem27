@@ -149,6 +149,23 @@
     outline-offset: 3px;
   }
   .useful-sites { display: grid; gap: 16px; }
+  .sticker-album-intro { margin: 0 0 22px; line-height: 1.6; color: var(--text-muted); }
+  .sticker-album-intro h2 { color: var(--text); font-size: 20px; margin: 0 0 10px; }
+  .sticker-album-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 10px; }
+  .sticker-album-card { width: 80%; margin: 0; justify-self: center; min-width: 0; }
+  /* Home: W × 0.8W. Figurinha: 0.8W × 1.04W (20% menos larga, 30% mais alta). */
+  .sticker-album-slot {
+    width: 100%;
+    aspect-ratio: 10 / 13;
+    background: #FFFFFF;
+    border: 1px solid #B8C7D9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+  }
+  .sticker-album-slot svg { width: 32%; height: auto; max-width: 72px; }
+  .sticker-album-card figcaption { margin-top: 10px; text-align: center; font-size: 14px; line-height: 1.4; overflow-wrap: anywhere; }
   .useful-site-card { padding: 18px; background: var(--surface); border: 1px solid var(--border); }
   .useful-site-card h2 { margin: 0 0 12px; font-size: 19px; }
   .useful-site-card p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; font-size: 15px; }
@@ -1488,8 +1505,33 @@ function render() {
         </button>
       `;
     });
-    html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button></div>';
+    html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button>';
+    html += '<button type="button" class="useful-links-tile" onclick="openStickerAlbum()">ÁLBUM DE FIGURINHAS</button></div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'stickerAlbum') {
+    subEl.textContent = 'Organizador de Estudos';
+    titleEl.textContent = 'ÁLBUM DE FIGURINHA';
+    breadEl.textContent = '14 figurinhas para colecionar';
+    footer.style.display = 'flex';
+    footerBadge.style.display = 'none';
+    container.innerHTML = `<section class="sticker-album-intro" aria-labelledby="stickerAlbumInstructions">
+      <h2 id="stickerAlbumInstructions">Como ganhar as figurinhas:</h2>
+      <p>Acerte as dez perguntas do quiz de uma matéria dentro do tempo estabelecido para conquistar a figurinha dessa disciplina. No quiz de História, o desafio é acertar todas em até dois minutos.</p>
+      <p>Cada matéria terá uma figurinha. Os cadeados indicam os espaços ainda bloqueados.</p>
+      <p>O álbum está em preparação. As figurinhas e a liberação das conquistas estarão disponíveis em breve.</p>
+    </section><div class="sticker-album-grid">` + CURRICULUM.map(disc => `<figure class="sticker-album-card">
+      <div class="sticker-album-slot" role="img" aria-label="Figurinha de ${speedQuizEscape(disc.name)} bloqueada">
+        <svg viewBox="0 0 48 60" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true" focusable="false">
+          <path d="M12 25V16a12 12 0 0 1 24 0v9"/>
+          <rect x="5" y="25" width="38" height="31" rx="4"/>
+          <circle cx="24" cy="38" r="3"/><path d="M24 41v6"/>
+        </svg>
+      </div><figcaption>${speedQuizEscape(disc.name)}</figcaption>
+    </figure>`).join('') + '</div>';
     window.scrollTo(0, 0);
     return;
   }
@@ -1897,6 +1939,16 @@ function submitQuiz() {
 function resetQuiz() {
   quizUserAnswers = {};
   quizSubmitted = false;
+  render();
+}
+
+function openStickerAlbum() {
+  stopSpeedTimer();
+  speedRound = null;
+  currentView = 'stickerAlbum';
+  selectedDisciplineId = null;
+  selectedThemeIndex = null;
+  activeVideoId = null;
   render();
 }
 
