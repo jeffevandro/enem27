@@ -1481,7 +1481,6 @@ function answerSpeedQuiz(index, letter) {
   if (Date.now() >= speedRound.deadline) { finishSpeedQuiz(true); return; }
   if (!Number.isInteger(index) || index < 0 || index >= 10 || !['A', 'B', 'C', 'D'].includes(letter)) return;
   speedRound.answers[index] = letter;
-  if (Object.keys(speedRound.answers).length === 10) { finishSpeedQuiz(false); return; }
   const card = document.getElementById(`speedQuestion${index}`);
   if (card) card.querySelectorAll('button').forEach(button => {
     const selected = button.dataset.letter === letter;
@@ -1489,17 +1488,21 @@ function answerSpeedQuiz(index, letter) {
     button.setAttribute('aria-pressed', String(selected));
   });
   document.getElementById('speedQuizProgress').textContent = `${Object.keys(speedRound.answers).length} de 10 respondidas`;
+  document.getElementById('finishSpeedQuizButton').disabled = Object.keys(speedRound.answers).length !== 10;
 }
 
 function finishSpeedQuiz(expired) {
   if (!speedRound || speedRound.finished) return;
+  const timeUp = Date.now() >= speedRound.deadline;
+  if (expired && !timeUp) return;
+  if (!timeUp && Object.keys(speedRound.answers).length !== 10) return;
   const elapsedMs = Date.now() - speedRound.startedAt;
   speedRound.finished = true;
-  speedRound.expired = expired || elapsedMs >= 120000;
+  speedRound.expired = timeUp;
   const perfect = speedRound.questions.every((q, i) => speedRound.answers[i] === q.answer);
-  if (!speedRound.expired && perfect && !earnedStickers[speedRound.discipline]) {
+  if (perfect && !earnedStickers[speedRound.discipline]) {
     speedRound.stickerStatus = 'saving';
-    speedRound.stickerSavePromise = saveQuizSticker(speedRound, elapsedMs);
+    speedRound.stickerSavePromise = saveQuizSticker(speedRound, Math.min(elapsedMs, 120000));
   }
   stopSpeedTimer();
   render();
@@ -1539,7 +1542,7 @@ function speedQuizMarkup() {
   if (!speedRound) {
     const ready = speedQuestionBank().length >= 20;
     return `<section class="info-card"><h2>${quizTitle}</h2>
-      <p>Dez perguntas, quatro alternativas e dois minutos para responder a todas. O resultado aparece ao responder a décima questão ou quando o tempo acabar.</p>
+      <p>Dez perguntas, quatro alternativas e dois minutos para responder e revisar suas escolhas. Após responder às dez perguntas, clique em Concluir quiz para ver o resultado. Ao completar dois minutos, o quiz será encerrado automaticamente.</p>
       <p>Na próxima tentativa, você receberá dez perguntas diferentes da rodada anterior.</p>
       ${ready ? '<button type="button" class="quiz-retry-btn" onclick="startSpeedQuiz()">Começar quiz</button>' : `<p role="status">Em breve! O quiz aguarda a inclusão das 20 questões de ${speedQuizEscape(disciplineName)}.</p>`}</section>`;
   }
@@ -1559,7 +1562,7 @@ function speedQuizMarkup() {
     speedRound.questions.map((q, i) => `<section class="quiz-card" id="speedQuestion${i}" aria-labelledby="speedTitle${i}">
       <h2 id="speedTitle${i}" style="font-size:18px">${i + 1}. ${speedQuizEscape(q.question)}</h2>
       <div class="quiz-options">${['A', 'B', 'C', 'D'].map(letter => `<button type="button" class="quiz-opt${speedRound.answers[i] === letter ? ' selected' : ''}" data-letter="${letter}" aria-pressed="${speedRound.answers[i] === letter}" onclick="answerSpeedQuiz(${i}, '${letter}')"><span class="quiz-opt-letter">${letter}</span><span>${speedQuizEscape(q.options[letter])}</span></button>`).join('')}</div>
-    </section>`).join('');
+    </section>`).join('') + `<button type="button" id="finishSpeedQuizButton" class="quiz-submit-btn" onclick="finishSpeedQuiz(false)" ${Object.keys(speedRound.answers).length === 10 ? '' : 'disabled'}>Concluir quiz</button>`;
 }
 
 async function api(path, options = {}) {

@@ -215,6 +215,11 @@ const firstRoundIds = run('speedRound.questions.map(q => q.id)');
 run("for (let i = 0; i < 9; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)");
 assert.equal(run('speedRound.finished'), false);
 run("answerSpeedQuiz(9, speedRound.questions[9].answer)");
+assert.equal(run('speedRound.finished'), false);
+assert.equal(element('finishSpeedQuizButton').disabled, false);
+run("answerSpeedQuiz(9, speedRound.questions[9].answer === 'A' ? 'B' : 'A')");
+assert.equal(run('speedRound.finished'), false);
+run('answerSpeedQuiz(9, speedRound.questions[9].answer); finishSpeedQuiz(false)');
 assert.match(element('appContainer').innerHTML, /Parabéns você acertou todas. Está no caminho certo para o ENEM 2027!/);
 run('startSpeedQuiz()');
 assert(run('speedRound.questions.map(q => q.id)').every(id => !firstRoundIds.includes(id)));
@@ -248,6 +253,8 @@ assert(run('speedRound.questions.every(q => q.id.startsWith("geografia-"))'));
 assert.match(element('appContainer').innerHTML, /2:00/);
 const geographyIds = run('speedRound.questions.map(q => q.id)');
 run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+assert.equal(run('speedRound.finished'), false);
+run('finishSpeedQuiz(false)');
 assert.match(element('appContainer').innerHTML, /Parabéns/);
 await run('speedRound.stickerSavePromise');
 assert.equal(run('earnedStickers.geografia'), true);
@@ -282,6 +289,7 @@ run('startSpeedQuiz(); speedRound.deadline = Date.now() - 1; tickSpeedQuiz()');
 assert.equal(run('earnedStickers.geografia'), undefined);
 ctx.fetch = async () => { throw new TypeError('Offline'); };
 run('startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
 await run('speedRound.stickerSavePromise');
 assert.equal(run('earnedStickers.geografia'), undefined);
 assert.match(element('appContainer').innerHTML, /Salvar figurinha novamente/);
@@ -295,6 +303,35 @@ await run('loadState()');
 run('openStickerAlbum()');
 assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/milton-santos.jpg"/);
 assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi-dos-palmares.jpg"/);
+// Confere os limites do cronômetro com relógio controlado nas duas disciplinas.
+const realDate = run('Date');
+let quizNow = 1000000;
+ctx.Date = class extends realDate { static now() { return quizNow; } };
+for (const discipline of ['historia', 'geografia']) {
+  run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
+  assert.equal(run('speedRound.finished'), false);
+  const startedAt = quizNow;
+  for (const elapsed of [0, 30000, 60000, 90000, 119000, 119999]) {
+    quizNow = startedAt + elapsed;
+    run('tickSpeedQuiz()');
+    assert.equal(run('speedRound.finished'), false, discipline + ' não encerra antes de 120 segundos');
+  }
+  assert.equal(element('speedQuizClock').textContent, '0:01');
+  quizNow = startedAt + 120000;
+  run('tickSpeedQuiz()');
+  assert.equal(run('speedRound.finished'), true);
+  assert.equal(run('speedRound.expired'), true);
+  assert.equal(run('speedTimer'), null);
+}
+// Dez acertos aguardando o fim do prazo também conquistam a figurinha.
+ctx.fetch = async () => Response.json({ discipline: 'geografia', unlocked: true });
+run("earnedStickers = {}; openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)");
+quizNow += 120200;
+run('tickSpeedQuiz()');
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.geografia'), true);
+assert.equal(run('speedRound.elapsedMs'), 120000);
+ctx.Date = realDate;
 run("openModal()"); assert(classes.get('backupModal').has('open'));
 run("closeModal()"); assert(!classes.get('backupModal').has('open'));
 run(`draftData['${key}'] = [true, false, false]`);
