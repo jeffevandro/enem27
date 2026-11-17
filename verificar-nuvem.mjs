@@ -40,6 +40,30 @@ async function request(path, jwt, body, extraHeaders = {}, method = body ? 'PUT'
   }), env);
 }
 const key = 'historia|0|0|0', dates = ['16/11/2026', null, null];
+const musicPath = '/audio/ferro-fumaca-e-revolucao.mp3';
+const musicBytes = fs.readFileSync(new URL('./public' + musicPath, import.meta.url));
+assert.equal(musicBytes.length, 4200727);
+assert.equal((await request(musicPath)).status, 401);
+assert.equal((await request(musicPath, alice)).status, 503);
+env.ASSETS = { async fetch(req) {
+  assert.equal(new URL(req.url).pathname, musicPath);
+  const partial = req.headers.has('Range');
+  return new Response(req.method === 'HEAD' ? null : partial ? musicBytes.subarray(0, 16) : musicBytes, {
+    status: partial ? 206 : 200,
+    headers: { 'Content-Type': 'audio/mpeg', 'Accept-Ranges': 'bytes',
+      ...(partial ? { 'Content-Range': `bytes 0-15/${musicBytes.length}` } : {}) }
+  });
+} };
+const song = await request(musicPath, alice);
+assert.equal(song.status, 200);
+assert.equal(song.headers.get('Content-Type'), 'audio/mpeg');
+assert.equal(song.headers.get('Cache-Control'), 'private, no-store');
+assert.deepEqual(Buffer.from(await song.arrayBuffer()), musicBytes);
+const segment = await request(musicPath, alice, undefined, { Range: 'bytes=0-15' });
+assert.equal(segment.status, 206);
+assert.equal(segment.headers.get('Content-Range'), `bytes 0-15/${musicBytes.length}`);
+assert.equal((await segment.arrayBuffer()).byteLength, 16);
+assert.equal(await (await request(musicPath, alice, undefined, {}, 'HEAD')).text(), '');
 assert.equal((await request('/api/state')).status, 401);
 assert.equal((await request('/api/state', await token('a@example.com', { exp: 1 }))).status, 401);
 assert.equal((await request('/api/state', await token('a@example.com', { aud: ['outra-app'] }))).status, 401);
@@ -111,6 +135,20 @@ const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, cl
 });
 const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
+run("openDiscipline('historia')");
+const historyPage = element('appContainer').innerHTML;
+assert(historyPage.indexOf('music-launch-card') > historyPage.indexOf('onclick="openVideos('));
+assert.match(historyPage, /Músicas para revisão de História/);
+run('openMusic()');
+assert.equal(element('headerTitle').textContent, 'Músicas de História');
+assert.match(element('appContainer').innerHTML, /Ferro, Fumaça e Revolução/);
+assert.match(element('appContainer').innerHTML, /<audio controls preload="metadata"/);
+assert.match(element('appContainer').innerHTML, /src="\/audio\/ferro-fumaca-e-revolucao.mp3"/);
+run('goBack()');
+assert.equal(run('currentView'), 'discipline');
+assert.equal(run('selectedDisciplineId'), 'historia');
+run("openDiscipline('geografia')");
+assert.doesNotMatch(element('appContainer').innerHTML, /music-launch-card/);
 run("openModal()"); assert(classes.get('backupModal').has('open'));
 run("closeModal()"); assert(!classes.get('backupModal').has('open'));
 run(`draftData['${key}'] = [true, false, false]`);
