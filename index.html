@@ -158,7 +158,7 @@
     width: 100%;
     aspect-ratio: 10 / 13;
     background: #FFFFFF;
-    border: 4px solid #B8C7D9;
+    border: 5px solid #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1171,13 +1171,236 @@ const HISTORY_SPEED_QUESTIONS = [
   { id: 'historia-19', question: 'Durante a Ditadura Militar brasileira, a censura foi utilizada principalmente para:', options: { A: 'Garantir a liberdade de expressão dos opositores.', B: 'Ampliar a participação popular nas decisões políticas.', C: 'Controlar informações e restringir manifestações contrárias ao regime.', D: 'Fortalecer a autonomia dos movimentos de oposição.' }, answer: 'C' },
   { id: 'historia-20', question: 'A Constituição brasileira de 1988 representou um marco da redemocratização porque:', options: { A: 'Ampliou direitos civis, políticos e sociais.', B: 'Eliminou as eleições diretas para presidente.', C: 'Estabeleceu um regime de partido único.', D: 'Restringiu a liberdade de organização política.' }, answer: 'A' }
 ];
+const GEOGRAPHY_SPEED_QUESTIONS = [
+  {
+    "id": "geografia-01",
+    "question": "Em um mapa de escala 1:500.000, a distância de 1 cm representa:",
+    "options": {
+      "A": "500 metros.",
+      "B": "5 quilômetros.",
+      "C": "50 quilômetros.",
+      "D": "500 quilômetros."
+    },
+    "answer": "B"
+  },
+  {
+    "id": "geografia-02",
+    "question": "Uma distorção característica da projeção de Mercator é a:",
+    "options": {
+      "A": "Conservação exata das áreas continentais.",
+      "B": "Redução exagerada das regiões polares.",
+      "C": "Ausência de deformações nas altas latitudes.",
+      "D": "Ampliação das áreas próximas aos polos."
+    },
+    "answer": "D"
+  },
+  {
+    "id": "geografia-03",
+    "question": "Em um deslocamento para leste, os horários locais tendem a:",
+    "options": {
+      "A": "Ficar adiantados em relação à origem.",
+      "B": "Ficar atrasados em relação à origem.",
+      "C": "Permanecer iguais aos da origem.",
+      "D": "Variar apenas conforme a altitude."
+    },
+    "answer": "A"
+  },
+  {
+    "id": "geografia-04",
+    "question": "Qual tecnologia permite sobrepor mapas de relevo, população e uso do solo?",
+    "options": {
+      "A": "Escala gráfica.",
+      "B": "Carta de fusos horários.",
+      "C": "Sistema de Informação Geográfica.",
+      "D": "Projeção cartográfica."
+    },
+    "answer": "C"
+  },
+  {
+    "id": "geografia-05",
+    "question": "A formação da cordilheira do Himalaia está ligada principalmente à:",
+    "options": {
+      "A": "Erosão provocada por geleiras.",
+      "B": "Colisão entre placas tectônicas continentais.",
+      "C": "Acumulação de sedimentos fluviais.",
+      "D": "Atividade dos rios em planícies."
+    },
+    "answer": "B"
+  },
+  {
+    "id": "geografia-06",
+    "question": "Em encostas desmatadas, as chuvas intensas tendem a:",
+    "options": {
+      "A": "Reduzir o escoamento superficial.",
+      "B": "Aumentar a estabilidade do solo.",
+      "C": "Impedir o transporte de sedimentos.",
+      "D": "Intensificar a erosão do solo."
+    },
+    "answer": "D"
+  },
+  {
+    "id": "geografia-07",
+    "question": "A Divisão Internacional do Trabalho caracteriza-se pela:",
+    "options": {
+      "A": "Distribuição igual de tecnologias entre países.",
+      "B": "Ausência de comércio entre continentes.",
+      "C": "Especialização desigual dos países em atividades produtivas.",
+      "D": "Autossuficiência industrial de todas as nações."
+    },
+    "answer": "C"
+  },
+  {
+    "id": "geografia-08",
+    "question": "Quando uma massa de ar polar avança pelo Brasil, pode ocorrer:",
+    "options": {
+      "A": "Queda de temperatura e episódios de friagem.",
+      "B": "Elevação generalizada das temperaturas.",
+      "C": "Fim das chuvas em todas as regiões.",
+      "D": "Aumento permanente da aridez no Sul."
+    },
+    "answer": "A"
+  },
+  {
+    "id": "geografia-09",
+    "question": "O fenômeno El Niño é caracterizado pelo:",
+    "options": {
+      "A": "Resfriamento do Pacífico equatorial.",
+      "B": "Resfriamento do Atlântico tropical.",
+      "C": "Aquecimento anômalo do Pacífico equatorial.",
+      "D": "Aumento das marés no oceano Índico."
+    },
+    "answer": "C"
+  },
+  {
+    "id": "geografia-10",
+    "question": "A preservação da vegetação ciliar contribui para:",
+    "options": {
+      "A": "Aumentar o depósito de resíduos nos rios.",
+      "B": "Elevar a salinidade das águas doces.",
+      "C": "Ampliar o transporte de sedimentos para os rios.",
+      "D": "Reduzir a erosão das margens e o assoreamento."
+    },
+    "answer": "D"
+  },
+  {
+    "id": "geografia-11",
+    "question": "Qual característica está associada ao Cerrado brasileiro?",
+    "options": {
+      "A": "Mosaico de gramíneas e árvores adaptadas à estação seca.",
+      "B": "Predomínio de coníferas em clima frio e úmido.",
+      "C": "Vegetação formada exclusivamente por manguezais.",
+      "D": "Floresta densa permanentemente inundada."
+    },
+    "answer": "A"
+  },
+  {
+    "id": "geografia-12",
+    "question": "A principal causa do aquecimento global atual é o:",
+    "options": {
+      "A": "Aumento da cobertura de gelo continental.",
+      "B": "Acúmulo de gases de efeito estufa na atmosfera.",
+      "C": "Enfraquecimento da radiação solar recebida pela Terra.",
+      "D": "Declínio do consumo mundial de combustíveis fósseis."
+    },
+    "answer": "B"
+  },
+  {
+    "id": "geografia-13",
+    "question": "Nas cidades, as ilhas de calor são favorecidas pela:",
+    "options": {
+      "A": "Impermeabilização do solo e redução de áreas verdes.",
+      "B": "Ampliação da arborização urbana.",
+      "C": "Preservação de grandes parques vegetados.",
+      "D": "Presença de corpos d’água e solo permeável."
+    },
+    "answer": "A"
+  },
+  {
+    "id": "geografia-14",
+    "question": "Qual combinação apresenta apenas fontes renováveis de eletricidade?",
+    "options": {
+      "A": "Petróleo e energia eólica.",
+      "B": "Gás natural e energia solar.",
+      "C": "Energia solar e eólica.",
+      "D": "Carvão mineral e energia hidrelétrica."
+    },
+    "answer": "C"
+  },
+  {
+    "id": "geografia-15",
+    "question": "Uma pirâmide etária com base estreita e maior participação de idosos indica:",
+    "options": {
+      "A": "Aumento contínuo das taxas de natalidade.",
+      "B": "Envelhecimento da população.",
+      "C": "Predomínio de crianças na população.",
+      "D": "Crescimento acelerado da fecundidade."
+    },
+    "answer": "B"
+  },
+  {
+    "id": "geografia-16",
+    "question": "Quanto mais próximo de 1 for o coeficiente de Gini da renda, maior será a:",
+    "options": {
+      "A": "Expectativa de vida da população.",
+      "B": "Igualdade na distribuição dos rendimentos.",
+      "C": "Produção econômica por habitante.",
+      "D": "Desigualdade na distribuição da renda."
+    },
+    "answer": "D"
+  },
+  {
+    "id": "geografia-17",
+    "question": "A segregação socioespacial nas metrópoles se expressa pela:",
+    "options": {
+      "A": "Distribuição homogênea dos serviços urbanos.",
+      "B": "Ausência de diferenças no preço da terra.",
+      "C": "Eliminação dos deslocamentos pendulares.",
+      "D": "Separação de grupos com acesso desigual à infraestrutura."
+    },
+    "answer": "D"
+  },
+  {
+    "id": "geografia-18",
+    "question": "A concentração fundiária no campo brasileiro corresponde à:",
+    "options": {
+      "A": "Distribuição equilibrada de terras entre famílias.",
+      "B": "Grande parcela das terras sob controle de poucos proprietários.",
+      "C": "Expansão exclusiva de unidades de conservação.",
+      "D": "Predomínio de pequenas propriedades em todas as regiões."
+    },
+    "answer": "B"
+  },
+  {
+    "id": "geografia-19",
+    "question": "A formação de blocos econômicos busca, entre outros objetivos:",
+    "options": {
+      "A": "Facilitar as trocas comerciais entre seus membros.",
+      "B": "Impedir investimentos entre países vizinhos.",
+      "C": "Eliminar as diferenças de renda entre os integrantes.",
+      "D": "Substituir obrigatoriamente os governos nacionais."
+    },
+    "answer": "A"
+  },
+  {
+    "id": "geografia-20",
+    "question": "A regionalização oficial do Brasil pelo IBGE agrupa estados segundo:",
+    "options": {
+      "A": "Os limites exclusivos dos biomas brasileiros.",
+      "B": "As fronteiras de cada bacia hidrográfica.",
+      "C": "Critérios territoriais, naturais e socioeconômicos.",
+      "D": "Os limites das áreas metropolitanas."
+    },
+    "answer": "C"
+  }
+];
+const SPEED_QUESTION_BANKS = { historia: HISTORY_SPEED_QUESTIONS, geografia: GEOGRAPHY_SPEED_QUESTIONS };
 let speedRound = null;
 let speedTimer = null;
-let previousSpeedIds = [];
+const previousSpeedIdsByDiscipline = {};
 
 function speedQuestionBank() {
   const ids = new Set();
-  return HISTORY_SPEED_QUESTIONS.filter(q => {
+  return (SPEED_QUESTION_BANKS[selectedDisciplineId] || []).filter(q => {
     if (!q || typeof q.id !== 'string' || ids.has(q.id) || !q.question ||
         !q.options || !['A', 'B', 'C', 'D'].every(k => typeof q.options[k] === 'string' && q.options[k].trim()) ||
         !['A', 'B', 'C', 'D'].includes(q.answer)) return false;
@@ -1195,10 +1418,11 @@ function shuffleSpeedQuestions(items) {
   return shuffled;
 }
 
-function openSpeedQuiz() {
+function openSpeedQuiz(disciplineId = 'historia') {
+  if (!SPEED_QUESTION_BANKS[disciplineId]) return;
   stopSpeedTimer();
   speedRound = null;
-  selectedDisciplineId = 'historia';
+  selectedDisciplineId = disciplineId;
   currentView = 'speedQuiz';
   render();
   window.scrollTo(0, 0);
@@ -1213,9 +1437,10 @@ function startSpeedQuiz() {
   const bank = speedQuestionBank();
   if (currentView !== 'speedQuiz' || bank.length < 20) return;
   stopSpeedTimer();
+  const previousSpeedIds = previousSpeedIdsByDiscipline[selectedDisciplineId] || [];
   const unused = bank.filter(q => !previousSpeedIds.includes(q.id));
   const questions = shuffleSpeedQuestions(unused.length >= 10 ? unused : bank).slice(0, 10);
-  previousSpeedIds = questions.map(q => q.id);
+  previousSpeedIdsByDiscipline[selectedDisciplineId] = questions.map(q => q.id);
   speedRound = { questions, answers: {}, deadline: Date.now() + 120000, finished: false, expired: false };
   render();
   window.scrollTo(0, 0);
@@ -1263,12 +1488,14 @@ function speedQuizEscape(value) {
 }
 
 function speedQuizMarkup() {
+  const disciplineName = CURRICULUM.find(d => d.id === selectedDisciplineId)?.name || '';
+  const quizTitle = speedQuizEscape(`Quiz de ${disciplineName}`);
   if (!speedRound) {
     const ready = speedQuestionBank().length >= 20;
-    return `<section class="info-card"><h2>Quiz de História</h2>
+    return `<section class="info-card"><h2>${quizTitle}</h2>
       <p>Dez perguntas, quatro alternativas e dois minutos para responder a todas. O resultado aparece ao responder a décima questão ou quando o tempo acabar.</p>
       <p>Na próxima tentativa, você receberá dez perguntas diferentes da rodada anterior.</p>
-      ${ready ? '<button type="button" class="quiz-retry-btn" onclick="startSpeedQuiz()">Começar quiz</button>' : '<p role="status">Em breve! O quiz aguarda a inclusão das 20 questões de História.</p>'}</section>`;
+      ${ready ? '<button type="button" class="quiz-retry-btn" onclick="startSpeedQuiz()">Começar quiz</button>' : `<p role="status">Em breve! O quiz aguarda a inclusão das 20 questões de ${speedQuizEscape(disciplineName)}.</p>`}</section>`;
   }
   if (speedRound.finished) {
     const score = speedRound.questions.filter((q, i) => speedRound.answers[i] === q.answer).length;
@@ -1637,9 +1864,9 @@ function render() {
       `;
     }
 
-    if (disc.id === 'historia') {
-      html += `<button type="button" class="video-launch-card" onclick="openSpeedQuiz()">
-        <span><span class="quiz-launch-title" style="display:block">Quiz de História (dez perguntas em 2 minutos)</span></span>
+    if (SPEED_QUESTION_BANKS[disc.id]) {
+      html += `<button type="button" class="video-launch-card" onclick="openSpeedQuiz('${disc.id}')">
+        <span><span class="quiz-launch-title" style="display:block">Quiz de ${disc.name} (dez perguntas em 2 minutos)</span></span>
         <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
     }
     html += '</div>';
@@ -1650,7 +1877,7 @@ function render() {
 
   if (currentView === 'speedQuiz') {
     subEl.textContent = disc.name;
-    titleEl.textContent = 'Quiz de História';
+    titleEl.textContent = `Quiz de ${disc.name}`;
     breadEl.textContent = 'Dez perguntas em 2 minutos';
     container.innerHTML = speedQuizMarkup();
     return;
