@@ -107,6 +107,7 @@
 
   /* Metro Tiles Grid (Home) */
   .tiles-grid {
+    container-type: inline-size;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -131,6 +132,27 @@
     transform: scale(0.96);
     opacity: 0.9;
   }
+
+  .useful-links-tile {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: calc((100cqw - 10px) / 7.5);
+    background: #000000;
+    border: 1px solid #2878BE;
+    color: var(--text);
+    font: 600 14px "Segoe UI", sans-serif;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+  .useful-links-tile:focus-visible, .useful-site-link:focus-visible {
+    outline: 2px solid #71B8F5;
+    outline-offset: 3px;
+  }
+  .useful-sites { display: grid; gap: 16px; }
+  .useful-site-card { padding: 18px; background: var(--surface); border: 1px solid var(--border); }
+  .useful-site-card h2 { margin: 0 0 12px; font-size: 19px; }
+  .useful-site-card p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; font-size: 15px; }
+  .useful-site-link { color: #80C2FF; overflow-wrap: anywhere; line-height: 1.6; }
 
   .tile-top {
     display: flex;
@@ -1465,8 +1487,31 @@ function render() {
         </button>
       `;
     });
-    html += '</div>';
+    html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button></div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'usefulLinks') {
+    subEl.textContent = 'Organizador de Estudos';
+    titleEl.textContent = 'LINKS ÚTEIS PARA O ENEM 2027';
+    breadEl.textContent = 'Os sites abrem em uma nova aba';
+    footer.style.display = 'none';
+    const sites = [
+      ['Portal oficial do ENEM no INEP', 'https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem', 'Fonte oficial do exame. Reúne os editais atualizados, cronogramas oficiais, cartilhas de redação com exemplos nota mil e o acervo completo de provas anteriores e gabaritos oficiais em PDF.'],
+      ['MEC Enem (Plataforma Oficial de Estudos)', 'https://www.gov.br/mec/pt-br/mec-enem', 'Ferramenta gratuita do Ministério da Educação que oferece simulados com questões reais organizadas por área do conhecimento, materiais de reforço e correção automatizada de redação com estimativa de nota.'],
+      ['Estuda.com', 'https://estuda.com', 'Conta com um dos maiores bancos de questões do ENEM e vestibulares, permitindo filtrar exercícios por disciplina, assunto e ano, além de oferecer simulados com cálculo baseado na Teoria de Resposta ao Item (TRI) e estatísticas de desempenho (possui plano gratuito completo para treino de questões).'],
+      ['Khan Academy Brasil', 'https://pt.khanacademy.org', 'Plataforma 100% gratuita e sem fins lucrativos, excelente para construir ou revisar a base teórica em Matemática, Ciências da Natureza (Física, Química e Biologia) e Língua Portuguesa por meio de videoaulas curtas e listas de exercícios progressivos.'],
+      ['Portal Único de Acesso ao Ensino Superior (MEC)', 'https://acessounico.mec.gov.br', 'Concentra os sistemas oficiais onde a nota do ENEM é utilizada após a prova — Sisu (universidades públicas), Prouni (bolsas em instituições privadas) e Fies (financiamento estudantil) — permitindo consultar notas de corte, pesos por área e regras de inscrição.'],
+      ['Tudo sobre o ENEM 2026 - Notícias - Portal G1', 'https://g1.globo.com/educacao/enem/2026/', 'Notícias importantes e atualizadas sobre datas, informações úteis, orientações e entrevistas.']
+    ];
+    container.innerHTML = '<button type="button" class="btn-secondary" onclick="goHome()" style="margin-bottom:16px">Voltar ao início</button><div class="useful-sites">' +
+      sites.map(([name, url, description], index) => `<article class="useful-site-card">
+        <h2>${index + 1}. ${speedQuizEscape(name)}</h2>
+        <a class="useful-site-link" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${speedQuizEscape(name)} (abre em nova aba)">${url}</a>
+        <p>${speedQuizEscape(description)}</p>
+      </article>`).join('') + '</div>';
     window.scrollTo(0, 0);
     return;
   }
@@ -1850,6 +1895,16 @@ function submitQuiz() {
 function resetQuiz() {
   quizUserAnswers = {};
   quizSubmitted = false;
+  render();
+}
+
+function openUsefulLinks() {
+  stopSpeedTimer();
+  speedRound = null;
+  currentView = 'usefulLinks';
+  selectedDisciplineId = null;
+  selectedThemeIndex = null;
+  activeVideoId = null;
   render();
 }
 
