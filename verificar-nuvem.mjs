@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import { DatabaseSync } from 'node:sqlite';
 import worker from './worker.mjs';
+import { SPEED_BANKS } from './generated/app.mjs';
 
 // Executa SQL real em SQLite e valida a autenticação com assinaturas RSA reais.
 const db = new DatabaseSync(':memory:');
@@ -66,7 +67,7 @@ assert.equal((await segment.arrayBuffer()).byteLength, 16);
 assert.equal(await (await request(musicPath, alice, undefined, {}, 'HEAD')).text(), '');
 // Testa o mesmo arquivo que o álbum solicita, inclusive após trocas de imagem.
 const albumHtml = fs.readFileSync(new URL('./index.html', import.meta.url), 'utf8');
-const stickerPath = albumHtml.match(/<img\s+src="(\/figurinhas\/[^\"]+)"/)[1];
+const stickerPath = '/figurinhas/zumbi-dos-palmares.jpg';
 const stickerBytes = fs.readFileSync(new URL('./public' + stickerPath, import.meta.url));
 assert.equal(stickerBytes.readUInt16BE(0), 0xffd8);
 assert.equal((await request(stickerPath)).status, 401);
@@ -81,6 +82,16 @@ assert.equal(stickerResponse.headers.get('Content-Type'), 'image/jpeg');
 assert.equal(stickerResponse.headers.get('Cache-Control'), 'private, no-store');
 assert.deepEqual(Buffer.from(await stickerResponse.arrayBuffer()), stickerBytes);
 assert.equal(await (await request(stickerPath, alice, undefined, {}, 'HEAD')).text(), '');
+env.ASSETS = audioAssets;
+const miltonBytes = fs.readFileSync(new URL('./public/figurinhas/milton-santos.jpg', import.meta.url));
+assert.equal(miltonBytes.readUInt16BE(0), 0xffd8);
+assert.equal((await request('/figurinhas/milton-santos.jpg')).status, 401);
+env.ASSETS = { async fetch(req) {
+  assert.equal(new URL(req.url).pathname, '/figurinhas/milton-santos.jpg');
+  return new Response(req.method === 'HEAD' ? null : miltonBytes, { headers: { 'Content-Type': 'image/jpeg' } });
+} };
+assert.deepEqual(Buffer.from(await (await request('/figurinhas/milton-santos.jpg', alice)).arrayBuffer()), miltonBytes);
+assert.equal(await (await request('/figurinhas/milton-santos.jpg', alice, undefined, {}, 'HEAD')).text(), '');
 env.ASSETS = audioAssets;
 assert.equal((await request('/api/state')).status, 401);
 assert.equal((await request('/api/state', await token('a@example.com', { exp: 1 }))).status, 401);
@@ -121,6 +132,20 @@ assert.equal((await request('/api/revision', bob, { key, dates, version: 0 })).s
 assert.equal((await request('/api/revision', alice, { key, dates, version: 2, padding: 'x'.repeat(3000) })).status, 413);
 const broken = { ...env, DB: { prepare() { throw new Error('Falha simulada'); } } };
 assert.equal((await worker.fetch(new Request('https://app.example.com/api/state', { headers: { 'Cf-Access-Jwt-Assertion': alice } }), broken)).status, 500);
+for (const discipline of ['historia', 'geografia']) {
+  const award = { discipline, elapsedMs: 119999, answers: SPEED_BANKS[discipline].slice(0, 10).map(q => ({ id: q.id, answer: q.answer })) };
+  assert.equal((await request('/api/sticker', alice, { ...award, elapsedMs: 120001 })).status, 400);
+  assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.slice(0, 9) })).status, 400);
+  assert.equal((await request('/api/sticker', alice, { ...award, answers: Array(10).fill(award.answers[0]) })).status, 400);
+  assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.map(a => ({ ...a, answer: 'X' })) })).status, 400);
+  assert.equal((await request('/api/sticker', alice, award, { Origin: 'https://other.example.com' })).status, 403);
+  assert.equal((await request('/api/sticker', alice, award)).status, 200);
+  assert.equal((await request('/api/sticker', alice, award)).status, 200);
+}
+state = await (await request('/api/state', alice)).json();
+assert.deepEqual(state.stickers, { historia: true, geografia: true });
+assert.equal(state.data['sticker|geografia'], undefined);
+assert.deepEqual((await (await request('/api/state', bob)).json()).stickers, {});
 globalThis.fetch = originalFetch;
 db.close();
 
@@ -139,7 +164,7 @@ const elements = new Map(), classes = new Map();
 const element = id => {
   if (!elements.has(id)) {
     const set = new Set(); classes.set(id, set);
-    elements.set(id, { style: {}, textContent: '', innerHTML: '', focus() {}, querySelectorAll: () => [], classList: {
+    elements.set(id, { style: {}, textContent: '', innerHTML: '', focus() {}, showModal() { this.open = true; }, close() { this.open = false; }, querySelectorAll: () => [], classList: {
       add(c) { set.add(c); }, remove(c) { set.delete(c); }, toggle(c) { set.has(c) ? set.delete(c) : set.add(c); }
     }});
   }
@@ -150,10 +175,16 @@ const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, cl
   setInterval: () => 2, clearInterval() {},
   document: { getElementById: element, querySelectorAll: () => [] }, CSS: { escape: s => s },
   window: { addEventListener() {}, scrollTo() {}, location: { assign() {} } }, confirm: () => true,
-  fetch: async () => Response.json({ email: 'alice@example.com', data: {}, versions: {} })
+  fetch: async (path, options) => path === '/api/sticker'
+    ? Response.json({ discipline: JSON.parse(options.body).discipline, unlocked: true })
+    : Response.json({ email: 'alice@example.com', data: {}, versions: {}, stickers: {} })
 });
 const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
+run('openStickerAlbum()');
+assert.doesNotMatch(element('appContainer').innerHTML, /<img/);
+run("openStickerBiography('geografia')");
+assert(!element('stickerBiographyDialog').open);
 run("openDiscipline('historia')");
 const historyPage = element('appContainer').innerHTML;
 assert(historyPage.indexOf('music-launch-card') > historyPage.indexOf('onclick="openVideos('));
@@ -218,6 +249,8 @@ assert.match(element('appContainer').innerHTML, /2:00/);
 const geographyIds = run('speedRound.questions.map(q => q.id)');
 run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
 assert.match(element('appContainer').innerHTML, /Parabéns/);
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.geografia'), true);
 run('startSpeedQuiz()');
 assert(run('speedRound.questions.map(q => q.id)').every(id => !geographyIds.includes(id)));
 run('speedRound.deadline = Date.now() - 1; tickSpeedQuiz()');
@@ -231,6 +264,37 @@ assert.equal(run('selectedDisciplineId'), 'historia');
 assert(run('speedQuestionBank().every(q => q.id.startsWith("historia-"))'));
 run('goBack()');
 assert.match(albumHtml, /border: 5px solid #FFFFFF/);
+run('openStickerAlbum()');
+assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/milton-santos.jpg"/);
+run("openStickerBiography('geografia')");
+assert.equal(element('stickerBiographyTitle').textContent, 'Milton Santos (1926–2001)');
+assert.match(element('stickerBiographyBody').innerHTML, /Milton Santos foi um geógrafo brasileiro/);
+assert.equal((element('stickerBiographyBody').innerHTML.match(/<p>/g) || []).length, 2);
+run('closeStickerBiography()');
+assert.equal(element('stickerBiographyDialog').open, false);
+// Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
+run('earnedStickers = {}');
+run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
+assert.equal(run('Object.keys(speedRound.answers).length'), 0);
+run("for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer === 'A' ? 'B' : 'A')");
+assert.equal(run('earnedStickers.geografia'), undefined);
+run('startSpeedQuiz(); speedRound.deadline = Date.now() - 1; tickSpeedQuiz()');
+assert.equal(run('earnedStickers.geografia'), undefined);
+ctx.fetch = async () => { throw new TypeError('Offline'); };
+run('startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.geografia'), undefined);
+assert.match(element('appContainer').innerHTML, /Salvar figurinha novamente/);
+ctx.fetch = async () => Response.json({ discipline: 'geografia', unlocked: true });
+run('retryQuizSticker()');
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.geografia'), true);
+ctx.fetch = async () => Response.json({ email: 'alice@example.com', data: {}, versions: {}, stickers: { geografia: true } });
+run('earnedStickers = {}');
+await run('loadState()');
+run('openStickerAlbum()');
+assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/milton-santos.jpg"/);
+assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi-dos-palmares.jpg"/);
 run("openModal()"); assert(classes.get('backupModal').has('open'));
 run("closeModal()"); assert(!classes.get('backupModal').has('open'));
 run(`draftData['${key}'] = [true, false, false]`);

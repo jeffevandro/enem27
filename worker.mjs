@@ -1,5 +1,5 @@
 // O arquivo pronto para a Cloudflare é gerado por preparar-cloudflare.cjs.
-import { APP_HTML, VALID_KEYS } from './generated/app.mjs';
+import { APP_HTML, VALID_KEYS, SPEED_BANKS } from './generated/app.mjs';
 
 const validKeys = new Set(VALID_KEYS);
 let keyCache = { issuer: '', until: 0, keys: [] };
@@ -81,7 +81,8 @@ export default {
       const email = await authenticate(request, env);
       if ((url.pathname === '/audio/ferro-fumaca-e-revolucao.mp3' ||
            url.pathname === '/figurinhas/zumbi-palmares.jpg' ||
-           url.pathname === '/figurinhas/zumbi-dos-palmares.jpg') &&
+           url.pathname === '/figurinhas/zumbi-dos-palmares.jpg' ||
+           url.pathname === '/figurinhas/milton-santos.jpg') &&
           (request.method === 'GET' || request.method === 'HEAD')) {
         if (!env.ASSETS) throw new HttpError(503, 'O arquivo está indisponível. Tente novamente mais tarde.');
         const response = await env.ASSETS.fetch(request);
@@ -94,16 +95,19 @@ export default {
         if (!env.DB) throw new HttpError(503, 'Conecte o banco D1 com o nome DB.');
         if (url.pathname === '/api/state' && request.method === 'GET') {
           const result = await env.DB.prepare('SELECT item_key, dates_json, version FROM revisions WHERE user_email = ?').bind(email).all();
-          const data = {}, versions = {};
+          const data = {}, versions = {}, stickers = {};
           for (const row of result.results) {
+            if (row.item_key.startsWith('sticker|') && Object.hasOwn(SPEED_BANKS, row.item_key.slice(8))) {
+              stickers[row.item_key.slice(8)] = true;
+            }
             if (validKeys.has(row.item_key)) {
               data[row.item_key] = JSON.parse(row.dates_json);
               versions[row.item_key] = row.version;
             }
           }
-          return json({ email, data, versions });
+          return json({ email, data, versions, stickers });
         }
-        if (url.pathname === '/api/revision' && request.method === 'PUT') {
+        if ((url.pathname === '/api/revision' || url.pathname === '/api/sticker') && request.method === 'PUT') {
           if (request.headers.get('Origin') !== url.origin) throw new HttpError(403, 'Origem da solicitação inválida.');
           if (!request.headers.get('Content-Type')?.startsWith('application/json')) throw new HttpError(415, 'Envie os dados em JSON.');
           // Limita o corpo efetivamente recebido, mesmo sem Content-Length.
@@ -124,6 +128,19 @@ export default {
           let body;
           try { body = JSON.parse(new TextDecoder().decode(bytes)); }
           catch { throw new HttpError(400, 'Dados inválidos.'); }
+          if (url.pathname === '/api/sticker') {
+            const bank = body && Object.hasOwn(SPEED_BANKS, body.discipline) ? SPEED_BANKS[body.discipline] : null;
+            if (!bank || !Number.isFinite(body.elapsedMs) || body.elapsedMs < 0 || body.elapsedMs > 120000 ||
+                !Array.isArray(body.answers) || body.answers.length !== 10 ||
+                new Set(body.answers.map(a => a?.id)).size !== 10 ||
+                !body.answers.every(a => a && bank.some(q => q.id === a.id && q.answer === a.answer))) {
+              throw new HttpError(400, 'A figurinha exige dez acertos em até dois minutos.');
+            }
+            await env.DB.prepare(`INSERT INTO revisions (user_email, item_key, dates_json, version)
+              VALUES (?, ?, ?, 1) ON CONFLICT(user_email, item_key) DO NOTHING
+              RETURNING dates_json, version`).bind(email, 'sticker|' + body.discipline, '[]').first();
+            return json({ discipline: body.discipline, unlocked: true });
+          }
           if (!body || !validKeys.has(body.key) || !validDates(body.dates) ||
               !Number.isSafeInteger(body.version) || body.version < 0) throw new HttpError(400, 'Revisão inválida.');
           // Controle de versão evita sobrescrever uma alteração feita em outro aparelho.
