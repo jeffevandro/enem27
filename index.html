@@ -1801,8 +1801,31 @@ function render() {
       `;
     });
     html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button>';
+    html += '<button type="button" class="useful-links-tile" onclick="openPastExams()">Provas e Gabaritos de anos anteriores</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openStickerAlbum()">ÁLBUM DE FIGURINHAS</button></div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'pastExams') {
+    subEl.textContent = 'Organizador de Estudos';
+    titleEl.textContent = 'Provas e Gabaritos de anos anteriores';
+    breadEl.textContent = 'Os PDFs do Inep abrem em uma nova aba';
+    footer.style.display = 'flex';
+    footerBadge.style.display = 'none';
+    const baseUrl = 'https://download.inep.gov.br/enem/provas_e_gabaritos/';
+    container.innerHTML = '<div class="useful-sites">' + [2025, 2024, 2023].map(year => `
+      <section class="useful-site-card">
+        <h2>ANO DE ${year}</h2>
+        ${[[1, 1], [2, 5]].map(([day, booklet]) => {
+          const suffix = `impresso_D${day}_CD${booklet}.pdf`;
+          return `<p>
+            <a class="useful-site-link" href="${baseUrl}${year}_PV_${suffix}" target="_blank" rel="noopener noreferrer" aria-label="Prova do ${day}º dia do ENEM ${year}">Prova - ${day}º dia</a><br>
+            <a class="useful-site-link" href="${baseUrl}${year}_GB_${suffix}" target="_blank" rel="noopener noreferrer" aria-label="Gabarito do ${day}º dia do ENEM ${year}">Gabarito</a>
+          </p>`;
+        }).join('')}
+      </section>`).join('') + '</div>';
     window.scrollTo(0, 0);
     return;
   }
@@ -2260,6 +2283,11 @@ function openStickerBiography(disciplineId = 'historia') {
 
 function closeStickerBiography() {
   document.getElementById('stickerBiographyDialog').close();
+}
+
+function openPastExams() {
+  currentView = 'pastExams';
+  render();
 }
 
 function openStickerAlbum() {
