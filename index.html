@@ -1952,6 +1952,17 @@ function render() {
         </audio>
         <p id="musicError" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
       </article>
+      <article class="music-card">
+        <span class="video-launch-badge music-launch-badge">Revolução Francesa</span>
+        <h2 id="bastilhaSongTitle">Da Bastilha eu grito</h2>
+        <p>Ouça a música para revisar a Revolução Francesa.</p>
+        <audio controls preload="metadata" aria-labelledby="bastilhaSongTitle"
+          src="/audio/da-bastilha-eu-grito.mp3"
+          onerror="document.getElementById('bastilhaMusicError').hidden = false">
+          Seu navegador não oferece suporte à reprodução de áudio.
+        </audio>
+        <p id="bastilhaMusicError" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
+      </article>
     `;
     window.scrollTo(0, 0);
     return;
