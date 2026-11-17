@@ -324,6 +324,8 @@
     color: #FFFFFF;
   }
 
+  .speed-quiz-status { position: sticky; top: 120px; z-index: 10; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px; margin-bottom: 16px; background: #1A1A1A; border: 1px solid #676767; }
+  #speedQuizClock { font-size: 24px; font-variant-numeric: tabular-nums; }
   .music-launch-card:active { background: #20362B; }
   .music-launch-card:focus-visible { outline: 2px solid #74D39D; outline-offset: 3px; }
   .music-launch-badge { background: #276442; color: #E8F9EE; }
@@ -1092,6 +1094,144 @@ let toastTimer = null;
 let quizUserAnswers = {}; // { qNum: "A" }
 let quizSubmitted = false;
 
+// Banco independente do simulado. Formato: { id, question, options: { A, B, C, D }, answer }.
+const HISTORY_SPEED_QUESTIONS = [
+  { id: 'historia-01', question: 'Sistema político, econômico, social e cultural que predominou na Europa Ocidental durante a Idade Média:', options: { A: 'Capitalismo', B: 'Socialismo', C: 'Feudalismo', D: 'Mercantilismo' }, answer: 'C' },
+  { id: 'historia-02', question: 'A agricultura nas civilizações do Egito e da Mesopotâmia dependia principalmente:', options: { A: 'Do aproveitamento das águas dos rios.', B: 'Da utilização de máquinas agrícolas.', C: 'Da importação de alimentos.', D: 'Da agricultura exclusivamente comercial.' }, answer: 'A' },
+  { id: 'historia-03', question: 'Na democracia da Atenas Antiga, quem estava excluído da participação política?', options: { A: 'Os cidadãos proprietários de terras.', B: 'Os homens adultos considerados cidadãos.', C: 'Os cidadãos que exerciam atividades comerciais.', D: 'As mulheres, os estrangeiros e os escravizados.' }, answer: 'D' },
+  { id: 'historia-04', question: 'Uma das principais consequências da expansão territorial de Roma durante a Antiguidade foi:', options: { A: 'O desaparecimento das diferenças sociais.', B: 'O aumento da utilização de mão de obra escravizada.', C: 'A implantação de uma democracia universal.', D: 'O fim das atividades comerciais.' }, answer: 'B' },
+  { id: 'historia-05', question: 'O Iluminismo foi um movimento intelectual que defendia principalmente:', options: { A: 'A manutenção do absolutismo monárquico.', B: 'O fortalecimento dos privilégios feudais.', C: 'A submissão da ciência à autoridade religiosa.', D: 'A valorização da razão e das liberdades individuais.' }, answer: 'D' },
+  { id: 'historia-06', question: 'Uma das principais características do mercantilismo europeu foi:', options: { A: 'A defesa do livre-comércio entre todas as nações.', B: 'A acumulação de metais preciosos e o protecionismo comercial.', C: 'A eliminação da intervenção estatal na economia.', D: 'A distribuição igualitária das riquezas.' }, answer: 'B' },
+  { id: 'historia-07', question: 'Uma das principais transformações sociais provocadas pela Revolução Industrial foi:', options: { A: 'O crescimento das cidades e do trabalho assalariado.', B: 'O desaparecimento das desigualdades econômicas.', C: 'O retorno da população urbana ao campo.', D: 'A substituição das fábricas pelas oficinas artesanais.' }, answer: 'A' },
+  { id: 'historia-08', question: 'A Revolução Francesa questionou principalmente:', options: { A: 'A existência das atividades comerciais.', B: 'A utilização de máquinas na produção.', C: 'O absolutismo e os privilégios do Antigo Regime.', D: 'A participação popular na vida política.' }, answer: 'C' },
+  { id: 'historia-09', question: 'O imperialismo europeu na África e na Ásia esteve relacionado principalmente:', options: { A: 'À concessão de independência às colônias.', B: 'À busca de matérias-primas, mercados e áreas de influência.', C: 'À eliminação das disputas entre potências industriais.', D: 'À formação de sociedades sem desigualdades sociais.' }, answer: 'B' },
+  { id: 'historia-10', question: 'A Guerra Fria caracterizou-se principalmente:', options: { A: 'Pela união política entre capitalismo e socialismo.', B: 'Pelo desaparecimento dos conflitos internacionais.', C: 'Pela colonização europeia de todo o continente americano.', D: 'Pela rivalidade política e ideológica entre Estados Unidos e União Soviética.' }, answer: 'D' },
+  { id: 'historia-11', question: 'Antes da colonização portuguesa, os povos indígenas que habitavam o Brasil:', options: { A: 'Possuíam uma única língua e cultura.', B: 'Viviam exclusivamente da agricultura.', C: 'Apresentavam diferentes culturas e formas de organização social.', D: 'Desconheciam técnicas de cultivo e produção de alimentos.' }, answer: 'C' },
+  { id: 'historia-12', question: 'A economia açucareira no Brasil Colonial caracterizou-se principalmente:', options: { A: 'Pela grande propriedade, monocultura e trabalho escravizado.', B: 'Pela pequena propriedade e produção exclusivamente familiar.', C: 'Pela industrialização e pelo trabalho assalariado.', D: 'Pela produção voltada exclusivamente ao mercado interno.' }, answer: 'A' },
+  { id: 'historia-13', question: 'Durante o período escravista brasileiro, os quilombos representavam:', options: { A: 'Centros comerciais administrados pela Coroa portuguesa.', B: 'Propriedades rurais destinadas à produção de açúcar.', C: 'Instituições responsáveis pela fiscalização dos escravizados.', D: 'Comunidades de resistência à escravidão.' }, answer: 'D' },
+  { id: 'historia-14', question: 'Uma importante consequência da mineração no Brasil Colonial foi:', options: { A: 'O desaparecimento da agricultura.', B: 'O crescimento urbano e do comércio interno.', C: 'O fim da escravidão africana.', D: 'A industrialização das principais cidades.' }, answer: 'B' },
+  { id: 'historia-15', question: 'Após a Independência do Brasil, uma característica da organização social e econômica que permaneceu foi:', options: { A: 'A manutenção da escravidão e da concentração de terras.', B: 'A implantação imediata de uma reforma agrária.', C: 'A distribuição igualitária das riquezas nacionais.', D: 'A substituição da monarquia por uma república democrática.' }, answer: 'A' },
+  { id: 'historia-16', question: 'A expansão da economia cafeeira no Brasil contribuiu principalmente:', options: { A: 'Para o desaparecimento das grandes propriedades rurais.', B: 'Para a interrupção da imigração europeia.', C: 'Para o desenvolvimento das ferrovias e da infraestrutura de transportes.', D: 'Para o fim das exportações agrícolas brasileiras.' }, answer: 'C' },
+  { id: 'historia-17', question: 'Durante a República Oligárquica, o coronelismo caracterizou-se:', options: { A: 'Pela participação política igualitária de toda a população.', B: 'Pelo controle político local exercido por grandes proprietários e chefes políticos.', C: 'Pela proibição da influência dos proprietários rurais nas eleições.', D: 'Pela escolha direta dos governantes por todos os habitantes.' }, answer: 'B' },
+  { id: 'historia-18', question: 'A Consolidação das Leis do Trabalho (CLT), criada durante a Era Vargas, teve como principal objetivo:', options: { A: 'Eliminar os sindicatos e todas as organizações trabalhistas.', B: 'Extinguir o trabalho assalariado nas indústrias.', C: 'Substituir os contratos de trabalho pela escravidão.', D: 'Reunir e regulamentar direitos e relações trabalhistas.' }, answer: 'D' },
+  { id: 'historia-19', question: 'Durante a Ditadura Militar brasileira, a censura foi utilizada principalmente para:', options: { A: 'Garantir a liberdade de expressão dos opositores.', B: 'Ampliar a participação popular nas decisões políticas.', C: 'Controlar informações e restringir manifestações contrárias ao regime.', D: 'Fortalecer a autonomia dos movimentos de oposição.' }, answer: 'C' },
+  { id: 'historia-20', question: 'A Constituição brasileira de 1988 representou um marco da redemocratização porque:', options: { A: 'Ampliou direitos civis, políticos e sociais.', B: 'Eliminou as eleições diretas para presidente.', C: 'Estabeleceu um regime de partido único.', D: 'Restringiu a liberdade de organização política.' }, answer: 'A' }
+];
+let speedRound = null;
+let speedTimer = null;
+let previousSpeedIds = [];
+
+function speedQuestionBank() {
+  const ids = new Set();
+  return HISTORY_SPEED_QUESTIONS.filter(q => {
+    if (!q || typeof q.id !== 'string' || ids.has(q.id) || !q.question ||
+        !q.options || !['A', 'B', 'C', 'D'].every(k => typeof q.options[k] === 'string' && q.options[k].trim()) ||
+        !['A', 'B', 'C', 'D'].includes(q.answer)) return false;
+    ids.add(q.id);
+    return true;
+  });
+}
+
+function shuffleSpeedQuestions(items) {
+  const shuffled = [...items];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function openSpeedQuiz() {
+  stopSpeedTimer();
+  speedRound = null;
+  selectedDisciplineId = 'historia';
+  currentView = 'speedQuiz';
+  render();
+  window.scrollTo(0, 0);
+}
+
+function stopSpeedTimer() {
+  if (speedTimer !== null) clearInterval(speedTimer);
+  speedTimer = null;
+}
+
+function startSpeedQuiz() {
+  const bank = speedQuestionBank();
+  if (currentView !== 'speedQuiz' || bank.length < 20) return;
+  stopSpeedTimer();
+  const unused = bank.filter(q => !previousSpeedIds.includes(q.id));
+  const questions = shuffleSpeedQuestions(unused.length >= 10 ? unused : bank).slice(0, 10);
+  previousSpeedIds = questions.map(q => q.id);
+  speedRound = { questions, answers: {}, deadline: Date.now() + 120000, finished: false, expired: false };
+  render();
+  window.scrollTo(0, 0);
+  speedTimer = setInterval(tickSpeedQuiz, 200);
+}
+
+function tickSpeedQuiz() {
+  if (currentView !== 'speedQuiz' || !speedRound || speedRound.finished) {
+    stopSpeedTimer();
+    return;
+  }
+  const seconds = Math.max(0, Math.ceil((speedRound.deadline - Date.now()) / 1000));
+  if (seconds === 0) { finishSpeedQuiz(true); return; }
+  const clock = document.getElementById('speedQuizClock');
+  if (clock) clock.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+}
+
+function answerSpeedQuiz(index, letter) {
+  if (currentView !== 'speedQuiz' || !speedRound || speedRound.finished) return;
+  if (Date.now() >= speedRound.deadline) { finishSpeedQuiz(true); return; }
+  if (!Number.isInteger(index) || index < 0 || index >= 10 || !['A', 'B', 'C', 'D'].includes(letter)) return;
+  speedRound.answers[index] = letter;
+  if (Object.keys(speedRound.answers).length === 10) { finishSpeedQuiz(false); return; }
+  const card = document.getElementById(`speedQuestion${index}`);
+  if (card) card.querySelectorAll('button').forEach(button => {
+    const selected = button.dataset.letter === letter;
+    button.classList.toggle('selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+  document.getElementById('speedQuizProgress').textContent = `${Object.keys(speedRound.answers).length} de 10 respondidas`;
+}
+
+function finishSpeedQuiz(expired) {
+  if (!speedRound || speedRound.finished) return;
+  speedRound.finished = true;
+  speedRound.expired = expired;
+  stopSpeedTimer();
+  render();
+  window.scrollTo(0, 0);
+  document.getElementById('speedQuizResult')?.focus();
+}
+
+function speedQuizEscape(value) {
+  return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+}
+
+function speedQuizMarkup() {
+  if (!speedRound) {
+    const ready = speedQuestionBank().length >= 20;
+    return `<section class="info-card"><h2>Quiz de História</h2>
+      <p>Dez perguntas, quatro alternativas e dois minutos para responder a todas. O resultado aparece ao responder a décima questão ou quando o tempo acabar.</p>
+      <p>Na próxima tentativa, você receberá dez perguntas diferentes da rodada anterior.</p>
+      ${ready ? '<button type="button" class="quiz-retry-btn" onclick="startSpeedQuiz()">Começar quiz</button>' : '<p role="status">Em breve! O quiz aguarda a inclusão das 20 questões de História.</p>'}</section>`;
+  }
+  if (speedRound.finished) {
+    const score = speedRound.questions.filter((q, i) => speedRound.answers[i] === q.answer).length;
+    return `<section class="quiz-score-box" id="speedQuizResult" tabindex="-1" role="status">
+      <h2>${score === 10 ? 'Parabéns você acertou todas. Está no caminho certo para o ENEM 2027!' : `Você acertou ${score} de 10 questões.`}</h2>
+      ${speedRound.expired ? '<p>O tempo acabou. As questões em branco não somam pontos.</p>' : ''}
+      <button type="button" class="quiz-retry-btn" onclick="startSpeedQuiz()">Tentar de novo</button></section>`;
+  }
+  const seconds = Math.max(0, Math.ceil((speedRound.deadline - Date.now()) / 1000));
+  return `<div class="speed-quiz-status"><span>Tempo restante <strong id="speedQuizClock" role="timer">${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}</strong></span>
+    <span id="speedQuizProgress" aria-live="polite">${Object.keys(speedRound.answers).length} de 10 respondidas</span></div>` +
+    speedRound.questions.map((q, i) => `<section class="quiz-card" id="speedQuestion${i}" aria-labelledby="speedTitle${i}">
+      <h2 id="speedTitle${i}" style="font-size:18px">${i + 1}. ${speedQuizEscape(q.question)}</h2>
+      <div class="quiz-options">${['A', 'B', 'C', 'D'].map(letter => `<button type="button" class="quiz-opt${speedRound.answers[i] === letter ? ' selected' : ''}" data-letter="${letter}" aria-pressed="${speedRound.answers[i] === letter}" onclick="answerSpeedQuiz(${i}, '${letter}')"><span class="quiz-opt-letter">${letter}</span><span>${speedQuizEscape(q.options[letter])}</span></button>`).join('')}</div>
+    </section>`).join('');
+}
+
 async function api(path, options = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 20000);
@@ -1393,9 +1533,22 @@ function render() {
       `;
     }
 
+    if (disc.id === 'historia') {
+      html += `<button type="button" class="video-launch-card" onclick="openSpeedQuiz()">
+        <span><span class="quiz-launch-title" style="display:block">Quiz de História (dez perguntas em 2 minutos)</span></span>
+        <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
+    }
     html += '</div>';
     container.innerHTML = html;
     window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'speedQuiz') {
+    subEl.textContent = disc.name;
+    titleEl.textContent = 'Quiz de História';
+    breadEl.textContent = 'Dez perguntas em 2 minutos';
+    container.innerHTML = speedQuizMarkup();
     return;
   }
 
@@ -1701,6 +1854,8 @@ function resetQuiz() {
 }
 
 function goHome() {
+  stopSpeedTimer();
+  speedRound = null;
   currentView = "home";
   selectedDisciplineId = null;
   selectedThemeIndex = null;
@@ -1709,6 +1864,8 @@ function goHome() {
 }
 
 function goDiscipline() {
+  stopSpeedTimer();
+  speedRound = null;
   if (selectedDisciplineId) {
     currentView = "discipline";
     selectedThemeIndex = null;
@@ -1718,7 +1875,7 @@ function goDiscipline() {
 }
 
 function goBack() {
-  if (currentView === "theme" || currentView === "quiz" || currentView === "videos" || currentView === "music") {
+  if (currentView === "theme" || currentView === "quiz" || currentView === "videos" || currentView === "music" || currentView === 'speedQuiz') {
     goDiscipline();
   } else {
     goHome();

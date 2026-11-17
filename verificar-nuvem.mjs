@@ -121,7 +121,7 @@ const elements = new Map(), classes = new Map();
 const element = id => {
   if (!elements.has(id)) {
     const set = new Set(); classes.set(id, set);
-    elements.set(id, { style: {}, textContent: '', innerHTML: '', classList: {
+    elements.set(id, { style: {}, textContent: '', innerHTML: '', focus() {}, querySelectorAll: () => [], classList: {
       add(c) { set.add(c); }, remove(c) { set.delete(c); }, toggle(c) { set.has(c) ? set.delete(c) : set.add(c); }
     }});
   }
@@ -129,6 +129,7 @@ const element = id => {
 };
 const code = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/loadState\(\);\s*$/, '');
 const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, clearTimeout() {},
+  setInterval: () => 2, clearInterval() {},
   document: { getElementById: element, querySelectorAll: () => [] }, CSS: { escape: s => s },
   window: { addEventListener() {}, scrollTo() {}, location: { assign() {} } }, confirm: () => true,
   fetch: async () => Response.json({ email: 'alice@example.com', data: {}, versions: {} })
@@ -147,8 +148,45 @@ assert.match(element('appContainer').innerHTML, /src="\/audio\/ferro-fumaca-e-re
 run('goBack()');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('selectedDisciplineId'), 'historia');
+run("openDiscipline('historia')");
+assert(historyPage.indexOf('onclick="openSpeedQuiz()"') > historyPage.indexOf('onclick="openMusic()"'));
+run('openSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /dois minutos/);
+assert.match(element('appContainer').innerHTML, /Começar quiz/);
+assert.equal(run('speedQuestionBank().length'), 20);
+assert.equal(run('HISTORY_SPEED_QUESTIONS.map(q => q.answer).join(\'\')'), 'CADBDBACBDCADBACBDCA');
+run('startSpeedQuiz()');
+assert.equal(run('speedRound.questions.length'), 10);
+assert.equal(run('new Set(speedRound.questions.map(q => q.id)).size'), 10);
+assert.match(element('appContainer').innerHTML, /2:00/);
+run('speedRound.deadline = Date.now() + 61000; tickSpeedQuiz()');
+assert.equal(run('speedRound.finished'), false);
+assert.equal(element('speedQuizClock').textContent, '1:01');
+const firstRoundIds = run('speedRound.questions.map(q => q.id)');
+run("for (let i = 0; i < 9; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)");
+assert.equal(run('speedRound.finished'), false);
+run("answerSpeedQuiz(9, speedRound.questions[9].answer)");
+assert.match(element('appContainer').innerHTML, /Parabéns você acertou todas. Está no caminho certo para o ENEM 2027!/);
+run('startSpeedQuiz()');
+assert(run('speedRound.questions.map(q => q.id)').every(id => !firstRoundIds.includes(id)));
+run("answerSpeedQuiz(0, speedRound.questions[0].answer); answerSpeedQuiz(0, speedRound.questions[0].answer === 'A' ? 'B' : 'A'); answerSpeedQuiz(1, speedRound.questions[1].answer)");
+assert.equal(run('Object.keys(speedRound.answers).length'), 2);
+run('speedRound.deadline = Date.now() - 1; tickSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /Você acertou 1 de 10 questões/);
+assert.match(element('appContainer').innerHTML, /O tempo acabou/);
+const lockedAnswer = run('speedRound.answers[0]');
+run("answerSpeedQuiz(0, speedRound.questions[0].answer)");
+assert.equal(run('speedRound.answers[0]'), lockedAnswer);
+run("startSpeedQuiz(); speedRound.deadline = Date.now() - 1; answerSpeedQuiz(0, 'A')");
+assert.equal(run('Object.keys(speedRound.answers).length'), 0);
+assert.equal(run('speedRound.expired'), true);
+run('startSpeedQuiz(); goBack()');
+assert.equal(run('currentView'), 'discipline');
+assert.equal(run('speedTimer'), null);
+assert.equal(run('speedRound'), null);
 run("openDiscipline('geografia')");
 assert.doesNotMatch(element('appContainer').innerHTML, /music-launch-card/);
+assert.doesNotMatch(element('appContainer').innerHTML, /openSpeedQuiz/);
 run("openModal()"); assert(classes.get('backupModal').has('open'));
 run("closeModal()"); assert(!classes.get('backupModal').has('open'));
 run(`draftData['${key}'] = [true, false, false]`);
