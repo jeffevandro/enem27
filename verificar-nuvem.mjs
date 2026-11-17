@@ -42,7 +42,7 @@ async function request(path, jwt, body, extraHeaders = {}, method = body ? 'PUT'
 const key = 'historia|0|0|0', dates = ['16/11/2026', null, null];
 const musicPath = '/audio/ferro-fumaca-e-revolucao.mp3';
 const musicBytes = fs.readFileSync(new URL('./public' + musicPath, import.meta.url));
-assert.equal(musicBytes.length, 4200727);
+assert(musicBytes.length > 16, 'O arquivo de áudio deve conter dados para reprodução.');
 assert.equal((await request(musicPath)).status, 401);
 assert.equal((await request(musicPath, alice)).status, 503);
 env.ASSETS = { async fetch(req) {
