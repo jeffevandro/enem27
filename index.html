@@ -158,7 +158,7 @@
     width: 100%;
     aspect-ratio: 10 / 13;
     background: #FFFFFF;
-    border: 1px solid #B8C7D9;
+    border: 4px solid #B8C7D9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1538,7 +1538,7 @@ function render() {
       <p>Acerte as dez perguntas do quiz de uma matéria dentro do tempo estabelecido para conquistar a figurinha dessa disciplina. No quiz de História, o desafio é acertar todas em até dois minutos.</p>
     </section><div class="sticker-album-grid">` + CURRICULUM.map(disc => `<figure class="sticker-album-card">
       ${disc.id === 'historia' ? `<button type="button" class="sticker-album-slot" onclick="openStickerBiography()" aria-label="Ler sobre Zumbi dos Palmares" aria-haspopup="dialog">
-        <img src="/figurinhas/zumbi-palmares.jpg" width="800" height="1040" alt="Figurinha ilustrada de Zumbi dos Palmares" decoding="async">
+        <img src="/figurinhas/zumbi-dos-palmares.jpg" width="800" height="1040" alt="Figurinha ilustrada de Zumbi dos Palmares" decoding="async">
       </button>` : `<div class="sticker-album-slot" role="img" aria-label="Figurinha de ${speedQuizEscape(disc.name)} bloqueada">
         <svg viewBox="0 0 48 60" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true" focusable="false">
           <path d="M12 25V16a12 12 0 0 1 24 0v9"/>
