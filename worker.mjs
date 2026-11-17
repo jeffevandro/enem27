@@ -79,6 +79,15 @@ export default {
     try {
       const url = new URL(request.url);
       const email = await authenticate(request, env);
+      if (url.pathname === '/audio/ferro-fumaca-e-revolucao.mp3' &&
+          (request.method === 'GET' || request.method === 'HEAD')) {
+        if (!env.ASSETS) throw new HttpError(503, 'O áudio está indisponível. Tente novamente mais tarde.');
+        const response = await env.ASSETS.fetch(request);
+        const headers = new Headers(response.headers);
+        headers.set('Cache-Control', 'private, no-store');
+        headers.set('X-Content-Type-Options', 'nosniff');
+        return new Response(response.body, { status: response.status, headers });
+      }
       if (url.pathname.startsWith('/api/')) {
         if (!env.DB) throw new HttpError(503, 'Conecte o banco D1 com o nome DB.');
         if (url.pathname === '/api/state' && request.method === 'GET') {

@@ -314,6 +314,25 @@
     margin-bottom: 6px;
   }
 
+  .music-launch-card {
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    background: #17251F;
+    border-color: #315140;
+    border-left-color: #4DAB79;
+    color: #FFFFFF;
+  }
+
+  .music-launch-card:active { background: #20362B; }
+  .music-launch-card:focus-visible { outline: 2px solid #74D39D; outline-offset: 3px; }
+  .music-launch-badge { background: #276442; color: #E8F9EE; }
+  .music-card { background: #17251F; border: 1px solid #315140; border-left: 6px solid #4DAB79; padding: 20px; }
+  .music-card h2 { color: #FFFFFF; font-size: 20px; margin: 0 0 10px; }
+  .music-card p { color: #B8C7D9; font-size: 14px; margin: 0 0 18px; }
+  .music-card audio { display: block; width: 100%; min-width: 0; color-scheme: dark; }
+  .music-error { margin-top: 14px !important; color: #FFD1D1 !important; }
+
   /* Video Player & Thumbs Grid */
   .video-player-box {
     background: #141414;
@@ -1243,8 +1262,41 @@ function render() {
       `;
     }
 
+    if (disc.id === "historia") {
+      html += `
+        <button type="button" class="video-launch-card music-launch-card" onclick="openMusic()">
+          <span>
+            <span class="video-launch-badge music-launch-badge">Músicas</span>
+            <span class="quiz-launch-title" style="display:block">Músicas para revisão de História</span>
+          </span>
+          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
+        </button>
+      `;
+    }
+
     html += '</div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === "music") {
+    subEl.textContent = disc.name;
+    titleEl.textContent = "Músicas de História";
+    breadEl.textContent = "Músicas para revisão de História";
+    container.innerHTML = `
+      <article class="music-card">
+        <span class="video-launch-badge music-launch-badge">Revolução Industrial</span>
+        <h2 id="historySongTitle">Ferro, Fumaça e Revolução</h2>
+        <p>Ouça a música para revisar a Revolução Industrial.</p>
+        <audio controls preload="metadata" aria-labelledby="historySongTitle"
+          src="/audio/ferro-fumaca-e-revolucao.mp3"
+          onerror="document.getElementById('musicError').hidden = false">
+          Seu navegador não oferece suporte à reprodução de áudio.
+        </audio>
+        <p id="musicError" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
+      </article>
+    `;
     window.scrollTo(0, 0);
     return;
   }
@@ -1477,6 +1529,14 @@ function openVideos(discId) {
   render();
 }
 
+function openMusic() {
+  selectedDisciplineId = "historia";
+  selectedThemeIndex = null;
+  activeVideoId = null;
+  currentView = "music";
+  render();
+}
+
 function playReviewVideo(videoId) {
   activeVideoId = videoId;
   render();
@@ -1537,7 +1597,7 @@ function goDiscipline() {
 }
 
 function goBack() {
-  if (currentView === "theme" || currentView === "quiz" || currentView === "videos") {
+  if (currentView === "theme" || currentView === "quiz" || currentView === "videos" || currentView === "music") {
     goDiscipline();
   } else {
     goHome();
