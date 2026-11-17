@@ -64,7 +64,9 @@ assert.equal(segment.status, 206);
 assert.equal(segment.headers.get('Content-Range'), `bytes 0-15/${musicBytes.length}`);
 assert.equal((await segment.arrayBuffer()).byteLength, 16);
 assert.equal(await (await request(musicPath, alice, undefined, {}, 'HEAD')).text(), '');
-const stickerPath = '/figurinhas/zumbi-palmares.jpg';
+// Testa o mesmo arquivo que o álbum solicita, inclusive após trocas de imagem.
+const albumHtml = fs.readFileSync(new URL('./index.html', import.meta.url), 'utf8');
+const stickerPath = albumHtml.match(/<img\s+src="(\/figurinhas\/[^\"]+)"/)[1];
 const stickerBytes = fs.readFileSync(new URL('./public' + stickerPath, import.meta.url));
 assert.equal(stickerBytes.readUInt16BE(0), 0xffd8);
 assert.equal((await request(stickerPath)).status, 401);
