@@ -41,7 +41,8 @@ async function request(path, jwt, body, extraHeaders = {}, method = body ? 'PUT'
   }), env);
 }
 const key = 'historia|0|0|0', dates = ['16/11/2026', null, null];
-const musicPath = '/audio/ferro-fumaca-e-revolucao.mp3';
+for (const musicPath of ['/audio/ferro-fumaca-e-revolucao.mp3', '/audio/da-bastilha-eu-grito.mp3']) {
+delete env.ASSETS;
 const musicBytes = fs.readFileSync(new URL('./public' + musicPath, import.meta.url));
 assert(musicBytes.length > 16, 'O arquivo de áudio deve conter dados para reprodução.');
 assert.equal((await request(musicPath)).status, 401);
@@ -65,6 +66,7 @@ assert.equal(segment.status, 206);
 assert.equal(segment.headers.get('Content-Range'), `bytes 0-15/${musicBytes.length}`);
 assert.equal((await segment.arrayBuffer()).byteLength, 16);
 assert.equal(await (await request(musicPath, alice, undefined, {}, 'HEAD')).text(), '');
+}
 // Testa o mesmo arquivo que o álbum solicita, inclusive após trocas de imagem.
 const albumHtml = fs.readFileSync(new URL('./index.html', import.meta.url), 'utf8');
 const stickerPath = '/figurinhas/zumbi-dos-palmares.jpg';
@@ -194,6 +196,9 @@ assert.equal(element('headerTitle').textContent, 'Músicas de História');
 assert.match(element('appContainer').innerHTML, /Ferro, Fumaça e Revolução/);
 assert.match(element('appContainer').innerHTML, /<audio controls preload="metadata"/);
 assert.match(element('appContainer').innerHTML, /src="\/audio\/ferro-fumaca-e-revolucao.mp3"/);
+assert.match(element('appContainer').innerHTML, /src="\/audio\/da-bastilha-eu-grito.mp3"/);
+assert.match(element('appContainer').innerHTML, /Ouça a música para revisar o Absolutismo\./);
+assert.doesNotMatch(element('appContainer').innerHTML, /Revolução Francesa/);
 run('goBack()');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('selectedDisciplineId'), 'historia');

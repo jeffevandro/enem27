@@ -80,6 +80,7 @@ export default {
       const url = new URL(request.url);
       const email = await authenticate(request, env);
       if ((url.pathname === '/audio/ferro-fumaca-e-revolucao.mp3' ||
+           url.pathname === '/audio/da-bastilha-eu-grito.mp3' ||
            url.pathname === '/figurinhas/zumbi-palmares.jpg' ||
            url.pathname === '/figurinhas/zumbi-dos-palmares.jpg' ||
            url.pathname === '/figurinhas/milton-santos.jpg') &&
