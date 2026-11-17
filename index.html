@@ -1453,6 +1453,7 @@ function render() {
   const breadEl = document.getElementById("breadcrumbBar");
   const footer = document.getElementById("metroFooter");
   const footerBadge = document.getElementById("footerDiscBadge");
+  footerBadge.style.display = '';
 
   if (!cloudReady) {
     footer.style.display = 'none';
@@ -1497,7 +1498,8 @@ function render() {
     subEl.textContent = 'Organizador de Estudos';
     titleEl.textContent = 'LINKS ÚTEIS PARA O ENEM 2027';
     breadEl.textContent = 'Os sites abrem em uma nova aba';
-    footer.style.display = 'none';
+    footer.style.display = 'flex';
+    footerBadge.style.display = 'none';
     const sites = [
       ['Portal oficial do ENEM no INEP', 'https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem', 'Fonte oficial do exame. Reúne os editais atualizados, cronogramas oficiais, cartilhas de redação com exemplos nota mil e o acervo completo de provas anteriores e gabaritos oficiais em PDF.'],
       ['MEC Enem (Plataforma Oficial de Estudos)', 'https://www.gov.br/mec/pt-br/mec-enem', 'Ferramenta gratuita do Ministério da Educação que oferece simulados com questões reais organizadas por área do conhecimento, materiais de reforço e correção automatizada de redação com estimativa de nota.'],
@@ -1506,7 +1508,7 @@ function render() {
       ['Portal Único de Acesso ao Ensino Superior (MEC)', 'https://acessounico.mec.gov.br', 'Concentra os sistemas oficiais onde a nota do ENEM é utilizada após a prova — Sisu (universidades públicas), Prouni (bolsas em instituições privadas) e Fies (financiamento estudantil) — permitindo consultar notas de corte, pesos por área e regras de inscrição.'],
       ['Tudo sobre o ENEM 2026 - Notícias - Portal G1', 'https://g1.globo.com/educacao/enem/2026/', 'Notícias importantes e atualizadas sobre datas, informações úteis, orientações e entrevistas.']
     ];
-    container.innerHTML = '<button type="button" class="btn-secondary" onclick="goHome()" style="margin-bottom:16px">Voltar ao início</button><div class="useful-sites">' +
+    container.innerHTML = '<div class="useful-sites">' +
       sites.map(([name, url, description], index) => `<article class="useful-site-card">
         <h2>${index + 1}. ${speedQuizEscape(name)}</h2>
         <a class="useful-site-link" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${speedQuizEscape(name)} (abre em nova aba)">${url}</a>
