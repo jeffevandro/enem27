@@ -239,6 +239,13 @@ assert.match(element('appContainer').innerHTML, /<audio controls preload="metada
 run('goBack()');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('selectedDisciplineId'), 'filosofia');
+run("openDiscipline('literatura')");
+assert.match(element('appContainer').innerHTML, /music-launch-card" onclick="openMusic\(\)">[\s\S]*?Músicas para revisão de Literatura/);
+run('openMusic()');
+assert.equal(element('headerTitle').textContent, 'Músicas de Literatura');
+assert.match(element('appContainer').innerHTML, /O Modernismo chegou junto com a liberdade de criar<\/h2>/);
+assert.match(element('appContainer').innerHTML, /src="\/audio\/o-modernismo-chegou-junto-com-a-liberdade-de-criar.mp3"/);
+run('goBack()');
 run("openDiscipline('historia')");
 assert(historyPage.indexOf("onclick=\"openSpeedQuiz('historia')\"") > historyPage.indexOf('onclick="openMusic()"'));
 run('openSpeedQuiz()');
