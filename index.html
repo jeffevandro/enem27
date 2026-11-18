@@ -286,6 +286,8 @@
   }
 
   .past-exams { display: grid; gap: 28px; }
+  .strategy-guide .useful-site-card { border-left: 6px solid var(--accent); }
+  .strategy-guide .useful-site-card p { font-size: 17px; color: var(--text); }
   .past-exams h2 { margin: 0 0 12px; font-size: 22px; font-weight: 600; }
   .past-exams .theme-card { color: var(--text); text-decoration: none; gap: 12px; }
   .past-exams .theme-card-title { margin: 0; }
@@ -1808,8 +1810,31 @@ function render() {
     });
     html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openPastExams()">PROVAS E GABARITOS DE ANOS ANTERIORES</button>';
-    html += '<button type="button" class="useful-links-tile" onclick="openStickerAlbum()">ÁLBUM DE FIGURINHAS</button></div>';
+    html += '<button type="button" class="useful-links-tile" onclick="openStickerAlbum()">ÁLBUM DE FIGURINHAS</button>';
+    html += '<button type="button" class="useful-links-tile" onclick="openStudyStrategies()">ESTRATÉGIAS PRÁTICAS PARA O ENEM</button></div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'studyStrategies') {
+    subEl.textContent = 'Organizador de Estudos';
+    titleEl.textContent = 'Estratégias práticas para o ENEM';
+    breadEl.textContent = 'Revisão, simulados e dia da prova';
+    footer.style.display = 'flex';
+    footerBadge.style.display = 'none';
+    const strategies = [
+      ['Comece a revisão com uma pergunta', 'Feche o material e tente responder de memória. Em História, por exemplo, pergunte “Por que as fábricas mudaram a rotina de trabalho na Revolução Industrial?”. Escreva duas ou três frases, confira a explicação e complete o que faltou.'],
+      ['Volte ao tema em dias diferentes', 'Se estudou porcentagem na segunda, tente resolver uma questão na quinta e outra na semana seguinte. Use o registro de revisões do app para acompanhar essas retomadas. Se ainda precisar consultar o exemplo, antecipe a próxima revisão.'],
+      ['Refaça o raciocínio depois de um erro', 'Ao corrigir um simulado, inclua as questões que acertou por palpite. Identifique o passo que gerou a dúvida. Se confundiu um aumento de 20% com um aumento de 20 pontos percentuais, calcule a passagem de 50% para 60% das duas maneiras. Dias depois, teste a diferença com outros valores.'],
+      ['Alterne problemas que exigem decisões diferentes', 'Depois de aprender escala, área e proporção, misture questões desses temas e esconda os títulos. Antes de calcular, diga qual relação vai usar e por quê. Um mapa pode pedir tanto a distância real de um trajeto quanto a área de uma região.'],
+      ['Ensaie o uso do tempo com uma prova anterior', 'Escolha um bloco de questões na página de provas anteriores e resolva com o relógio à vista. Anote onde demorou e quanto tempo levou para passar as respostas a uma folha. Use esses tempos para decidir, no próximo simulado, quando seguir adiante e quanto reservar para conferir o cartão.'],
+      ['Use o comando para conferir a resposta', 'Se a questão pede uma consequência, identifique qual alternativa descreve algo que ocorreu depois do processo citado. Em gráficos, confira o período, a unidade e a legenda. Antes de marcar, localize o dado ou trecho que sustenta sua escolha.'],
+      ['Revise um ponto de cada vez na redação', 'Escolha um parágrafo de desenvolvimento e peça a alguém que o leia e diga qual argumento entendeu. Compare a resposta com o que você pretendia defender. Se a ligação entre um exemplo e a tese ficou implícita, reescreva essa passagem e releia o parágrafo inteiro.']
+    ];
+    container.innerHTML = '<div class="useful-sites strategy-guide">' + strategies.map(([title, tip]) =>
+      `<section class="useful-site-card"><h2>${title}</h2><p>${tip}</p></section>`
+    ).join('') + '</div>';
     window.scrollTo(0, 0);
     return;
   }
@@ -2292,6 +2317,11 @@ function openStickerBiography(disciplineId = 'historia') {
 
 function closeStickerBiography() {
   document.getElementById('stickerBiographyDialog').close();
+}
+
+function openStudyStrategies() {
+  currentView = 'studyStrategies';
+  render();
 }
 
 function openPastExams() {
