@@ -173,6 +173,9 @@
   .useful-site-card { padding: 18px; background: var(--surface); border: 1px solid var(--border); }
   .useful-site-card h2 { margin: 0 0 12px; font-size: 19px; }
   .useful-site-card p { margin: 12px 0 0; color: var(--text-muted); line-height: 1.6; font-size: 15px; }
+  .past-essay-topics p, .useful-links-directory p { color: #fff; font-size: 19.5px; }
+  .past-essay-topics h2 + p { font-weight: 600; }
+  .useful-links-directory h2 { color: #fff; font-size: 24.7px; }
   .useful-site-link { color: #80C2FF; overflow-wrap: anywhere; line-height: 1.6; }
 
   .tile-top {
@@ -1110,7 +1113,7 @@
   </nav>
 </footer>
 <template id="past-essay-content">
-  <div class="useful-sites">
+  <div class="useful-sites past-essay-topics">
     <article class="useful-site-card">
       <h2>2026</h2>
       <p>Tema: "A valorização do Sistema Único de Saúde (SUS) como direito universal"</p>
@@ -2675,7 +2678,7 @@ function render() {
       ['Portal Único de Acesso ao Ensino Superior (MEC)', 'https://acessounico.mec.gov.br', 'Concentra os sistemas oficiais onde a nota do ENEM é utilizada após a prova — Sisu (universidades públicas), Prouni (bolsas em instituições privadas) e Fies (financiamento estudantil) — permitindo consultar notas de corte, pesos por área e regras de inscrição.'],
       ['Tudo sobre o ENEM 2026 - Notícias - Portal G1', 'https://g1.globo.com/educacao/enem/2026/', 'Notícias importantes e atualizadas sobre datas, informações úteis, orientações e entrevistas.']
     ];
-    container.innerHTML = '<div class="useful-sites">' +
+    container.innerHTML = '<div class="useful-sites useful-links-directory">' +
       sites.map(([name, url, description], index) => `<article class="useful-site-card">
         <h2>${index + 1}. ${speedQuizEscape(name)}</h2>
         <a class="useful-site-link" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${speedQuizEscape(name)} (abre em nova aba)">${url}</a>
