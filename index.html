@@ -286,6 +286,10 @@
   }
 
   .past-exams { display: grid; gap: 28px; }
+  .info-footer { padding: 16px; border-top: 1px solid var(--border); text-align: center; }
+  .info-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
+  .info-footer a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-muted); font-size: 13px; text-decoration: none; }
+  .info-footer a:hover, .info-footer a:focus-visible { color: var(--text); text-decoration: underline; }
   .strategy-guide .useful-site-card { border-left: 6px solid var(--accent); }
   .strategy-guide .useful-site-card p { font-size: 17px; color: var(--text); }
   .past-exams h2 { margin: 0 0 12px; font-size: 22px; font-weight: 600; }
@@ -1069,6 +1073,33 @@
 </header>
 
 <main id="appContainer"></main>
+
+<footer class="info-footer">
+  <nav aria-label="Informações sobre o aplicativo">
+    <a href="?pagina=objetivo" target="_blank" rel="noopener">NOSSO OBJETIVO</a>
+    <a href="?pagina=privacidade" target="_blank" rel="noopener">POLÍTICA DE PRIVACIDADE</a>
+    <a href="?pagina=tecnica" target="_blank" rel="noopener">QUESTÕES TÉCNICAS</a>
+  </nav>
+</footer>
+<template id="info-objetivo">
+<section class="useful-site-card"><h2>Sobre o ENEM 2027</h2><p>O aplicativo ENEM 2027 foi desenvolvido para ajudar estudantes que pretendem realizar o Exame Nacional do Ensino Médio (ENEM) em 2027. Seu principal objetivo é facilitar a organização dos estudos, o planejamento das revisões e o acompanhamento dos conteúdos que precisam ser estudados ao longo da preparação para o exame.</p><p>A plataforma reúne, em um único ambiente, ferramentas para registrar revisões, acompanhar o progresso nos estudos, realizar testes de conhecimentos, responder a simulados, acessar videoaulas recomendadas e consultar informações relacionadas ao ENEM. Dessa forma, o estudante pode organizar melhor sua rotina, identificar os assuntos que precisam de maior atenção e acompanhar sua preparação.</p><p>É importante destacar que o aplicativo não pretende substituir as aulas, os materiais didáticos, os simulados completos ou os estudos individuais. Sua principal finalidade é funcionar como uma ferramenta complementar de organização e planejamento, contribuindo para uma preparação mais estruturada e eficiente.</p></section>
+<section class="useful-site-card"><h2>Produção e revisão dos conteúdos</h2><p>Grande parte dos conteúdos da área de Ciências Humanas foi produzida por Jefferson Evandro Machado Ramos, professor e historiador, bacharel e licenciado em História pela Universidade de São Paulo (USP).</p><p>Os conteúdos das áreas de Ciências da Natureza e Matemática foram elaborados com o auxílio do modelo de inteligência artificial GPT-6.2 Astra e submetidos a revisões adicionais realizadas por outros dois modelos de inteligência artificial, Gemini e Claude.</p><p>Embora tenham passado por processos de revisão, os materiais podem apresentar eventuais erros ou imprecisões. Por esse motivo, recomendamos que os estudantes utilizem também livros didáticos, materiais de professores e outras fontes confiáveis para complementar seus estudos.</p></section>
+<section class="useful-site-card"><h2>Nosso compromisso</h2><p>O ENEM 2027 busca oferecer um ambiente de estudos organizado, acessível e de fácil utilização. As ferramentas foram pensadas para incentivar a regularidade das revisões, a autonomia dos estudantes e a identificação de dificuldades durante a preparação.</p><p>O aplicativo é uma iniciativa independente e não possui vínculo oficial com o Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep) ou com o Ministério da Educação (MEC). Para informações oficiais sobre inscrições, datas, regras e procedimentos do exame, os usuários devem consultar os canais de comunicação do Inep.</p><p>A proposta é simples: ajudar cada estudante a aproveitar melhor seu tempo, organizar seus estudos e chegar ao ENEM 2027 com uma preparação mais consistente.</p></section>
+</template>
+<template id="info-privacidade">
+  <section class="useful-site-card"><h2>Seu e-mail e seu progresso</h2><p>O ENEM27 usa o e-mail de acesso para identificar sua conta e mostrar as revisões e figurinhas que pertencem a você. Ao tocar em Salvar, o aplicativo registra na nuvem o tópico, as datas das revisões e informações de atualização usadas para sincronizar seus aparelhos.</p></section>
+  <section class="useful-site-card"><h2>Por que o login continua ativo</h2><p>Após a entrada com e-mail e código, o Cloudflare Access grava no navegador do celular ou computador um pequeno registro chamado cookie de autenticação. Com ele, o serviço reconhece a sessão válida quando você volta ao app. A duração depende da configuração de acesso. Quando a sessão expira, você troca de navegador ou apaga os cookies, um novo login pode ser necessário.</p></section>
+  <section class="useful-site-card"><h2>Aparelhos compartilhados</h2><p>Quem usa o mesmo navegador pode encontrar sua conta aberta. Ao terminar, abra o painel da conta e toque em “Sair da conta”. Guarde o código recebido por e-mail só para você. Apagar os cookies do aparelho encerra o reconhecimento da sessão nesse navegador e preserva o progresso já salvo na nuvem.</p></section>
+  <section class="useful-site-card"><h2>Quizzes e serviços externos</h2><p>Para validar a conquista de uma figurinha, o aplicativo envia à sua infraestrutura na Cloudflare a disciplina, as respostas da rodada e o tempo utilizado. O banco de progresso registra a conquista. A Cloudflare também processa dados técnicos de conexão, como o endereço IP, para entregar e proteger o serviço. Ao abrir um vídeo do YouTube ou seguir um link externo, seu navegador se conecta ao serviço escolhido, que pode tratar dados conforme sua própria política.</p></section>
+  <section class="useful-site-card"><h2>Seus direitos</h2><p>Você pode pedir ao responsável pelo ENEM27 a confirmação do tratamento, o acesso aos seus dados, a correção de informações e a exclusão nas hipóteses previstas pela LGPD. Use o canal pelo qual recebeu acesso ao aplicativo e informe o e-mail da conta, sem enviar seu código de login. O atendimento pode exigir a verificação de sua identidade. Dados sujeitos a obrigação legal de guarda podem ser conservados pelo prazo aplicável.</p></section>
+  <section class="useful-site-card"><h2>Uso do aplicativo</h2><p>Ao usar o ENEM27, você declara que leu e concorda com esta política. Seus direitos previstos em lei continuam assegurados. Quando uma finalidade exigir consentimento específico, a concordância geral com a política não o substitui. Estudantes menores de idade podem pedir a um responsável que os acompanhe na leitura e no exercício de seus direitos.</p></section>
+</template>
+<template id="info-tecnica">
+  <section class="useful-site-card"><h2>Versão beta</h2><p>O ENEM27 está em desenvolvimento. Durante essa fase, funções podem mudar e podem ocorrer erros de conteúdo, falhas de sincronização ou interrupções. Se uma data de revisão ou um prazo for importante, mantenha também uma anotação própria.</p></section>
+  <section class="useful-site-card"><h2>Como confirmar uma revisão</h2><p>Você precisa de internet para carregar sua conta e gravar as alterações. Depois de marcar os quadrados da revisão, toque em “Salvar” e aguarde a confirmação antes de fechar a página. Se aparecer uma falha, confira a conexão e tente novamente. Para continuar em outro aparelho, entre com o mesmo e-mail.</p></section>
+  <section class="useful-site-card"><h2>Quando algo falha</h2><p>Se o app pedir o login novamente, abra o e-mail com o código e conclua o acesso no navegador em que iniciou a entrada. Se um áudio ou vídeo falhar, confira a conexão e teste novamente. Ao relatar um problema, indique a tela, o navegador e a mensagem exibida. Oculte seu e-mail e o código de acesso de qualquer captura de tela.</p></section>
+  <section class="useful-site-card"><h2>Limites de uso</h2><p>O aplicativo auxilia no planejamento dos estudos. Não há garantia de disponibilidade contínua, de nota ou de aprovação. Para inscrições, horários e regras da prova, consulte o edital do Inep. A responsabilidade por eventuais danos será apurada conforme a legislação aplicável, considerando a causa da falha e os direitos do usuário.</p></section>
+</template>
 
 <div class="toast" id="toastBox"></div>
 
@@ -2460,7 +2491,27 @@ window.addEventListener('beforeunload', event => {
   if (savingKeys.size || Object.keys(draftData).length) { event.preventDefault(); event.returnValue = ''; }
 });
 window.addEventListener('pageshow', event => { if (event.persisted) window.location.reload(); });
-loadState();
+function startApp() {
+  const infoPage = new URLSearchParams(window.location.search).get('pagina');
+  const infoTemplate = document.getElementById('info-' + infoPage);
+  if (infoTemplate instanceof HTMLTemplateElement) {
+    const pageLink = document.querySelector(`.info-footer a[href="?pagina=${infoPage}"]`);
+    const title = pageLink.textContent;
+    document.title = title + ' | ENEM27';
+    document.getElementById('headerTitle').textContent = title;
+    document.getElementById('breadcrumbBar').innerHTML = '<a class="useful-site-link" href="./">Tela inicial</a>';
+    document.querySelector('.sync-btn').style.display = 'none';
+    pageLink.setAttribute('aria-current', 'page');
+    document.querySelectorAll('.info-footer a').forEach(link => link.removeAttribute('target'));
+    const main = document.getElementById('appContainer');
+    main.classList.add('useful-sites', 'strategy-guide');
+    main.append(infoTemplate.content.cloneNode(true));
+    window.scrollTo(0, 0);
+  } else {
+    loadState();
+  }
+}
+startApp();
 </script>
 </body>
 </html>

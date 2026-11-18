@@ -172,7 +172,7 @@ const element = id => {
   }
   return elements.get(id);
 };
-const code = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/loadState\(\);\s*$/, '');
+const code = html.match(/<script>([\s\S]*?)<\/script>/)[1].replace(/startApp\(\);\s*$/, '');
 const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, clearTimeout() {},
   setInterval: () => 2, clearInterval() {},
   document: { getElementById: element, querySelectorAll: () => [] }, CSS: { escape: s => s },
