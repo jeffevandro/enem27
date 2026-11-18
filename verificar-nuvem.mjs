@@ -54,7 +54,12 @@ assert.equal(sentMail.replyTo, contact.email);
 assert.ok(sentMail.text.includes(contact.message));
 env.CONTACT_MAIL.send = async () => { throw new Error('indisponível'); };
 assert.equal((await postContact(contact)).status, 502);
-for (const musicPath of ['/audio/ferro-fumaca-e-revolucao.mp3', '/audio/da-bastilha-eu-grito.mp3', '/audio/marcas-na-paisagem.mp3']) {
+for (const musicPath of [
+  '/audio/ferro-fumaca-e-revolucao.mp3',
+  '/audio/da-bastilha-eu-grito.mp3',
+  '/audio/marcas-na-paisagem.mp3',
+  '/audio/o-caminho-da-virtude.mp3'
+]) {
 delete env.ASSETS;
 const musicBytes = fs.readFileSync(new URL('./public' + musicPath, import.meta.url));
 assert(musicBytes.length > 16, 'O arquivo de áudio deve conter dados para reprodução.');
@@ -229,6 +234,15 @@ assert.doesNotMatch(element('appContainer').innerHTML, /Da Bastilha eu grito/);
 run('goBack()');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('selectedDisciplineId'), 'geografia');
+run("openDiscipline('filosofia')");
+assert.match(element('appContainer').innerHTML, /music-launch-card" onclick="openMusic\(\)">[\s\S]*?Músicas para revisão de Filosofia/);
+run('openMusic()');
+assert.equal(element('headerTitle').textContent, 'Músicas de Filosofia');
+assert.match(element('appContainer').innerHTML, /ARISTÓTELES E SUA FILOSOFIA<\/span>\s*<h2[^>]*>O caminho da virtude<\/h2>/);
+assert.match(element('appContainer').innerHTML, /<audio controls preload="metadata"[^>]*src="\/audio\/o-caminho-da-virtude.mp3"/);
+run('goBack()');
+assert.equal(run('currentView'), 'discipline');
+assert.equal(run('selectedDisciplineId'), 'filosofia');
 run("openDiscipline('historia')");
 assert(historyPage.indexOf("onclick=\"openSpeedQuiz('historia')\"") > historyPage.indexOf('onclick="openMusic()"'));
 run('openSpeedQuiz()');
