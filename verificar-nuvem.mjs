@@ -54,12 +54,8 @@ assert.equal(sentMail.replyTo, contact.email);
 assert.ok(sentMail.text.includes(contact.message));
 env.CONTACT_MAIL.send = async () => { throw new Error('indisponível'); };
 assert.equal((await postContact(contact)).status, 502);
-for (const musicPath of [
-  '/audio/ferro-fumaca-e-revolucao.mp3',
-  '/audio/da-bastilha-eu-grito.mp3',
-  '/audio/marcas-na-paisagem.mp3',
-  '/audio/o-caminho-da-virtude.mp3'
-]) {
+for (const filename of fs.readdirSync(new URL('./public/audio/', import.meta.url)).filter(name => name.endsWith('.mp3'))) {
+const musicPath = '/audio/' + filename;
 delete env.ASSETS;
 const musicBytes = fs.readFileSync(new URL('./public' + musicPath, import.meta.url));
 assert(musicBytes.length > 16, 'O arquivo de áudio deve conter dados para reprodução.');
