@@ -2346,6 +2346,38 @@ function closeSummary() {
   document.getElementById('summaryDialog').close();
 }
 
+function rememberPage() {
+  const previous = window.history?.state?.enemPage;
+  if (previous?.view === currentView && previous.discipline === selectedDisciplineId && previous.theme === selectedThemeIndex) return;
+  window.history?.replaceState({ ...window.history.state, enemPage: {
+    view: currentView, discipline: selectedDisciplineId, theme: selectedThemeIndex
+  } }, '');
+}
+
+function restorePage() {
+  const page = window.history?.state?.enemPage;
+  if (!page) return;
+  if (['home', 'examMatrix', 'studyStrategies', 'pastExams', 'stickerAlbum', 'usefulLinks'].includes(page.view)) {
+    currentView = page.view;
+    return;
+  }
+  const disc = CURRICULUM.find(d => d.id === page.discipline);
+  if (!disc) return;
+  selectedDisciplineId = disc.id;
+  currentView = 'discipline';
+  if (page.view === 'theme' && Number.isInteger(page.theme) && disc.themes[page.theme]) {
+    selectedThemeIndex = page.theme;
+    currentView = 'theme';
+  } else if ((page.view === 'essayTopics' && disc.id === 'redacao') ||
+             (page.view === 'biologyFlashcards' && disc.id === 'biologia') ||
+             (page.view === 'speedQuiz' && SPEED_QUESTION_BANKS[disc.id]) ||
+             (page.view === 'music' && MUSIC_TRACKS[disc.id]) ||
+             (page.view === 'quiz' && QUIZZES[disc.id]) ||
+             (page.view === 'videos' && REVIEW_VIDEOS[disc.id])) {
+    currentView = page.view;
+  }
+}
+
 function render() {
   const container = document.getElementById("appContainer");
   const titleEl = document.getElementById("headerTitle");
@@ -2362,6 +2394,7 @@ function render() {
     return;
   }
 
+  rememberPage();
   if (currentView === "home") {
     subEl.textContent = "Organizador de Estudos";
     titleEl.textContent = "Revisão ENEM 2027";
@@ -3191,6 +3224,7 @@ function startApp() {
     main.append(infoTemplate.content.cloneNode(true));
     window.scrollTo(0, 0);
   } else {
+    restorePage();
     loadState();
   }
 }
