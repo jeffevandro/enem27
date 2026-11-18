@@ -1486,6 +1486,30 @@ let selectedThemeIndex = null;
 let activeVideoId = null;
 let toastTimer = null;
 
+const MUSIC_TRACKS = {
+  historia: [
+    {
+      file: 'ferro-fumaca-e-revolucao',
+      topic: 'Revolução Industrial',
+      title: 'Ferro, Fumaça e Revolução',
+      description: 'Ouça a música para revisar a Revolução Industrial.'
+    },
+    {
+      file: 'da-bastilha-eu-grito',
+      topic: 'Absolutismo',
+      title: 'Da Bastilha eu grito',
+      description: 'Ouça a música para revisar o Absolutismo.'
+    }
+  ],
+  geografia: [
+    {
+      file: 'marcas-na-paisagem',
+      topic: 'MUDANÇAS E IMPACTOS AMBIENTAIS',
+      title: 'Marcas na Paisagem'
+    }
+  ]
+};
+
 const BIOLOGY_FLASHCARDS = [
   ['Cadeia alimentar', 'O que as setas de uma cadeia alimentar indicam?', 'Indicam a direção da transferência de matéria e energia, do organismo que serve de alimento para aquele que o consome. A energia disponível diminui a cada nível trófico.'],
   ['Eutrofização', 'Por que o excesso de nutrientes na água pode provocar a morte de peixes?', 'O excesso de nutrientes como fósforo e nitrogênio favorece a proliferação de algas. Quando elas morrem, a decomposição da matéria orgânica consome oxigênio dissolvido, o que pode levar à morte dos peixes.'],
@@ -2476,12 +2500,12 @@ function render() {
       `;
     }
 
-    if (disc.id === "historia") {
+    if (MUSIC_TRACKS[disc.id]) {
       html += `
         <button type="button" class="video-launch-card music-launch-card" onclick="openMusic()">
           <span>
             <span class="video-launch-badge music-launch-badge">Músicas</span>
-            <span class="quiz-launch-title" style="display:block">Músicas para revisão de História</span>
+            <span class="quiz-launch-title" style="display:block">Músicas para revisão de ${disc.name}</span>
           </span>
           <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
         </button>
@@ -2548,32 +2572,21 @@ function render() {
 
   if (currentView === "music") {
     subEl.textContent = disc.name;
-    titleEl.textContent = "Músicas de História";
-    breadEl.textContent = "Músicas para revisão de História";
-    container.innerHTML = `
+    titleEl.textContent = `Músicas de ${disc.name}`;
+    breadEl.textContent = `Músicas para revisão de ${disc.name}`;
+    container.innerHTML = MUSIC_TRACKS[disc.id].map(({ file, topic, title, description }) => `
       <article class="music-card">
-        <span class="video-launch-badge music-launch-badge">Revolução Industrial</span>
-        <h2 id="historySongTitle">Ferro, Fumaça e Revolução</h2>
-        <p>Ouça a música para revisar a Revolução Industrial.</p>
-        <audio controls preload="metadata" aria-labelledby="historySongTitle"
-          src="/audio/ferro-fumaca-e-revolucao.mp3"
-          onerror="document.getElementById('musicError').hidden = false">
+        <span class="video-launch-badge music-launch-badge">${topic}</span>
+        <h2 id="song-title-${file}">${title}</h2>
+        ${description ? `<p>${description}</p>` : ''}
+        <audio controls preload="metadata" aria-labelledby="song-title-${file}"
+          src="/audio/${file}.mp3"
+          onerror="document.getElementById('song-error-${file}').hidden = false">
           Seu navegador não oferece suporte à reprodução de áudio.
         </audio>
-        <p id="musicError" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
+        <p id="song-error-${file}" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
       </article>
-      <article class="music-card">
-        <span class="video-launch-badge music-launch-badge">Absolutismo</span>
-        <h2 id="bastilhaSongTitle">Da Bastilha eu grito</h2>
-        <p>Ouça a música para revisar o Absolutismo.</p>
-        <audio controls preload="metadata" aria-labelledby="bastilhaSongTitle"
-          src="/audio/da-bastilha-eu-grito.mp3"
-          onerror="document.getElementById('bastilhaMusicError').hidden = false">
-          Seu navegador não oferece suporte à reprodução de áudio.
-        </audio>
-        <p id="bastilhaMusicError" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
-      </article>
-    `;
+    `).join('');
     window.scrollTo(0, 0);
     return;
   }
@@ -2841,7 +2854,7 @@ function openVideos(discId) {
 }
 
 function openMusic() {
-  selectedDisciplineId = "historia";
+  if (!MUSIC_TRACKS[selectedDisciplineId]) return;
   selectedThemeIndex = null;
   activeVideoId = null;
   currentView = "music";
