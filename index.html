@@ -286,8 +286,9 @@
   }
 
   .past-exams { display: grid; gap: 28px; }
-  .matrix-content p { color: var(--text); font-size: 17px; line-height: 1.65; }
-  .matrix-content h2:not(:first-child) { margin-top: 32px; }
+  .matrix-content p, .essay-topics-content p { color: var(--text); font-size: 17px; line-height: 1.65; }
+  .matrix-content h2:not(:first-child), .essay-topics-content h2 { margin-top: 32px; }
+  .essay-topics-content > p:first-child { margin-top: 0; }
   .matrix-content h3 { font-size: 18px; margin: 24px 0 10px; }
   .info-footer { padding: 16px; border-top: 1px solid var(--border); text-align: center; }
   .contact-form { display: grid; gap: 16px; margin-top: 20px; }
@@ -394,6 +395,7 @@
   .music-launch-card:active { background: #20362B; }
   .music-launch-card:focus-visible { outline: 2px solid #74D39D; outline-offset: 3px; }
   .music-launch-badge { background: #276442; color: #E8F9EE; }
+  .essay-topics-launch { margin-top: 16px; }
   .music-card { background: #17251F; border: 1px solid #315140; border-left: 6px solid #4DAB79; padding: 20px; }
   .music-card h2 { color: #FFFFFF; font-size: 20px; margin: 0 0 10px; }
   .music-card p { color: #B8C7D9; font-size: 14px; margin: 0 0 18px; }
@@ -1353,6 +1355,51 @@
     <p>• Representação espacial</p>
     <p>o Projeções cartográficas; leitura de mapas temáticos, físicos e políticos; tecnologias modernas aplicadas à cartografia.</p>
     <p>Fonte: <a class="useful-site-link" href="https://download.inep.gov.br/download/enem/matriz_referencia.pdf" target="_blank" rel="noopener noreferrer">MINISTÉRIO DA EDUCAÇÃO – INSTITUTO NACIONAL DE ESTUDOS E PESQUISAS EDUCACIONAIS ANÍSIO TEIXEIRA</a>. VISITADO EM 17/11/2026.</p>
+  </article>
+</template>
+<template id="essay-topics-content">
+  <article class="useful-site-card essay-topics-content">
+    <p>As 20 propostas desta página partem de problemas que fazem parte da vida no Brasil e que podem render uma redação no estilo do ENEM. Alguns aparecem no cotidiano da escola, como o uso da inteligência artificial e A permanência dos jovens no ensino médio. Outros exigem olhar para situações que nem sempre ganham espaço nas conversas, como a pobreza menstrual e as dificuldades de quem sai do sistema prisional. Ao praticar, procure explicar por que o problema existe, quem é mais afetado e o que poderia ser feito para enfrentá-lo.</p>
+    <h2>1. Os impactos das apostas on-line na vida dos jovens brasileiros</h2>
+    <p>Uma aposta de poucos reais pode parecer inofensiva. O problema surge quando a promessa de dinheiro fácil leva a apostas repetidas e o jovem tenta recuperar o que perdeu apostando de novo. O assunto tem espaço no ENEM porque permite discutir o peso da publicidade, a influência de criadores de conteúdo e a responsabilidade das plataformas. A educação financeira na escola também cabe no debate, especialmente quando ajuda o estudante a entender como esses jogos funcionam.</p>
+    <h2>2. A preparação das cidades brasileiras para eventos climáticos extremos</h2>
+    <p>Quando uma chuva forte alaga um bairro, as consequências dependem também de como aquela parte da cidade foi ocupada e dos serviços que recebeu. Famílias que vivem em áreas sujeitas a enchentes ou deslizamentos podem perder a casa, o trabalho e o acesso à escola. A proposta combina meio ambiente e desigualdade social, uma combinação que permite defender medidas concretas, como melhorar a drenagem urbana e fazer com que os alertas de emergência cheguem a tempo aos moradores.</p>
+    <h2>3. O uso da inteligência artificial na educação básica</h2>
+    <p>Uma ferramenta de inteligência artificial pode ajudar o estudante a entender um exercício, mas também pode entregar uma resposta pronta que ele copia sem compreender. Essa diferença dá sentido ao debate. Como orientar o uso da tecnologia para que ela favoreça a aprendizagem? O tema tem perfil de redação do ENEM porque envolve escolhas da escola, formação de professores e condições de acesso que variam de uma turma para outra.</p>
+    <h2>4. Os obstáculos à permanência dos jovens no ensino médio</h2>
+    <p>Sair da escola costuma ser o resultado de dificuldades que se acumulam. Um estudante pode começar a faltar porque precisa trabalhar ou cuidar de alguém da família. Com o tempo, perde aulas, tem dificuldade de acompanhar a turma e acaba abandonando os estudos. Uma proposta sobre permanência escolar permite investigar essas causas e avaliar o que ajudaria em cada situação, do transporte escolar ao apoio pedagógico para quem está voltando a estudar.</p>
+    <h2>5. A violência digital contra meninas e mulheres</h2>
+    <p>A divulgação de imagens íntimas sem consentimento, as ameaças e a perseguição nas redes podem afetar a vida escolar, profissional e familiar de quem sofre a violência. Mesmo quando a publicação é apagada, o material pode continuar circulando. O tema é candidato ao ENEM porque levanta uma questão de cidadania em um ambiente que os estudantes conhecem bem. Dá para discutir desde a educação para o respeito e o consentimento até a rapidez com que plataformas e autoridades acolhem denúncias.</p>
+    <h2>6. A desigualdade no acesso ao saneamento básico no Brasil</h2>
+    <p>Abrir a torneira e ter água segura ou contar com coleta de esgoto são condições que mudam a vida de uma comunidade inteira. Onde esses serviços são precários, cresce o risco de doenças, e o esgoto pode comprometer rios e córregos usados pela população. É uma boa proposta de redação porque aproxima saúde pública, meio ambiente e desigualdade regional. Cabe investigar por que áreas rurais e bairros periféricos podem enfrentar obstáculos diferentes para receber o mesmo serviço.</p>
+    <h2>7. A inclusão das pessoas com deficiência no mercado de trabalho</h2>
+    <p>A entrada no emprego é uma parte da inclusão. A outra é ter condições de trabalhar, participar das decisões e crescer na profissão. Uma entrevista inacessível, um programa de computador incompatível com leitores de tela ou a ideia de que determinada pessoa só pode exercer funções simples já são barreiras. O ENEM poderia explorar a distância entre o direito ao trabalho e a experiência cotidiana de quem depende de adaptações e de oportunidades reais de formação.</p>
+    <h2>8. O acesso das famílias brasileiras a uma alimentação adequada</h2>
+    <p>A insegurança alimentar aparece quando uma família precisa reduzir a quantidade ou a qualidade do que come, ou vive sem saber se terá comida suficiente nos próximos dias. Preço dos alimentos, renda e distância até os locais de venda ajudam a entender o problema. O tema combina com o ENEM porque uma mesma situação pode ser examinada pelo direito à alimentação, pelas condições de vida das famílias e pelo papel de iniciativas como a merenda escolar.</p>
+    <h2>9. Os desafios para ampliar a vacinação no Brasil</h2>
+    <p>Para uma família, a maior dificuldade pode ser chegar ao posto de saúde durante o horário de trabalho. Para outra, pode ser a desconfiança alimentada por mensagens falsas. Essas diferenças importam porque cada causa pede uma resposta. O tema pode aparecer no ENEM pela relação entre ciência, acesso aos serviços públicos e responsabilidade coletiva. Uma redação pode discutir, por exemplo, quando faz sentido ampliar os horários de atendimento e como melhorar a comunicação com a população.</p>
+    <h2>10. O direito à moradia digna nas cidades brasileiras</h2>
+    <p>Uma família pode ter onde morar e ainda enfrentar infiltrações, risco de despejo ou horas de deslocamento até o trabalho. Essas situações ajudam a entender por que moradia digna envolve tanto a qualidade da casa quanto a localização e o acesso a serviços. O assunto tem potencial para o ENEM porque permite relacionar o preço dos aluguéis, a ocupação do espaço urbano e as decisões sobre onde construir habitações populares.</p>
+    <h2>11. O papel da educação no enfrentamento da desinformação</h2>
+    <p>Uma manchete alarmante, um vídeo fora de contexto ou uma imagem manipulada podem circular muito antes de alguém verificar sua origem. A educação midiática ensina a identificar quem publicou o conteúdo, procurar a data e comparar versões de uma mesma notícia. O tema rende uma proposta de ENEM porque a desinformação afeta decisões sobre saúde, eleições e convivência social. A escola pode entrar na discussão como espaço para praticar a verificação e aprender a reconhecer quando faltam evidências.</p>
+    <h2>12. A proteção social de quem trabalha por aplicativos</h2>
+    <p>Motoristas e entregadores usam plataformas para conseguir trabalho e renda. Ao mesmo tempo, podem enfrentar ganhos instáveis, custos com combustível e manutenção ou dificuldades para se sustentar depois de um acidente. A questão tem perfil de ENEM porque parte de um serviço conhecido pelos estudantes e leva a uma discussão mais ampla sobre direitos. Um bom recorte é analisar como dividir custos e responsabilidades entre empresas, trabalhadores e poder público.</p>
+    <h2>13. A formação de leitores e o acesso aos livros no Brasil</h2>
+    <p>Uma biblioteca aberta depois das aulas, um acervo com livros que despertam interesse ou uma roda de leitura podem mudar a relação de um jovem com os livros. Essas oportunidades variam conforme a escola, o bairro e as condições da família. Se o tema aparecer no ENEM, a discussão pode ir além do hábito individual e examinar como bibliotecas, professores e projetos comunitários ajudam a criar oportunidades de leitura onde elas são mais escassas.</p>
+    <h2>14. A valorização da produção cultural das periferias brasileiras</h2>
+    <p>Slam, saraus, hip-hop e coletivos de audiovisual são algumas das formas pelas quais artistas das periferias contam suas histórias e constroem espaços de encontro. Conseguir financiamento, locais para apresentações e divulgação pode ser mais difícil longe dos circuitos culturais centrais. O tema se encaixa no ENEM porque permite discutir quem tem acesso à cultura e quem encontra condições para produzi-la, circular com seu trabalho e viver dele.</p>
+    <h2>15. O descarte de resíduos eletrônicos no Brasil</h2>
+    <p>Quando um celular quebra ou um carregador deixa de funcionar, muita gente acaba guardando o aparelho em casa ou jogando-o no lixo comum porque desconhece um ponto de coleta próximo. Esses equipamentos contêm materiais que podem ser reaproveitados e componentes que exigem descarte adequado. É um tema com espaço no ENEM por ligar um hábito de consumo à responsabilidade de fabricantes, comerciantes e prefeituras por facilitar a devolução desses produtos.</p>
+    <h2>16. O acesso ao esporte na infância e na adolescência</h2>
+    <p>Ter uma quadra no bairro ajuda, desde que ela esteja em condições de uso e os jovens consigam frequentá-la com segurança. Horários, custos e acolhimento também influenciam a participação de meninas e de pessoas com deficiência. Uma redação sobre o tema pode mostrar como o esporte favorece a saúde e a convivência. Também oferece um caminho para discutir o que escolas e municípios podem fazer para que mais crianças e adolescentes participem.</p>
+    <h2>17. A reintegração social das pessoas que deixam o sistema prisional</h2>
+    <p>Depois de cumprir a pena, uma pessoa pode encontrar portas fechadas na hora de procurar emprego, retomar os estudos ou conseguir moradia. O preconceito agrava dificuldades que já existiam antes da prisão. O assunto pode aparecer no ENEM porque permite relacionar direitos, segurança pública e oportunidades de reconstruir a vida. Cursos profissionalizantes, apoio na busca pelo primeiro emprego e continuidade dos estudos são exemplos de caminhos que cabem nessa discussão.</p>
+    <h2>18. O enfrentamento da pobreza menstrual no Brasil</h2>
+    <p>Para uma estudante que vive sem acesso regular a absorventes, água ou banheiro com privacidade, ir à escola durante a menstruação pode ser difícil. O constrangimento de pedir ajuda aumenta quando o assunto é tratado como motivo de vergonha. Esse recorte tem perfil de ENEM por reunir saúde, educação e desigualdade de renda. A discussão pode abranger a distribuição de produtos de higiene, as condições dos banheiros escolares e o acesso a informações sobre o próprio corpo.</p>
+    <h2>19. A preservação das línguas indígenas no Brasil</h2>
+    <p>As línguas indígenas guardam memórias, conhecimentos e formas de compreender o mundo. Quando crianças e jovens encontram poucas oportunidades de aprender e usar a língua de sua comunidade, a transmissão entre as gerações se enfraquece. É uma proposta possível para o ENEM porque envolve direitos culturais e educação. Uma redação pode discutir o papel das escolas indígenas, dos materiais bilíngues e das iniciativas conduzidas pelos próprios povos para manter suas línguas em uso.</p>
+    <h2>20. A proteção de crianças e adolescentes contra o trabalho infantil</h2>
+    <p>O trabalho infantil pode passar despercebido quando é apresentado como uma forma de ajudar a família. Uma criança que passa horas vendendo na rua ou assume tarefas domésticas pesadas perde tempo de descanso, lazer e estudo e pode ficar exposta a acidentes. O tema se encaixa no ENEM porque permite explicar como a necessidade de renda e a aceitação social de certas práticas dificultam a proteção das crianças. Uma resposta pode combinar fiscalização com apoio às famílias e acompanhamento escolar.</p>
   </article>
 </template>
 <template id="info-contato">
@@ -2481,6 +2528,18 @@ function render() {
       `;
     });
 
+    if (disc.id === 'redacao') {
+      html += `
+        <button type="button" class="video-launch-card music-launch-card essay-topics-launch" onclick="openEssayTopics()">
+          <span>
+            <span class="video-launch-badge music-launch-badge">DICAS DE TEMAS DE REDAÇÃO</span>
+            <span class="quiz-launch-title" style="display:block">20 Possíveis temas de redação do ENEM 2027</span>
+          </span>
+          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
+        </button>
+      `;
+    }
+
     if (QUIZZES[disc.id] && QUIZZES[disc.id].length > 0) {
       html += `
         <div class="quiz-launch-card" onclick="openQuiz('${disc.id}')">
@@ -2537,6 +2596,15 @@ function render() {
     }
     html += '</div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'essayTopics') {
+    subEl.textContent = disc.name;
+    titleEl.textContent = 'Possíveis temas de redação do ENEM 2027';
+    breadEl.textContent = 'Propostas para praticar a escrita';
+    container.replaceChildren(document.getElementById('essay-topics-content').content.cloneNode(true));
     window.scrollTo(0, 0);
     return;
   }
@@ -2868,6 +2936,11 @@ function openMusic() {
   render();
 }
 
+function openEssayTopics() {
+  currentView = 'essayTopics';
+  render();
+}
+
 function playReviewVideo(videoId) {
   activeVideoId = videoId;
   render();
@@ -2981,7 +3054,7 @@ function goDiscipline() {
 }
 
 function goBack() {
-  if (['theme', 'quiz', 'videos', 'music', 'speedQuiz', 'biologyFlashcards'].includes(currentView)) {
+  if (['theme', 'quiz', 'videos', 'music', 'speedQuiz', 'biologyFlashcards', 'essayTopics'].includes(currentView)) {
     goDiscipline();
   } else {
     goHome();
