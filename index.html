@@ -624,7 +624,9 @@
   }
   .summary-header h2 { font-size: 20px; line-height: 1.4; margin: 0; }
   .summary-body { padding: 8px 20px 24px; overflow-y: auto; overscroll-behavior: contain; font-size: 16px; line-height: 1.65; }
-  .summary-body h3 { font-size: 18px; margin: 24px 0 10px; }
+  .summary-body h3, .summary-body h4 { font-size: 18px; margin: 24px 0 10px; }
+  .summary-body .summary-group-title { font-size: 22px; color: #9BC9F0; }
+  .summary-group + .summary-group { margin-top: 28px; border-top: 1px solid #414141; }
   .summary-body ul { padding-left: 22px; margin: 0; }
   .summary-body li { margin-bottom: 10px; }
   .summary-body, .summary-body * { user-select: text; }
@@ -2149,6 +2151,79 @@ const SUMMARIES = {
         'Em algumas regiões, a produção agrícola e as trocas ajudaram a sustentar o crescimento de cidades, que surgiram bem depois das primeiras aldeias. Muitas comunidades permaneceram organizadas em aldeias.'
       ]]
     ]
+  },
+  'historia|0|1|0': {
+    title: 'RESUMO: CIVILIZAÇÕES HIDRÁULICAS',
+    groups: [
+      ['Egito Antigo', [
+        ['1. Localização e importância do Nilo:', [
+          'O Egito Antigo se desenvolveu no nordeste da África, no vale e no delta do rio Nilo.',
+          'As cheias anuais inundavam parte das terras próximas às margens. Quando as águas baixavam, deixavam sedimentos que ajudavam a manter a fertilidade do solo.',
+          'Diques, canais e bacias permitiam distribuir e reter água para o cultivo. O Nilo servia também como via de transporte.',
+          'A expressão civilizações hidráulicas destaca a importância do manejo da água para a agricultura e a organização do trabalho.'
+        ]],
+        ['2. Unificação e organização política:', [
+          'O Alto Egito, situado ao sul, e o Baixo Egito, ao norte, foram reunidos por volta de 3.100 a.C. A unificação é tradicionalmente associada ao rei Narmer.',
+          'O faraó exercia autoridade política e religiosa. Funcionários e escribas auxiliavam na administração do território e no registro de tributos.',
+          'A unidade do Egito variou ao longo do tempo. Houve fases de governo centralizado e períodos de disputa entre poderes regionais.'
+        ]],
+        ['3. Principais períodos:', [
+          'No Antigo Império, foram construídas as grandes pirâmides de Gizé para servir de túmulos reais.',
+          'O Médio Império começou com uma reunificação e foi marcado pela reorganização do governo e pela expansão de contatos comerciais.',
+          'No Novo Império, campanhas militares ampliaram o domínio egípcio sobre áreas da Núbia e do Oriente Próximo.',
+          'Alexandre, o Grande, conquistou o Egito em 332 a.C. Após o período da dinastia dos Ptolomeus, o território foi incorporado ao domínio romano em 30 a.C.'
+        ]],
+        ['4. Sociedade, trabalho e economia:', [
+          'O faraó ocupava o topo da hierarquia social. Altos funcionários da corte e sacerdotes também exerciam poder.',
+          'Camponeses cultivavam trigo, cevada e linho. Artesãos produziam tecidos, cerâmicas, ferramentas e outros bens.',
+          'Parte da produção era recolhida como tributo. A administração também podia convocar trabalhadores para obras públicas e monumentos.'
+        ]],
+        ['5. Religião e práticas funerárias:', [
+          'A religião era predominantemente politeísta. Entre as divindades cultuadas estavam Rá, ligado ao Sol, e Osíris, associado ao mundo dos mortos.',
+          'A crença na vida após a morte se expressava em práticas como a mumificação, as oferendas e a preparação de túmulos.',
+          'As pirâmides e o Vale dos Reis ilustram diferentes formas de enterramento dos governantes em épocas distintas.'
+        ]],
+        ['6. Escrita e conhecimentos:', [
+          'Os hieróglifos eram usados em inscrições de templos e túmulos. Alguns sinais representavam sons, enquanto outros indicavam palavras ou ajudavam a esclarecer seu sentido.',
+          'Nos registros do cotidiano, escribas usavam formas cursivas de escrita, como o hierático, frequentemente registrado em papiro.',
+          'Os egípcios empregavam conhecimentos de matemática na medição de terras e nas construções. O calendário civil de 365 dias auxiliava na organização das atividades e cerimônias.'
+        ]]
+      ]],
+      ['Mesopotâmia', [
+        ['1. Localização e manejo da água:', [
+          'A Mesopotâmia se localizava em torno dos rios Tigre e Eufrates, no sudoeste da Ásia. Seu território abrangia grande parte do atual Iraque e áreas vizinhas.',
+          'Nas planícies do sul, onde as chuvas eram escassas, os canais de irrigação levavam água até os campos de cultivo.',
+          'As cheias podiam inundar as plantações. As comunidades construíam diques e mantinham canais para proteger os campos e distribuir a água.',
+          'A organização do manejo da água variava conforme a época e o lugar. Comunidades locais, templos e governantes participavam dessas atividades.'
+        ]],
+        ['2. Cidades-Estado e impérios:', [
+          'No sul, cidades sumérias como Ur, Uruk e Lagash formaram cidades-Estado. Cada uma possuía governo próprio e controlava as terras ao seu redor.',
+          'No século XXIV a.C., Sargão de Acádia submeteu várias cidades e estabeleceu o Império Acádio.',
+          'A Babilônia tornou-se um centro político importante e ampliou seu domínio sob Hamurábi, no século XVIII a.C.',
+          'No norte, os assírios construíram um império que teve Nínive como uma de suas capitais. Após a queda da Assíria, a Babilônia voltou a se destacar até a conquista persa de 539 a.C.'
+        ]],
+        ['3. Sociedade, trabalho e economia:', [
+          'A economia reunia agricultura, criação de animais, artesanato e comércio. A cevada era um dos principais cultivos.',
+          'Templos e palácios administravam terras, estoques e trabalhadores. Famílias e comerciantes também participavam das atividades econômicas.',
+          'Nas trocas com outras regiões, comerciantes obtinham materiais como madeira, pedra e metais, escassos nas planícies do sul.'
+        ]],
+        ['4. Religião e arquitetura:', [
+          'Os povos mesopotâmicos cultuavam vários deuses. Algumas divindades eram ligadas a cidades, como Marduque à Babilônia e Assur à cidade de mesmo nome.',
+          'Os zigurates eram grandes estruturas escalonadas associadas ao culto religioso. Um dos exemplos mais conhecidos ficava na cidade de Ur.',
+          'O tijolo de barro era um material comum na construção de casas, muralhas, palácios e edifícios religiosos.'
+        ]],
+        ['5. Escrita, literatura e conhecimentos:', [
+          'Entre os primeiros registros escritos de Uruk, do fim do quarto milênio a.C., há tabuletas de argila que anotam quantidades de grãos e outros bens.',
+          'A escrita cuneiforme, feita com sinais em forma de cunha, foi usada para registrar contas, contratos, leis e obras literárias, como a "Epopeia de Gilgámesh".',
+          'Os mesopotâmicos registraram observações astronômicas e desenvolveram sistemas de cálculo. O uso da base 60 deixou marcas na divisão das horas e dos ângulos.'
+        ]],
+        ['6. Código de Hamurábi:', [
+          'A coleção de decisões e normas atribuídas ao rei Hamurábi foi gravada em uma estela de pedra por volta de 1.750 a.C.',
+          'O texto trata de assuntos como propriedade, comércio, trabalho e família. Em certos casos, previa uma punição equivalente ao dano causado, princípio conhecido como lei de talião.',
+          'Uma mesma lesão podia resultar em punição física ou em compensação em prata, conforme a posição social das pessoas envolvidas.'
+        ]]
+      ]]
+    ]
   }
 };
 
@@ -2158,18 +2233,31 @@ function openSummary(key) {
   document.getElementById('summaryTitle').textContent = summary.title;
   const body = document.getElementById('summaryBody');
   body.replaceChildren();
-  summary.sections.forEach(([heading, items]) => {
-    const section = document.createElement('section');
-    const title = document.createElement('h3');
-    title.textContent = heading;
-    const list = document.createElement('ul');
-    items.forEach(text => {
-      const item = document.createElement('li');
-      item.textContent = text;
-      list.appendChild(item);
+  const groups = summary.groups ?? [[null, summary.sections]];
+  groups.forEach(([groupHeading, sections]) => {
+    let parent = body;
+    if (groupHeading) {
+      parent = document.createElement('section');
+      parent.className = 'summary-group';
+      const title = document.createElement('h3');
+      title.className = 'summary-group-title';
+      title.textContent = groupHeading;
+      parent.appendChild(title);
+      body.appendChild(parent);
+    }
+    sections.forEach(([heading, items]) => {
+      const section = document.createElement('section');
+      const title = document.createElement(groupHeading ? 'h4' : 'h3');
+      title.textContent = heading;
+      const list = document.createElement('ul');
+      items.forEach(text => {
+        const item = document.createElement('li');
+        item.textContent = text;
+        list.appendChild(item);
+      });
+      section.append(title, list);
+      parent.appendChild(section);
     });
-    section.append(title, list);
-    body.appendChild(section);
   });
   const dialog = document.getElementById('summaryDialog');
   if (!dialog.open) dialog.showModal();
