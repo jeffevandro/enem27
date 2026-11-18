@@ -2720,7 +2720,16 @@ function render() {
       `;
     }
 
-    if (SPEED_QUESTION_BANKS[disc.id]) {
+    if (disc.id === 'historia' && SPEED_QUESTION_BANKS[disc.id]) {
+      html += `
+        <button type="button" class="video-launch-card music-launch-card" onclick="openSpeedQuiz('historia')">
+          <span>
+            <span class="video-launch-badge music-launch-badge">Quiz de História</span>
+            <span class="quiz-launch-title" style="display:block">Responda a 10 perguntas em 2 minutos e 30 segundos</span>
+          </span>
+          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
+        </button>`;
+    } else if (SPEED_QUESTION_BANKS[disc.id]) {
       html += `<button type="button" class="video-launch-card" onclick="openSpeedQuiz('${disc.id}')">
         <span><span class="quiz-launch-title" style="display:block">Quiz de ${disc.name} (dez perguntas em 2 minutos e 30 segundos)</span></span>
         <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
