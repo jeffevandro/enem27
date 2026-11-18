@@ -400,7 +400,7 @@
   .music-card audio { display: block; width: 100%; min-width: 0; color-scheme: dark; }
   .music-error { margin-top: 14px !important; color: #FFD1D1 !important; }
 
-  .flashcards-launch { width: 100%; text-align: left; font: inherit; background: #17251F; border-color: #315140; border-left-color: #4DAB79; }
+  .flashcards-launch { margin-top: 16px; width: 100%; text-align: left; font: inherit; background: #17251F; border-color: #315140; border-left-color: #4DAB79; }
   .flashcards-launch:active { background: #20362B; }
   .flashcard { background: #17251F; border: 1px solid #315140; border-left: 6px solid #4DAB79; padding: 20px; }
   .flashcard-position { margin: 0 0 8px; color: #A7D8BB; font-size: 13px; }
@@ -2274,16 +2274,6 @@ function render() {
     breadEl.textContent = "Selecione um tema para revisar";
 
     let html = '<div class="theme-list">';
-    if (disc.id === 'biologia') {
-      html += `
-        <button type="button" class="video-launch-card flashcards-launch" onclick="openBiologyFlashcards()">
-          <span>
-            <span class="quiz-launch-title" style="display:block">Revisão com flashcards</span>
-            <span class="quiz-launch-sub">${BIOLOGY_FLASHCARDS.length} cartões</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>`;
-    }
     disc.themes.forEach((th, tIdx) => {
       const st = getThemeStats(disc.id, th, tIdx);
       html += `
@@ -2339,6 +2329,17 @@ function render() {
       html += `<button type="button" class="video-launch-card" onclick="openSpeedQuiz('${disc.id}')">
         <span><span class="quiz-launch-title" style="display:block">Quiz de ${disc.name} (dez perguntas em 2 minutos e 30 segundos)</span></span>
         <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
+    }
+
+    if (disc.id === 'biologia') {
+      html += `
+        <button type="button" class="video-launch-card flashcards-launch" onclick="openBiologyFlashcards()">
+          <span>
+            <span class="quiz-launch-title" style="display:block">Revisão com flashcards</span>
+            <span class="quiz-launch-sub">${BIOLOGY_FLASHCARDS.length} cartões</span>
+          </span>
+          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
+        </button>`;
     }
     html += '</div>';
     container.innerHTML = html;
