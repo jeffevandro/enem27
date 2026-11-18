@@ -1101,7 +1101,7 @@
 
 <main id="appContainer"></main>
 
-<footer class="info-footer">
+<footer class="info-footer" id="infoFooter" hidden>
   <nav aria-label="Informações sobre o aplicativo">
     <a href="?pagina=objetivo" target="_blank" rel="noopener">NOSSO OBJETIVO</a>
     <a href="?pagina=privacidade" target="_blank" rel="noopener">POLÍTICA DE PRIVACIDADE</a>
@@ -2486,6 +2486,7 @@ function render() {
   const breadEl = document.getElementById("breadcrumbBar");
   const footer = document.getElementById("metroFooter");
   const footerBadge = document.getElementById("footerDiscBadge");
+  document.getElementById("infoFooter").hidden = !cloudReady || currentView !== "home";
   footerBadge.style.display = '';
 
   if (!cloudReady) {
