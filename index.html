@@ -400,6 +400,19 @@
   .music-card audio { display: block; width: 100%; min-width: 0; color-scheme: dark; }
   .music-error { margin-top: 14px !important; color: #FFD1D1 !important; }
 
+  .flashcards-launch { width: 100%; text-align: left; font: inherit; background: #17251F; border-color: #315140; border-left-color: #4DAB79; }
+  .flashcards-launch:active { background: #20362B; }
+  .flashcard { background: #17251F; border: 1px solid #315140; border-left: 6px solid #4DAB79; padding: 20px; }
+  .flashcard-position { margin: 0 0 8px; color: #A7D8BB; font-size: 13px; }
+  .flashcard-topic { margin: 0 0 10px; color: #A7D8BB; font-size: 15px; font-weight: 600; }
+  .flashcard-question { margin: 0 0 18px; font-size: clamp(18px, 3.5vw, 24px); line-height: 1.35; }
+  .flashcard-answer { margin: 16px 0 0; border-top: 1px solid #315140; padding-top: 14px; line-height: 1.55; }
+  .flashcard-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
+  .flashcards button { min-height: 44px; }
+  .flashcard-nav .btn-primary { flex: 0 1 auto; }
+  .flashcard-nav button:disabled { opacity: 0.55; cursor: default; }
+  .flashcards button:focus-visible, .flashcards-launch:focus-visible { outline: 2px solid #74D39D; outline-offset: 3px; }
+
   /* Video Player & Thumbs Grid */
   .video-player-box {
     background: #141414;
@@ -1465,11 +1478,35 @@ let cloudLoading = false;
 let cloudError = '';
 const savingKeys = new Set();
 
-let currentView = "home"; // "home" | "discipline" | "theme" | "quiz" | "videos"
+let currentView = "home";
 let selectedDisciplineId = null;
 let selectedThemeIndex = null;
 let activeVideoId = null;
 let toastTimer = null;
+
+const BIOLOGY_FLASHCARDS = [
+  ['Cadeia alimentar', 'O que as setas de uma cadeia alimentar indicam?', 'Indicam a direção da transferência de matéria e energia, do organismo que serve de alimento para aquele que o consome. A energia disponível diminui a cada nível trófico.'],
+  ['Eutrofização', 'Por que o excesso de nutrientes na água pode provocar a morte de peixes?', 'O excesso de nutrientes como fósforo e nitrogênio favorece a proliferação de algas. Quando elas morrem, a decomposição da matéria orgânica consome oxigênio dissolvido, o que pode levar à morte dos peixes.'],
+  ['Bioacumulação e biomagnificação', 'Qual é a diferença entre bioacumulação e biomagnificação?', 'Bioacumulação é o acúmulo de uma substância ao longo do tempo em um organismo. Biomagnificação é o aumento da concentração de certas substâncias persistentes, como o metilmercúrio, ao longo dos níveis tróficos.'],
+  ['Ciclo do nitrogênio', 'Qual é o papel da fixação biológica no ciclo do nitrogênio?', 'Certas bactérias e arqueias transformam o gás nitrogênio (N₂) em amônia. Nos nódulos das raízes de leguminosas, bactérias fixadoras fornecem compostos nitrogenados que a planta usa para crescer.'],
+  ['Sucessão ecológica', 'Por que a vegetação de uma área pode se recuperar mais rápido quando o solo permanece?', 'A sucessão secundária começa com solo já formado, que pode conter sementes, raízes e microrganismos. Na sucessão primária, a comunidade se estabelece em um substrato inicialmente sem solo, como rocha exposta.'],
+  ['Relações ecológicas', 'Como distinguir mutualismo, comensalismo e parasitismo?', 'No mutualismo, os dois organismos se beneficiam. No comensalismo, um se beneficia e o outro fica indiferente. No parasitismo, o parasita se beneficia e causa prejuízo ao hospedeiro.'],
+  ['Fotossíntese', 'De onde vem o carbono incorporado à matéria orgânica produzida na fotossíntese?', 'Vem do gás carbônico (CO₂). A energia da luz permite incorporar esse carbono à matéria orgânica. O oxigênio liberado na fotossíntese das plantas vem da água.'],
+  ['Respiração aeróbia e fermentação', 'Qual processo permite às leveduras produzir gás carbônico na massa do pão?', 'Na fermentação alcoólica, as leveduras obtêm energia a partir de açúcares e liberam etanol e gás carbônico. As bolhas de gás fazem a massa crescer. A respiração aeróbia utiliza oxigênio e fornece mais ATP por molécula de glicose.'],
+  ['Osmose', 'Por que uma folha de alface pode murchar quando recebe muito sal?', 'O sal torna o meio externo mais concentrado. Por osmose, a água atravessa a membrana das células em direção a esse meio, reduzindo a pressão interna que mantém a folha firme.'],
+  ['Mitose e meiose', 'Qual é a diferença entre mitose e meiose quanto ao número de cromossomos?', 'A mitose mantém o número de cromossomos nas células resultantes. A meiose reduz esse número à metade e contribui para a variabilidade genética.'],
+  ['DNA, RNA e síntese de proteínas', 'Como a informação do DNA é usada para produzir uma proteína?', 'Na transcrição, uma sequência do DNA orienta a produção de RNA mensageiro. Na tradução, os ribossomos leem esse RNA e unem aminoácidos na ordem indicada.'],
+  ['Genótipo e fenótipo', 'Como indivíduos com genótipos semelhantes podem apresentar diferenças de altura?', 'Genótipo é a constituição genética do indivíduo. Fenótipo é o conjunto de características observáveis que resulta da interação entre fatores genéticos e ambientais, como a nutrição no caso da altura.'],
+  ['Herança mendeliana', 'Em um cruzamento Aa × Aa, qual é a chance de um descendente apresentar o fenótipo recessivo, considerando dominância completa?', 'A chance é de 25%. Cada genitor pode transmitir A ou a com igual probabilidade, e o fenótipo recessivo aparece no genótipo aa.'],
+  ['Transgênicos', 'O que caracteriza um organismo transgênico?', 'É um organismo que recebeu, por engenharia genética, uma sequência de DNA proveniente de outra espécie. Um exemplo é uma planta que recebeu um gene bacteriano associado à resistência a determinados insetos.'],
+  ['Seleção natural', 'Como o uso de inseticida pode aumentar a frequência de insetos resistentes em uma população?', 'Insetos com resistência hereditária têm maior chance de sobreviver e se reproduzir na presença do inseticida. Ao longo das gerações, a resistência tende a se tornar mais frequente na população.'],
+  ['Especiação', 'Como uma barreira geográfica pode contribuir para a formação de novas espécies?', 'Uma barreira pode reduzir o fluxo gênico entre populações. Com o tempo, elas podem acumular diferenças genéticas e desenvolver isolamento reprodutivo.'],
+  ['Vacina e soro', 'Qual é a diferença entre a imunidade gerada por uma vacina e a conferida por um soro com anticorpos?', 'A vacina estimula o organismo a desenvolver sua própria resposta imune, incluindo memória imunológica. O soro fornece anticorpos prontos, com efeito imediato e temporário.'],
+  ['Vírus e bactérias', 'Por que os vírus dependem de uma célula hospedeira para se multiplicar?', 'Os vírus são acelulares e usam a maquinaria da célula hospedeira para produzir novas partículas virais. As bactérias são organismos unicelulares que geralmente se reproduzem por divisão binária.'],
+  ['Insulina e glucagon', 'Como insulina e glucagon ajudam a controlar a glicose no sangue?', 'Após uma refeição, a insulina favorece a captação e o armazenamento de glicose, reduzindo a glicemia. No jejum, o glucagon estimula o fígado a liberar glicose para o sangue.'],
+  ['Xilema e floema', 'O que o xilema e o floema transportam nas plantas vasculares?', 'O xilema transporta água e sais minerais, principalmente das raízes para as folhas. O floema distribui açúcares dos locais onde são produzidos ou liberados para as regiões que os utilizam ou armazenam.']
+];
+let biologyFlashcardIndex = 0;
 
 // Quiz state
 let quizUserAnswers = {}; // { qNum: "A" }
@@ -2237,6 +2274,16 @@ function render() {
     breadEl.textContent = "Selecione um tema para revisar";
 
     let html = '<div class="theme-list">';
+    if (disc.id === 'biologia') {
+      html += `
+        <button type="button" class="video-launch-card flashcards-launch" onclick="openBiologyFlashcards()">
+          <span>
+            <span class="quiz-launch-title" style="display:block">Revisão com flashcards</span>
+            <span class="quiz-launch-sub">${BIOLOGY_FLASHCARDS.length} cartões</span>
+          </span>
+          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
+        </button>`;
+    }
     disc.themes.forEach((th, tIdx) => {
       const st = getThemeStats(disc.id, th, tIdx);
       html += `
@@ -2295,6 +2342,34 @@ function render() {
     }
     html += '</div>';
     container.innerHTML = html;
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  if (currentView === 'biologyFlashcards') {
+    subEl.textContent = disc.name;
+    titleEl.textContent = 'Revisão com flashcards';
+    breadEl.textContent = 'Tente responder de memória antes de ver a resposta';
+    container.innerHTML = `
+      <div class="flashcards">
+        <article class="flashcard">
+          <div aria-live="polite" aria-atomic="true">
+            <p class="flashcard-position" id="flashcardPosition"></p>
+            <p class="flashcard-topic" id="flashcardTopic"></p>
+            <h2 class="flashcard-question" id="flashcardQuestion" tabindex="-1"></h2>
+          </div>
+          <button type="button" class="btn-secondary" id="flashcardReveal" aria-controls="flashcardAnswer"
+            onclick="setFlashcardAnswerVisible(this.getAttribute('aria-expanded') === 'false')">Mostrar resposta</button>
+          <div aria-live="polite">
+            <p class="flashcard-answer" id="flashcardAnswer" hidden></p>
+          </div>
+        </article>
+        <div class="flashcard-nav">
+          <button type="button" class="btn-secondary" id="flashcardPrevious" onclick="changeBiologyFlashcard(-1)">Anterior</button>
+          <button type="button" class="btn-primary" id="flashcardNext" onclick="changeBiologyFlashcard(1)">Próximo</button>
+        </div>
+      </div>`;
+    updateBiologyFlashcard();
     window.scrollTo(0, 0);
     return;
   }
@@ -2554,6 +2629,38 @@ function openTheme(tIdx) {
   render();
 }
 
+function openBiologyFlashcards() {
+  biologyFlashcardIndex = 0;
+  currentView = 'biologyFlashcards';
+  render();
+  document.getElementById('flashcardQuestion').focus({ preventScroll: true });
+}
+
+function updateBiologyFlashcard() {
+  const [topic, question, answer] = BIOLOGY_FLASHCARDS[biologyFlashcardIndex];
+  const count = BIOLOGY_FLASHCARDS.length;
+  setFlashcardAnswerVisible(false);
+  document.getElementById('flashcardPosition').textContent = `Cartão ${biologyFlashcardIndex + 1} de ${count}`;
+  document.getElementById('flashcardTopic').textContent = topic;
+  document.getElementById('flashcardQuestion').textContent = question;
+  document.getElementById('flashcardAnswer').textContent = answer;
+  document.getElementById('flashcardPrevious').disabled = biologyFlashcardIndex === 0;
+  document.getElementById('flashcardNext').textContent = biologyFlashcardIndex === count - 1 ? 'Recomeçar' : 'Próximo';
+}
+
+function setFlashcardAnswerVisible(visible) {
+  const button = document.getElementById('flashcardReveal');
+  document.getElementById('flashcardAnswer').hidden = !visible;
+  button.setAttribute('aria-expanded', String(visible));
+  button.textContent = visible ? 'Ocultar resposta' : 'Mostrar resposta';
+}
+
+function changeBiologyFlashcard(step) {
+  biologyFlashcardIndex = Math.max(0, (biologyFlashcardIndex + step) % BIOLOGY_FLASHCARDS.length);
+  updateBiologyFlashcard();
+  if (step < 0 && biologyFlashcardIndex === 0) document.getElementById('flashcardReveal').focus();
+}
+
 function openQuiz(discId) {
   selectedDisciplineId = discId;
   quizUserAnswers = {};
@@ -2690,7 +2797,7 @@ function goDiscipline() {
 }
 
 function goBack() {
-  if (currentView === "theme" || currentView === "quiz" || currentView === "videos" || currentView === "music" || currentView === 'speedQuiz') {
+  if (['theme', 'quiz', 'videos', 'music', 'speedQuiz', 'biologyFlashcards'].includes(currentView)) {
     goDiscipline();
   } else {
     goHome();
