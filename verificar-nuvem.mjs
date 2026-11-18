@@ -41,6 +41,19 @@ async function request(path, jwt, body, extraHeaders = {}, method = body ? 'PUT'
   }), env);
 }
 const key = 'historia|0|0|0', dates = ['16/11/2026', null, null];
+const contact = { name: 'Ana', email: 'ana@example.com', message: 'Sugestão sobre o simulado.' };
+const postContact = body => request('/api/contact', alice, body, {}, 'POST');
+assert.equal((await postContact(contact)).status, 503);
+env.CONTACT_FROM = 'app@example.com';
+let sentMail;
+env.CONTACT_MAIL = { async send(mail) { sentMail = mail; } };
+assert.equal((await postContact({ ...contact, message: ' ' })).status, 400);
+assert.deepEqual(await (await postContact(contact)).json(), { sent: true });
+assert.equal(sentMail.to, 'jefferson.evandro@gmail.com');
+assert.equal(sentMail.replyTo, contact.email);
+assert.ok(sentMail.text.includes(contact.message));
+env.CONTACT_MAIL.send = async () => { throw new Error('indisponível'); };
+assert.equal((await postContact(contact)).status, 502);
 for (const musicPath of ['/audio/ferro-fumaca-e-revolucao.mp3', '/audio/da-bastilha-eu-grito.mp3']) {
 delete env.ASSETS;
 const musicBytes = fs.readFileSync(new URL('./public' + musicPath, import.meta.url));

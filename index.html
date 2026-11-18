@@ -287,6 +287,13 @@
 
   .past-exams { display: grid; gap: 28px; }
   .info-footer { padding: 16px; border-top: 1px solid var(--border); text-align: center; }
+  .contact-form { display: grid; gap: 16px; margin-top: 20px; }
+  .contact-form label { display: grid; gap: 6px; font-size: 16px; }
+  .contact-form input, .contact-form textarea { width: 100%; padding: 12px; background: var(--bg); color: var(--text); border: 1px solid #777; font: inherit; user-select: text; }
+  .contact-form textarea { resize: vertical; }
+  .contact-form button { justify-self: start; }
+  .contact-form [role="status"] { color: #ffb4ab; }
+  .contact-form [role="status"].sent { color: #84df99; }
   .info-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
   .info-footer a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-muted); font-size: 13px; text-decoration: none; }
   .info-footer a:hover, .info-footer a:focus-visible { color: var(--text); text-decoration: underline; }
@@ -1079,8 +1086,21 @@
     <a href="?pagina=objetivo" target="_blank" rel="noopener">NOSSO OBJETIVO</a>
     <a href="?pagina=privacidade" target="_blank" rel="noopener">POLÍTICA DE PRIVACIDADE</a>
     <a href="?pagina=tecnica" target="_blank" rel="noopener">QUESTÕES TÉCNICAS</a>
+    <a href="?pagina=contato" target="_blank" rel="noopener">CONTATO</a>
   </nav>
 </footer>
+<template id="info-contato">
+  <section class="useful-site-card">
+    <p>Tem uma dúvida ou sugestão para o ENEM27? Escreva para a equipe pelo formulário abaixo. Se encontrou uma falha técnica, indique em qual tela ela ocorreu. Para apontar um erro de conteúdo, informe a disciplina e o trecho ou a questão que precisa de revisão.</p>
+    <form class="contact-form" onsubmit="sendContact(event)">
+      <label>Nome<input name="name" autocomplete="name" maxlength="120" required></label>
+      <label>E-mail para contato<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+      <label>Mensagem<textarea name="message" rows="7" maxlength="4000" required></textarea></label>
+      <button type="submit" class="btn-primary">ENVIAR</button>
+      <div role="status" aria-live="polite"></div>
+    </form>
+  </section>
+</template>
 <template id="info-objetivo">
 <section class="useful-site-card"><h2>Sobre o ENEM 2027</h2><p>O aplicativo ENEM 2027 foi desenvolvido para ajudar estudantes que pretendem realizar o Exame Nacional do Ensino Médio (ENEM) em 2027. Seu principal objetivo é facilitar a organização dos estudos, o planejamento das revisões e o acompanhamento dos conteúdos que precisam ser estudados ao longo da preparação para o exame.</p><p>A plataforma reúne, em um único ambiente, ferramentas para registrar revisões, acompanhar o progresso nos estudos, realizar testes de conhecimentos, responder a simulados, acessar videoaulas recomendadas e consultar informações relacionadas ao ENEM. Dessa forma, o estudante pode organizar melhor sua rotina, identificar os assuntos que precisam de maior atenção e acompanhar sua preparação.</p><p>É importante destacar que o aplicativo não pretende substituir as aulas, os materiais didáticos, os simulados completos ou os estudos individuais. Sua principal finalidade é funcionar como uma ferramenta complementar de organização e planejamento, contribuindo para uma preparação mais estruturada e eficiente.</p></section>
 <section class="useful-site-card"><h2>Produção e revisão dos conteúdos</h2><p>Grande parte dos conteúdos da área de Ciências Humanas foi produzida por Jefferson Evandro Machado Ramos, professor e historiador, bacharel e licenciado em História pela Universidade de São Paulo (USP).</p><p>Os conteúdos das áreas de Ciências da Natureza e Matemática foram elaborados com o auxílio do modelo de inteligência artificial GPT-6.2 Astra e submetidos a revisões adicionais realizadas por outros dois modelos de inteligência artificial, Gemini e Claude.</p><p>Embora tenham passado por processos de revisão, os materiais podem apresentar eventuais erros ou imprecisões. Por esse motivo, recomendamos que os estudantes utilizem também livros didáticos, materiais de professores e outras fontes confiáveis para complementar seus estudos.</p></section>
@@ -2491,6 +2511,37 @@ window.addEventListener('beforeunload', event => {
   if (savingKeys.size || Object.keys(draftData).length) { event.preventDefault(); event.returnValue = ''; }
 });
 window.addEventListener('pageshow', event => { if (event.persisted) window.location.reload(); });
+async function sendContact(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const button = form.querySelector('button');
+  if (button.disabled) return;
+  const status = form.querySelector('[role="status"]');
+  status.classList.remove('sent');
+  status.textContent = '';
+  button.disabled = true;
+  button.textContent = 'Enviando…';
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(new FormData(form))), redirect: 'error'
+    });
+    const result = await response.json();
+    if (!response.ok || result.sent !== true) {
+      status.textContent = result.error || 'Não foi possível confirmar o envio.';
+      return;
+    }
+    form.reset();
+    status.classList.add('sent');
+    status.textContent = 'Mensagem enviada com sucesso!';
+  } catch {
+    status.textContent = 'Não foi possível confirmar o envio. Verifique sua conexão e se a sessão continua ativa.';
+  } finally {
+    button.disabled = false;
+    button.textContent = 'ENVIAR';
+  }
+}
+
 function startApp() {
   const infoPage = new URLSearchParams(window.location.search).get('pagina');
   const infoTemplate = document.getElementById('info-' + infoPage);

@@ -64,6 +64,28 @@ async function authenticate(request, env) {
   }
 }
 
+async function readJson(request, url, limit) {
+  if (request.headers.get('Origin') !== url.origin) throw new HttpError(403, 'Origem da solicitação inválida.');
+  if (!request.headers.get('Content-Type')?.startsWith('application/json')) throw new HttpError(415, 'Envie os dados em JSON.');
+  // Limita o corpo efetivamente recebido, mesmo sem Content-Length.
+  const reader = request.body?.getReader();
+  if (!reader) throw new HttpError(400, 'Dados ausentes.');
+  let size = 0;
+  const chunks = [];
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    size += value.byteLength;
+    if (size > limit) { await reader.cancel(); throw new HttpError(413, 'Dados muito grandes.'); }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
+  try { return JSON.parse(new TextDecoder().decode(bytes)); }
+  catch { throw new HttpError(400, 'Dados inválidos.'); }
+}
+
 function validDates(value) {
   return Array.isArray(value) && value.length === 3 && value.every(date => {
     if (date === null) return true;
@@ -93,6 +115,27 @@ export default {
         return new Response(response.body, { status: response.status, headers });
       }
       if (url.pathname.startsWith('/api/')) {
+        if (url.pathname === '/api/contact' && request.method === 'POST') {
+          const body = await readJson(request, url, 32768);
+          const name = typeof body?.name === 'string' ? body.name.trim() : '';
+          const replyTo = typeof body?.email === 'string' ? body.email.trim() : '';
+          const message = typeof body?.message === 'string' ? body.message.trim() : '';
+          if (!name || name.length > 120 || !message || message.length > 4000 ||
+              replyTo.length > 254 || !/^[^\s@<>,;:"]+@[^\s@<>,;:"]+\.[^\s@<>,;:"]+$/.test(replyTo)) {
+            throw new HttpError(400, 'Preencha o nome, um e-mail válido e a mensagem.');
+          }
+          if (!env.CONTACT_MAIL || !env.CONTACT_FROM) throw new HttpError(503, 'O envio está indisponível no momento.');
+          try {
+            await env.CONTACT_MAIL.send({
+              from: env.CONTACT_FROM, to: 'jefferson.evandro@gmail.com', replyTo,
+              subject: 'Contato pelo ENEM27',
+              text: `Nome: ${name}\nE-mail para contato: ${replyTo}\n\n${message}`
+            });
+          } catch {
+            throw new HttpError(502, 'O serviço de e-mail não confirmou o envio. Tente novamente mais tarde.');
+          }
+          return json({ sent: true });
+        }
         if (!env.DB) throw new HttpError(503, 'Conecte o banco D1 com o nome DB.');
         if (url.pathname === '/api/state' && request.method === 'GET') {
           const result = await env.DB.prepare('SELECT item_key, dates_json, version FROM revisions WHERE user_email = ?').bind(email).all();
@@ -109,26 +152,7 @@ export default {
           return json({ email, data, versions, stickers });
         }
         if ((url.pathname === '/api/revision' || url.pathname === '/api/sticker') && request.method === 'PUT') {
-          if (request.headers.get('Origin') !== url.origin) throw new HttpError(403, 'Origem da solicitação inválida.');
-          if (!request.headers.get('Content-Type')?.startsWith('application/json')) throw new HttpError(415, 'Envie os dados em JSON.');
-          // Limita o corpo efetivamente recebido, mesmo sem Content-Length.
-          const reader = request.body?.getReader();
-          if (!reader) throw new HttpError(400, 'Dados ausentes.');
-          let size = 0;
-          const chunks = [];
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            size += value.byteLength;
-            if (size > 2048) { await reader.cancel(); throw new HttpError(413, 'Dados muito grandes.'); }
-            chunks.push(value);
-          }
-          const bytes = new Uint8Array(size);
-          let offset = 0;
-          for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
-          let body;
-          try { body = JSON.parse(new TextDecoder().decode(bytes)); }
-          catch { throw new HttpError(400, 'Dados inválidos.'); }
+          const body = await readJson(request, url, 2048);
           if (url.pathname === '/api/sticker') {
             const bank = body && Object.hasOwn(SPEED_BANKS, body.discipline) ? SPEED_BANKS[body.discipline] : null;
             if (!bank || !Number.isFinite(body.elapsedMs) || body.elapsedMs < 0 || body.elapsedMs > 150000 ||
