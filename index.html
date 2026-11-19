@@ -1860,7 +1860,30 @@ const BIOLOGY_FLASHCARDS = [
   ['Insulina e glucagon', 'Como insulina e glucagon ajudam a controlar a glicose no sangue?', 'Após uma refeição, a insulina favorece a captação e o armazenamento de glicose, reduzindo a glicemia. No jejum, o glucagon estimula o fígado a liberar glicose para o sangue.'],
   ['Xilema e floema', 'O que o xilema e o floema transportam nas plantas vasculares?', 'O xilema transporta água e sais minerais, principalmente das raízes para as folhas. O floema distribui açúcares dos locais onde são produzidos ou liberados para as regiões que os utilizam ou armazenam.']
 ];
-let biologyFlashcardIndex = 0;
+const SOCIOLOGY_FLASHCARDS = [
+  ["Fato social","Por que a pressão para usar determinada roupa numa cerimônia é um exemplo de fato social?","Para Émile Durkheim, certas maneiras de agir são coletivas, existem antes de cada indivíduo e exercem pressão sobre ele. Até um olhar de reprovação pode revelar a força de uma regra que ninguém precisou escrever."],
+  ["Ação social","Duas pessoas participam da mesma passeata por motivos diferentes. O que Max Weber investigaria?","Weber procuraria compreender o sentido que cada participante atribui à sua ação e como leva em conta a conduta dos outros. Uma pessoa pode agir por convicção, outra para alcançar um resultado político específico."],
+  ["Classes e exploração do trabalho","De onde vem a mais-valia na análise de Karl Marx?","Ao longo da jornada, o trabalhador assalariado produz valor superior ao valor de sua força de trabalho. A parcela excedente, apropriada pelo capitalista, é a mais-valia. Essa relação ajuda a explicar o conflito entre capital e trabalho."],
+  ["Capital cultural","Como Pierre Bourdieu explicaria a vantagem de quem já conhece a linguagem valorizada pela escola?","A convivência familiar pode transmitir vocabulário, hábitos de leitura e familiaridade com obras que a escola valoriza. Quando a avaliação trata essa bagagem como talento individual, diferenças de origem podem se transformar em desigualdades escolares."],
+  ["Relações raciais no Brasil","Por que, segundo Florestan Fernandes, a abolição de 1888 foi insuficiente para garantir igualdade?","A liberdade jurídica veio sem medidas amplas de acesso à terra, à educação e ao trabalho em condições de igualdade. Florestan investigou como a discriminação racial continuou a limitar as oportunidades da população negra na sociedade de classes."],
+  ["Divisão sexual do trabalho","O que a socióloga Heleieth Saffioti ajuda a explicar sobre a dupla jornada de muitas mulheres?","A divisão social das tarefas atribui às mulheres grande parte do cuidado e do trabalho doméstico, mesmo quando elas também têm emprego remunerado. Saffioti analisou como as hierarquias de gênero se articulam às desigualdades de classe e raça."],
+  ["Socialização","Como uma criança aprende o que seu grupo considera adequado ou inadequado?","Na convivência com familiares e outros cuidadores, ela aprende linguagem, regras e expectativas. Esse processo continua na escola, nos grupos de amigos e no trabalho. Novas experiências podem até levá-la a questionar o que aprendeu antes."],
+  ["Etnocentrismo e relativismo cultural","Que mudança de perspectiva ocorre quando alguém deixa de chamar um costume de “atrasado” e investiga seu significado local?","A pessoa passa de um julgamento etnocêntrico, que usa a própria cultura como medida, para uma abordagem relativista. Procura entender a prática em seu contexto histórico e social, o que também permite discutir suas consequências."],
+  ["Indústria cultural","Por que Theodor Adorno e Max Horkheimer usaram a expressão “indústria cultural”?","Eles analisaram a produção de bens culturais segundo critérios comerciais e fórmulas repetíveis. Uma sequência de filmes com enredos quase idênticos ilustra como a busca por vendas pode favorecer a padronização."],
+  ["Patrimônio imaterial","O que se preserva quando uma comunidade transmite o saber de uma roda de capoeira?","Preservam-se cantos, gestos, conhecimentos e formas de convivência que dão sentido à prática. A continuidade desse patrimônio depende das pessoas que o recriam e o transmitem entre gerações."],
+  ["Cidadania","Que dimensões da cidadania aparecem na liberdade de expressão, no voto e no acesso à educação?","Na classificação de T. H. Marshall, a liberdade de expressão é um direito civil, o voto é um direito político e a educação é um direito social. A trajetória desses direitos varia de um país para outro."],
+  ["Estado e dominação legítima","Segundo Max Weber, por que se obedece a uma autoridade legal-racional?","A obediência se apoia na crença na validade das regras e na competência atribuída ao cargo. Por isso, uma servidora pode emitir uma licença dentro dos limites de sua função, independentemente de seu prestígio pessoal."],
+  ["Movimentos sociais","O que permite reconhecer um movimento social na luta por moradia?","Pessoas se organizam em torno de uma reivindicação coletiva, constroem vínculos e mantêm ações ao longo do tempo. Assembleias, negociações e manifestações são algumas das formas de pressionar por mudanças na política habitacional."],
+  ["Mobilidade social","Que tipo de mobilidade se observa quando a posição social dos filhos difere da dos pais?","É a mobilidade intergeracional. Para identificá-la, comparam-se as posições de duas gerações por critérios como ocupação e renda. O deslocamento pode ser ascendente ou descendente."],
+  ["Organização da produção","Como distinguir taylorismo e fordismo ao analisar uma fábrica?","O taylorismo se reconhece pelo estudo dos tempos e movimentos e pela separação entre planejar e executar tarefas. O fordismo associou a linha de montagem à produção em massa de bens padronizados. Uma fábrica pode combinar os dois modelos."],
+  ["Trabalho por plataformas","Como um aplicativo pode controlar o trabalho de entregadores à distância?","A plataforma pode distribuir pedidos, definir valores e usar notas ou taxas de aceitação para organizar o serviço. Essa gestão por algoritmos convive com a flexibilidade de horários e pode transferir custos, como combustível e manutenção, ao trabalhador."],
+  ["Globalização","O que a trajetória de um celular revela sobre a divisão internacional do trabalho?","O projeto, a extração de minerais, a fabricação de peças e a montagem podem ocorrer em países diferentes. Essas etapas formam uma cadeia produtiva global, na qual renda, tecnologia e poder de decisão se distribuem de maneira desigual."],
+  ["Segregação socioespacial","Por que a distância entre a moradia e os serviços públicos pode aprofundar desigualdades urbanas?","Quando empregos, hospitais e equipamentos culturais se concentram em certas áreas, moradores de bairros distantes podem gastar mais tempo e dinheiro para alcançá-los. O preço da terra e as decisões sobre transporte e infraestrutura influenciam essa distribuição."],
+  ["Justiça ambiental","Por que a instalação de uma atividade poluente pode se tornar uma questão de justiça ambiental?","É preciso observar quem recebe os benefícios, quem fica exposto aos danos e quem participa da decisão. Uma comunidade com pouca influência política pode suportar a poluição enquanto outros grupos ficam com a maior parte dos ganhos."],
+  ["Poder disciplinar","Como Michel Foucault interpreta o uso de horários, exames e vigilância em instituições?","Essas práticas permitem observar, comparar e corrigir condutas. Para Foucault, a disciplina também atua quando as pessoas passam a regular o próprio comportamento por saberem que podem estar sendo observadas."]
+];
+const FLASHCARDS = { biologia: BIOLOGY_FLASHCARDS, sociologia: SOCIOLOGY_FLASHCARDS };
+let flashcardIndex = 0;
 
 // Quiz state
 let quizUserAnswers = {}; // { qNum: "A" }
@@ -2857,9 +2880,11 @@ function restorePage() {
   if (page.view === 'theme' && Number.isInteger(page.theme) && disc.themes[page.theme]) {
     selectedThemeIndex = page.theme;
     currentView = 'theme';
+  } else if (page.view === 'biologyFlashcards' && disc.id === 'biologia') {
+    currentView = 'flashcards';
   } else if ((['essayTopics', 'essayGuide', 'pastEssayTopics'].includes(page.view) && disc.id === 'redacao') ||
             (page.view === 'historyGlossary' && disc.id === 'historia') ||
-            (page.view === 'biologyFlashcards' && disc.id === 'biologia') ||
+            (page.view === 'flashcards' && FLASHCARDS[disc.id]) ||
              (page.view === 'speedQuiz' && SPEED_QUESTION_BANKS[disc.id]) ||
              (page.view === 'music' && MUSIC_TRACKS[disc.id]) ||
              (page.view === 'quiz' && QUIZZES[disc.id]) ||
@@ -3131,12 +3156,12 @@ function render() {
         <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
     }
 
-    if (disc.id === 'biologia') {
+    if (FLASHCARDS[disc.id]) {
       html += `
-        <button type="button" class="video-launch-card flashcards-launch" onclick="openBiologyFlashcards()">
+        <button type="button" class="video-launch-card flashcards-launch" onclick="openFlashcards()">
           <span>
             <span class="quiz-launch-title" style="display:block">Revisão com flashcards</span>
-            <span class="quiz-launch-sub">${BIOLOGY_FLASHCARDS.length} cartões</span>
+            <span class="quiz-launch-sub">${FLASHCARDS[disc.id].length} cartões</span>
           </span>
           <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
         </button>`;
@@ -3193,7 +3218,7 @@ function render() {
     return;
   }
 
-  if (currentView === 'biologyFlashcards') {
+  if (currentView === 'flashcards') {
     subEl.textContent = disc.name;
     titleEl.textContent = 'Revisão com flashcards';
     breadEl.textContent = 'Tente responder de memória antes de ver a resposta';
@@ -3212,11 +3237,11 @@ function render() {
           </div>
         </article>
         <div class="flashcard-nav">
-          <button type="button" class="btn-secondary" id="flashcardPrevious" onclick="changeBiologyFlashcard(-1)">Anterior</button>
-          <button type="button" class="btn-primary" id="flashcardNext" onclick="changeBiologyFlashcard(1)">Próximo</button>
+          <button type="button" class="btn-secondary" id="flashcardPrevious" onclick="changeFlashcard(-1)">Anterior</button>
+          <button type="button" class="btn-primary" id="flashcardNext" onclick="changeFlashcard(1)">Próximo</button>
         </div>
       </div>`;
-    updateBiologyFlashcard();
+    updateFlashcard();
     window.scrollTo(0, 0);
     return;
   }
@@ -3465,23 +3490,23 @@ function openTheme(tIdx) {
   render();
 }
 
-function openBiologyFlashcards() {
-  biologyFlashcardIndex = 0;
-  currentView = 'biologyFlashcards';
+function openFlashcards() {
+  flashcardIndex = 0;
+  currentView = 'flashcards';
   render();
   document.getElementById('flashcardQuestion').focus({ preventScroll: true });
 }
 
-function updateBiologyFlashcard() {
-  const [topic, question, answer] = BIOLOGY_FLASHCARDS[biologyFlashcardIndex];
-  const count = BIOLOGY_FLASHCARDS.length;
+function updateFlashcard() {
+  const [topic, question, answer] = FLASHCARDS[selectedDisciplineId][flashcardIndex];
+  const count = FLASHCARDS[selectedDisciplineId].length;
   setFlashcardAnswerVisible(false);
-  document.getElementById('flashcardPosition').textContent = `Cartão ${biologyFlashcardIndex + 1} de ${count}`;
+  document.getElementById('flashcardPosition').textContent = `Cartão ${flashcardIndex + 1} de ${count}`;
   document.getElementById('flashcardTopic').textContent = topic;
   document.getElementById('flashcardQuestion').textContent = question;
   document.getElementById('flashcardAnswer').textContent = answer;
-  document.getElementById('flashcardPrevious').disabled = biologyFlashcardIndex === 0;
-  document.getElementById('flashcardNext').textContent = biologyFlashcardIndex === count - 1 ? 'Recomeçar' : 'Próximo';
+  document.getElementById('flashcardPrevious').disabled = flashcardIndex === 0;
+  document.getElementById('flashcardNext').textContent = flashcardIndex === count - 1 ? 'Recomeçar' : 'Próximo';
 }
 
 function setFlashcardAnswerVisible(visible) {
@@ -3491,10 +3516,10 @@ function setFlashcardAnswerVisible(visible) {
   button.textContent = visible ? 'Ocultar resposta' : 'Mostrar resposta';
 }
 
-function changeBiologyFlashcard(step) {
-  biologyFlashcardIndex = Math.max(0, (biologyFlashcardIndex + step) % BIOLOGY_FLASHCARDS.length);
-  updateBiologyFlashcard();
-  if (step < 0 && biologyFlashcardIndex === 0) document.getElementById('flashcardReveal').focus();
+function changeFlashcard(step) {
+  flashcardIndex = Math.max(0, (flashcardIndex + step) % FLASHCARDS[selectedDisciplineId].length);
+  updateFlashcard();
+  if (step < 0 && flashcardIndex === 0) document.getElementById('flashcardReveal').focus();
 }
 
 function openQuiz(discId) {
@@ -3653,7 +3678,7 @@ function goDiscipline() {
 }
 
 function goBack() {
-  if (['historyGlossary', 'theme', 'quiz', 'videos', 'music', 'speedQuiz', 'biologyFlashcards', 'essayTopics', 'essayGuide', 'pastEssayTopics'].includes(currentView)) {
+  if (['historyGlossary', 'theme', 'quiz', 'videos', 'music', 'speedQuiz', 'flashcards', 'essayTopics', 'essayGuide', 'pastEssayTopics'].includes(currentView)) {
     goDiscipline();
   } else {
     goHome();

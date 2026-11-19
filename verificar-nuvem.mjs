@@ -197,6 +197,26 @@ const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, cl
 });
 const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
+for (const discipline of ['biologia', 'sociologia']) {
+  run(`openDiscipline('${discipline}')`);
+  assert.match(element('appContainer').innerHTML, /flashcards-launch" onclick="openFlashcards\(\)">[\s\S]*?20 cartões/);
+  element('flashcardReveal').setAttribute = function (key, value) { this[key] = value; };
+  run('openFlashcards()');
+  const topics = new Set();
+  for (let i = 1; i <= 20; i++) {
+    assert.equal(element('flashcardPosition').textContent, `Cartão ${i} de 20`);
+    assert.equal(element('flashcardAnswer').hidden, true);
+    topics.add(element('flashcardTopic').textContent);
+    run('setFlashcardAnswerVisible(true)');
+    assert.equal(element('flashcardAnswer').hidden, false);
+    assert.ok(element('flashcardAnswer').textContent.trim());
+    run('changeFlashcard(1)');
+  }
+  assert.equal(topics.size, 20);
+  assert.equal(element('flashcardPosition').textContent, 'Cartão 1 de 20');
+  run('goBack()');
+  assert.equal(run('selectedDisciplineId'), discipline);
+}
 run('openStickerAlbum()');
 assert.doesNotMatch(element('appContainer').innerHTML, /<img/);
 run("openStickerBiography('geografia')");
