@@ -8237,6 +8237,65 @@ const SUMMARIES = {
       ]]
     ]
   },
+  'geografia|0|0|1': {
+    title: 'RESUMO: PROJEÇÕES CARTOGRÁFICAS',
+    sections: [
+      ['1. Por que os mapas apresentam distorções:', [
+        'Uma projeção cartográfica transforma as coordenadas da superfície curva da Terra em posições num plano. Ao fazer essa passagem, o cartógrafo precisa escolher quais propriedades conservar.',
+        'A finalidade do mapa orienta essa escolha. Para comparar a extensão de duas florestas, interessa preservar a proporção entre suas áreas. Para traçar uma rota marítima de rumo constante, interessa a representação dos ângulos.'
+      ]],
+      ['2. Projeções cilíndricas, cônicas e azimutais:', [
+        'Imagine um cilindro envolvendo o globo. Na posição normal, as projeções cilíndricas representam meridianos e paralelos como linhas retas que se cruzam em ângulo reto.',
+        'Nas projeções cônicas em posição normal, os paralelos formam arcos de círculo e os meridianos convergem. Essa disposição é útil para mapear territórios que se estendem de oeste a leste em latitudes médias.',
+        'Uma projeção azimutal representa a superfície em um plano e conserva as direções a partir do centro escolhido. Quando o centro é um polo, os meridianos se distribuem como os raios de uma roda.'
+      ]],
+      ['3. O que cada projeção conserva:', [
+        'Uma projeção conforme preserva os ângulos locais. Já uma equivalente conserva a proporção entre áreas. Nela, se uma ilha tem o dobro da área de outra, também ocupará o dobro do espaço no mapa, mesmo que seu contorno se deforme.',
+        'O termo equidistante exige atenção. Na projeção azimutal equidistante, por exemplo, é possível medir corretamente as distâncias do centro a qualquer ponto. Essa propriedade não se estende a qualquer par de cidades.'
+      ]],
+      ['4. Mercator e a navegação:', [
+        'Na projeção cilíndrica conforme de Mercator, uma rota que cruza todos os meridianos sob o mesmo ângulo aparece como uma reta. Isso facilitava o traçado de percursos de rumo constante nas cartas náuticas.',
+        'A ampliação das áreas cresce em direção aos polos. Por isso, a Groenlândia pode parecer tão extensa quanto a África nesse planisfério, embora o continente africano tenha uma área cerca de 14 vezes maior.'
+      ]],
+      ['5. Gall-Peters e a comparação entre territórios:', [
+        'Conhecida também como Peters, essa projeção cilíndrica equivalente mantém a proporção entre as áreas. Nela, a diferença de tamanho entre África e Groenlândia aparece na proporção real.',
+        'A preservação das áreas modifica os contornos. Próximo ao Equador, os territórios aparecem alongados no sentido norte-sul. Mercator e Peters mostram como duas projeções da mesma família podem servir a objetivos diferentes.'
+      ]],
+      ['6. Como interpretar um planisfério no ENEM:', [
+        'Antes de comparar dois mapas, observe o que mudou. Colocar o Pacífico no centro ou orientar o sul para cima altera a leitura visual, mas essas escolhas, por si sós, não identificam a projeção.',
+        'Procure a evidência que responde ao enunciado. Se a questão trata do tamanho dos continentes, compare áreas. Se mostra rotas partindo de uma cidade no centro de um mapa azimutal, observe se a legenda indica a preservação de direções, de distâncias ou de ambas.'
+      ]]
+    ]
+  },
+  'geografia|0|0|2': {
+    title: 'RESUMO: FUSOS HORÁRIOS',
+    sections: [
+      ['1. Rotação da Terra e hora solar:', [
+        'A Terra gira de oeste para leste. Por isso, o Sol atinge primeiro o ponto mais alto de seu percurso diário nos lugares situados mais a leste. Duas cidades no mesmo meridiano têm aproximadamente a mesma hora solar, mesmo que suas latitudes sejam diferentes.',
+        'Em cerca de 24 horas, a Terra completa uma rotação de aproximadamente 360°. Dividindo 360 por 24, chegamos a 15° de longitude por hora, ou quatro minutos por grau. No modelo teórico, 45° de diferença correspondem a três horas.'
+      ]],
+      ['2. Fusos teóricos e horários oficiais:', [
+        'No modelo teórico, o globo se divide em 24 faixas de 15° de longitude. O meridiano de Greenwich, de longitude 0°, passa pelo centro da faixa de referência.',
+        'Na prática, os governos definem os horários oficiais. Os limites podem acompanhar fronteiras e divisas estaduais. Ao resolver uma questão com um mapa de fusos oficiais, use os horários indicados na legenda.'
+      ]],
+      ['3. Como calcular a diferença pelo UTC:', [
+        'O Tempo Universal Coordenado (UTC) serve de referência para os relógios. Quando são 12h UTC, uma cidade em UTC−3 marca 9h, enquanto outra em UTC+2 marca 14h.',
+        'Para converter a hora entre cidades, desconte o fuso da origem e aplique o do destino. Uma transmissão às 20h em Brasília (UTC−3) começa às 23h UTC. Em uma cidade de fuso UTC+2, já será 1h do dia seguinte.'
+      ]],
+      ['4. Os quatro fusos do Brasil:', [
+        'Fernando de Noronha adota UTC−2. Brasília e a maior parte da população do país seguem UTC−3. Manaus e Cuiabá estão em UTC−4. O Acre e parte do oeste do Amazonas adotam UTC−5.',
+        'Uma prova marcada para as 13h pelo horário de Brasília começa no mesmo instante às 14h em Fernando de Noronha, às 12h em Manaus e às 11h em Rio Branco. Cada candidato precisa identificar qual cidade serve de referência no aviso.'
+      ]],
+      ['5. Viagens e duração de voos:', [
+        'Um avião sai de Brasília às 10h e chega a Rio Branco após três horas de voo. No momento do pouso, são 13h em Brasília. Como Rio Branco está duas horas atrás, o relógio do aeroporto de chegada marca 11h.',
+        'Quando a pergunta pede a duração da viagem, coloque partida e chegada no mesmo fuso antes de subtrair. Nesse voo, comparar diretamente 10h com 11h daria a impressão de que a viagem durou apenas uma hora.'
+      ]],
+      ['6. Linha Internacional de Data:', [
+        'No Pacífico, a Linha Internacional de Data acompanha aproximadamente o meridiano de 180°, com desvios para contornar territórios. Ao cruzá-la rumo a oeste, acrescenta-se um dia ao calendário. Rumo a leste, subtrai-se um dia.',
+        'Uma questão pode envolver mudança de data mesmo longe dessa linha. No exemplo da transmissão de Brasília, a cidade em UTC+2 já passou da meia-noite. Por isso, registre tanto a hora quanto o dia ao terminar o cálculo.'
+      ]]
+    ]
+  },
   'historia|0|0|0': {
     title: 'RESUMO: PALEOLÍTICO (IDADE DA PEDRA LASCADA)',
     sections: [
