@@ -7480,6 +7480,12 @@ let activeVideoId = null;
 let toastTimer = null;
 
 const MUSIC_TRACKS = {
+  portugues: [
+    {
+      topic: 'FIGURAS DE LINGUAGEM',
+      title: 'As palavras tem poesia'
+    }
+  ],
   historia: [
     {
       file: 'ferro-fumaca-e-revolucao',
@@ -9227,7 +9233,7 @@ function render() {
         <button type="button" class="video-launch-card music-launch-card" onclick="openMusic()">
           <span>
             <span class="video-launch-badge music-launch-badge">Músicas</span>
-            <span class="quiz-launch-title" style="display:block">Músicas para revisão de ${disc.name}</span>
+            <span class="quiz-launch-title" style="display:block">${disc.id === 'portugues' ? 'MÚSICAS PARA REVISÃO DE LÍNGUA PORTUGUESA' : `Músicas para revisão de ${disc.name}`}</span>
           </span>
           <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
         </button>
@@ -9379,14 +9385,14 @@ function render() {
     container.innerHTML = MUSIC_TRACKS[disc.id].map(({ file, topic, title, description }) => `
       <article class="music-card">
         <span class="video-launch-badge music-launch-badge">${topic}</span>
-        <h2 id="song-title-${file}">${title}</h2>
+        <h2${file ? ` id="song-title-${file}"` : ''}>${title}</h2>
         ${description ? `<p>${description}</p>` : ''}
-        <audio controls preload="metadata" aria-labelledby="song-title-${file}"
+        ${file ? `<audio controls preload="metadata" aria-labelledby="song-title-${file}"
           src="/audio/${file}.mp3"
           onerror="document.getElementById('song-error-${file}').hidden = false">
           Seu navegador não oferece suporte à reprodução de áudio.
         </audio>
-        <p id="song-error-${file}" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>
+        <p id="song-error-${file}" class="music-error" role="status" hidden>Não foi possível carregar a música. Verifique sua conexão e abra esta página novamente.</p>` : ''}
       </article>
     `).join('');
     window.scrollTo(0, 0);
