@@ -8206,6 +8206,37 @@ function getThemeStats(discId, theme, tIdx) {
 }
 
 const SUMMARIES = {
+  'geografia|0|0|0': {
+    title: 'RESUMO: ESCALAS CARTOGRÁFICAS E LEITURA DE CARTAS TOPOGRÁFICAS',
+    sections: [
+      ['1. O que a escala indica:', [
+        'A escala relaciona uma distância medida no mapa à distância horizontal correspondente no terreno. Uma carta topográfica usa essa relação para representar elementos como estradas, rios e formas de relevo.',
+        'Na escala numérica 1:25.000, cada unidade no papel equivale a 25.000 unidades no terreno. Assim, 1 cm na carta representa 25.000 cm, ou 250 m.'
+      ]],
+      ['2. Como calcular distâncias:', [
+        'Para passar do mapa ao terreno, multiplique a medida pelo denominador da escala. Se duas pontes estão separadas por 4 cm em linha reta numa carta de 1:50.000, a distância horizontal entre elas é de 200.000 cm, ou 2 km.',
+        'No sentido inverso, converta a distância real para a unidade desejada e divida pelo denominador. Uma estrada retilínea de 3 km corresponde a 300.000 cm no terreno e ocupa 6 cm numa carta de 1:50.000.',
+        'Também é possível descobrir a escala. Se 2 cm no mapa equivalem a 1 km no terreno, a razão é de 2 para 100.000. Dividindo os dois termos por 2, chega-se a 1:50.000.'
+      ]],
+      ['3. Escala grande e escala pequena:', [
+        'Quanto menor o denominador, maior a escala. Em folhas de mesmo tamanho, uma carta de 1:10.000 cobre uma área menor e permite mostrar mais detalhes que outra de 1:1.000.000.',
+        'Para localizar os pontos de alagamento de um bairro, interessa distinguir ruas e quarteirões. Para comparar as grandes bacias hidrográficas do Brasil, uma escala menor permite reunir o território nacional numa única folha.'
+      ]],
+      ['4. Escala gráfica e mudanças de tamanho:', [
+        'A escala gráfica é uma barra graduada. Se o trecho entre 0 e 1 km mede 2 cm, uma distância de 5 cm nesse mapa equivale a duas barras e meia, ou 2,5 km.',
+        'Quando a imagem inteira é ampliada ou reduzida na mesma proporção, a barra acompanha o desenho e continua válida. Já a escala numérica precisa ser recalculada. Se as dimensões de uma carta de 1:50.000 dobrarem na impressão, a nova escala será 1:25.000.'
+      ]],
+      ['5. Curvas de nível e declividade:', [
+        'Na carta topográfica, cada curva de nível une pontos de mesma altitude. A equidistância vertical é a diferença de altitude entre duas curvas consecutivas. Se elas marcam 100, 120 e 140 m, a equidistância é de 20 m.',
+        'Numa mesma carta, com equidistância constante, curvas próximas indicam uma encosta mais íngreme. Onde estão mais afastadas, percorre-se uma distância horizontal maior para vencer o mesmo desnível.',
+        'Para calcular a declividade em porcentagem, divida o desnível pela distância horizontal, ambos na mesma unidade, e multiplique por 100. Uma subida de 40 m em 500 m horizontais tem declividade de 8%.'
+      ]],
+      ['6. Percursos e áreas em questões do ENEM:', [
+        'Se a questão pede o percurso de uma estrada sinuosa, acompanhe as curvas, meça o traçado em pequenos trechos e some as medidas antes de aplicar a escala. Uma reta entre os extremos mede apenas a separação direta.',
+        'Em problemas de área, a escala se aplica às duas dimensões. Na escala 1:10.000, um terreno quadrado de 1 cm de lado no mapa mede 100 m de lado no terreno. Sua área real é de 10.000 m², equivalente a 1 hectare.'
+      ]]
+    ]
+  },
   'historia|0|0|0': {
     title: 'RESUMO: PALEOLÍTICO (IDADE DA PEDRA LASCADA)',
     sections: [
