@@ -7482,8 +7482,9 @@ let toastTimer = null;
 const MUSIC_TRACKS = {
   portugues: [
     {
+      file: 'as-palavras-tem-poesia',
       topic: 'FIGURAS DE LINGUAGEM',
-      title: 'As palavras tem poesia'
+      title: 'As palavras têm poesia'
     }
   ],
   historia: [
@@ -7702,6 +7703,7 @@ const FLASHCARDS = {
 let flashcardIndex = 0;
 
 function flashcardDeck(view, discipline) {
+  if (discipline === 'portugues') return { title: 'REVISÃO COM FLASHCARDS - LÍNGUA PORTUGUESA', cards: PORTUGUESE_FLASHCARDS };
   const brazil = view === 'brazilFlashcards';
   const title = discipline === 'historia'
     ? 'REVISÃO COM FLASHCARDS - HISTÓRIA ' + (brazil ? 'DO BRASIL' : 'GERAL')
