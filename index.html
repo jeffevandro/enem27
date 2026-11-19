@@ -7761,7 +7761,31 @@ const CHEMISTRY_FLASHCARDS = [
   ['Efeito estufa', 'Como o CO₂ liberado na queima de combustíveis fósseis contribui para intensificar o efeito estufa?', 'O CO₂ absorve parte da radiação infravermelha emitida pela superfície terrestre e a reemite em várias direções. O aumento de sua concentração dificulta a perda de energia para o espaço e favorece o aquecimento do planeta.']
 ];
 
+const MATH_FLASHCARDS = [
+  ['Frações', 'Uma escola tem 180 alunos. Se 2/3 deles usam o ônibus escolar, quantos alunos usam esse transporte?', '120 alunos. Um terço de 180 corresponde a 60 alunos. Dois terços correspondem a 2 × 60 = 120.'],
+  ['Conversão de unidades', 'Quantas garrafas de 250 mL podem ser enchidas com 1,5 L de suco?', '6 garrafas. Como 1 L equivale a 1.000 mL, temos 1.500 mL de suco. Dividindo 1.500 por 250, obtemos 6.'],
+  ['Equação do 1º grau', 'Três cadernos de mesmo preço e uma caneta de R$ 6 custaram R$ 42. Quanto custou cada caderno?', 'R$ 12. Se x é o preço de um caderno em reais, então 3x + 6 = 42. Os cadernos juntos custaram R$ 36. Dividindo esse valor por 3, chegamos a R$ 12 por caderno.'],
+  ['Razão', 'Uma tinta é preparada com 2 partes de pigmento azul para 3 partes de pigmento branco. De cada 10 medidas dessa mistura, quantas são de azul?', '4 medidas. Cada grupo de 5 medidas contém 2 de azul e 3 de branco. Em 10 medidas, a receita é duplicada.'],
+  ['Proporcionalidade inversa', 'Uma torneira enche um tanque em 12 minutos. Em quanto tempo duas torneiras iguais enchem o mesmo tanque vazio, cada uma mantendo a vazão original?', '6 minutos. Ao dobrar a vazão total, o tempo necessário para fornecer o mesmo volume cai pela metade.'],
+  ['Escala cartográfica', 'Em um mapa de escala 1:50.000, duas pontes estão a 4 cm uma da outra em linha reta. Qual é a distância real em quilômetros?', '2 km. Cada centímetro do mapa representa 50.000 cm no terreno, ou seja, 500 m. Os 4 cm representam 2.000 m, equivalentes a 2 km.'],
+  ['Porcentagem', 'Em uma turma de 40 alunos, 6 vão à escola de bicicleta. Qual é a porcentagem de ciclistas?', '15%. Divida a parte pelo total: 6 ÷ 40 = 0,15. Expressar essa fração em porcentagem equivale a dizer 15 em cada 100.'],
+  ['Descontos sucessivos', 'Um tênis de R$ 200 recebe dois descontos consecutivos de 10%. Qual é o preço final?', 'R$ 162. O primeiro desconto é de R$ 20 e reduz o preço para R$ 180. O segundo é calculado sobre R$ 180 e retira mais R$ 18.'],
+  ['Juros compostos', 'Uma aplicação de R$ 100 rende 10% ao ano em juros compostos. Sem depósitos, retiradas ou taxas, qual será o saldo após dois anos?', 'R$ 121. Ao fim do primeiro ano, o saldo é R$ 110. No segundo, os 10% incidem sobre esse saldo e acrescentam R$ 11.'],
+  ['Leitura de gráficos', 'Um gráfico de barras mostra 90 atendimentos em maio e 100 em junho. O eixo vertical começa em 80. Por que a barra de junho parece ter o dobro da altura?', 'Acima de 80, as alturas visíveis representam 10 e 20 unidades. O número de atendimentos aumentou de 90 para 100, um acréscimo de apenas 10. A origem do eixo altera a impressão visual.'],
+  ['Média ponderada', 'Uma prova de peso 1 teve nota 6, e outra de peso 3 teve nota 8. Qual é a média ponderada?', '7,5. Multiplique cada nota pelo seu peso e divida pela soma dos pesos: (6 × 1 + 8 × 3) ÷ 4 = 7,5.'],
+  ['Mediana', 'Quatro pessoas esperaram 18, 5, 12 e 8 minutos por um ônibus. Qual foi a mediana dos tempos?', '10 minutos. Em ordem crescente, os tempos são 5, 8, 12 e 18. Como há quatro valores, a mediana é a média dos dois centrais: (8 + 12) ÷ 2 = 10.'],
+  ['Amostra e representatividade', 'Uma escola quer saber como todos os alunos chegam às aulas, mas entrevista apenas quem entra pelo bicicletário. Que problema isso cria?', 'A escolha do local favorece a presença de ciclistas na amostra e pode superestimar o uso de bicicletas. Uma alternativa é sortear alunos a partir da lista de matrícula de toda a escola.'],
+  ['Probabilidade simples', 'Uma sacola contém 3 fichas azuis e 5 amarelas. Se cada ficha tem a mesma chance de ser retirada, qual é a probabilidade de sair uma azul?', '3/8, ou 37,5%. Há 3 resultados favoráveis entre 8 fichas igualmente prováveis.'],
+  ['Princípio fundamental da contagem', 'Uma cantina oferece 3 sanduíches e 4 sucos. Quantos lanches diferentes podem ser montados escolhendo um sanduíche e um suco?', '12 lanches. Cada um dos 3 sanduíches pode ser combinado com qualquer um dos 4 sucos. Pelo princípio da contagem, multiplicamos 3 × 4 = 12.'],
+  ['Função afim', 'Uma entrega custa R$ 5 de taxa fixa mais R$ 2 por quilômetro percorrido. Que função dá o preço em reais para uma distância de x quilômetros?', 'P(x) = 5 + 2x. O termo 5 representa a taxa fixa. O coeficiente 2 indica quanto o preço aumenta por quilômetro.'],
+  ['Progressão aritmética', 'A primeira fileira de um teatro tem 12 lugares, e cada fileira seguinte tem 3 lugares a mais. Quantos lugares há na quinta fileira?', '24 lugares. Da primeira à quinta fileira há quatro aumentos de 3 lugares. Portanto, 12 + 4 × 3 = 24.'],
+  ['Área e perímetro', 'Um jardim retangular mede 6 m por 4 m. Quanto de cerca é necessário para o contorno completo e que área será coberta por grama?', 'São 20 m de cerca e 24 m² de grama. Para o perímetro, somamos os quatro lados: 6 + 4 + 6 + 4 = 20. Para a área, multiplicamos 6 × 4 = 24.'],
+  ['Teorema de Pitágoras', 'Uma praça retangular tem lados de 30 m e 40 m. Quanto mede o caminho em linha reta entre dois vértices opostos?', '50 m. A diagonal é a hipotenusa de um triângulo retângulo. Seu quadrado é 30² + 40² = 2.500. Como 50² = 2.500, a diagonal mede 50 m.'],
+  ['Volume', 'Uma caixa retangular tem dimensões internas de 30 cm, 20 cm e 10 cm. Qual é sua capacidade em litros?', '6 L. Multiplicando as três dimensões, obtemos 6.000 cm³. Como 1.000 cm³ equivalem a 1 L, a caixa comporta 6 L.']
+];
+
 const FLASHCARDS = {
+  matematica: MATH_FLASHCARDS,
   quimica: CHEMISTRY_FLASHCARDS,
   tics: DIGITAL_CULTURE_FLASHCARDS,
   artes: ART_FLASHCARDS,
@@ -7775,6 +7799,7 @@ const FLASHCARDS = {
 let flashcardIndex = 0;
 
 function flashcardDeck(view, discipline) {
+  if (discipline === 'matematica') return { title: 'REVISÃO COM FLASHCARDS - MATEMÁTICA', cards: MATH_FLASHCARDS };
   if (discipline === 'quimica') return { title: 'REVISÃO COM FLASHCARDS - QUÍMICA', cards: CHEMISTRY_FLASHCARDS };
   if (discipline === 'tics') return { title: 'REVISÃO COM FLASHCARDS - TICs', cards: DIGITAL_CULTURE_FLASHCARDS };
   if (discipline === 'artes') return { title: 'REVISÃO COM FLASHCARDS - ARTES', cards: ART_FLASHCARDS };
