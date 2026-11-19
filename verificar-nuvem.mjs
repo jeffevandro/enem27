@@ -197,7 +197,7 @@ const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, cl
 });
 const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
-for (const discipline of ['biologia', 'sociologia', 'filosofia', 'literatura']) {
+for (const discipline of ['biologia', 'sociologia', 'filosofia', 'literatura', 'historia']) {
   run(`openDiscipline('${discipline}')`);
   assert.match(element('appContainer').innerHTML, /flashcards-launch" onclick="openFlashcards\(\)">[\s\S]*?20 cartões/);
   element('flashcardReveal').setAttribute = function (key, value) { this[key] = value; };
