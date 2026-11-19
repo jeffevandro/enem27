@@ -197,11 +197,23 @@ const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, cl
 });
 const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
-for (const discipline of ['biologia', 'sociologia', 'filosofia', 'literatura', 'historia']) {
+for (const [discipline, view] of [
+  ['biologia', 'flashcards'], ['sociologia', 'flashcards'], ['filosofia', 'flashcards'],
+  ['literatura', 'flashcards'], ['historia', 'flashcards'], ['historia', 'brazilFlashcards']
+]) {
   run(`openDiscipline('${discipline}')`);
-  assert.match(element('appContainer').innerHTML, /flashcards-launch" onclick="openFlashcards\(\)">[\s\S]*?20 cartões/);
+  const action = `openFlashcards('${view}')`;
+  const card = element('appContainer').innerHTML.split('<button').find(button => button.includes(`onclick="${action}"`));
+  assert.ok(card?.includes('20 cartões'));
   element('flashcardReveal').setAttribute = function (key, value) { this[key] = value; };
-  run('openFlashcards()');
+  run(action);
+  if (discipline === 'historia') {
+    const brazil = view === 'brazilFlashcards';
+    const title = 'REVISÃO COM FLASHCARDS - HISTÓRIA ' + (brazil ? 'DO BRASIL' : 'GERAL');
+    assert.ok(card.includes(title));
+    assert.equal(element('headerTitle').textContent, title);
+    assert.equal(element('flashcardTopic').textContent, brazil ? 'Povos indígenas antes de 1500' : 'Egito e Mesopotâmia');
+  }
   const topics = new Set();
   for (let i = 1; i <= 20; i++) {
     assert.equal(element('flashcardPosition').textContent, `Cartão ${i} de 20`);
