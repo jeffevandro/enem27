@@ -290,6 +290,7 @@
 
   .past-exams { display: grid; gap: 28px; }
   .history-exams section + section { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .history-exams p:has(+ button[aria-controls]) { margin-bottom: 1lh; }
   .matrix-content p, .essay-topics-content p { color: var(--text); font-size: 17px; line-height: 1.65; }
   .matrix-content h2:not(:first-child), .essay-topics-content h2 { margin-top: 32px; }
   .essay-topics-content > p:first-child { margin-top: 0; }
