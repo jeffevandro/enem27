@@ -200,7 +200,8 @@ run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
 for (const [discipline, view] of [
   ['biologia', 'flashcards'], ['sociologia', 'flashcards'], ['filosofia', 'flashcards'],
   ['literatura', 'flashcards'], ['artes', 'flashcards'], ['tics', 'flashcards'], ['quimica', 'flashcards'],
-  ['matematica', 'flashcards'], ['fisica', 'flashcards'], ['historia', 'flashcards'], ['historia', 'brazilFlashcards']
+  ['matematica', 'flashcards'], ['fisica', 'flashcards'], ['lingua_estrangeira', 'flashcards'],
+  ['historia', 'flashcards'], ['historia', 'brazilFlashcards']
 ]) {
   run(`openDiscipline('${discipline}')`);
   const action = `openFlashcards('${view}')`;
@@ -208,6 +209,10 @@ for (const [discipline, view] of [
   assert.ok(card?.includes('20 cartões'));
   element('flashcardReveal').setAttribute = function (key, value) { this[key] = value; };
   run(action);
+  if (discipline === 'lingua_estrangeira') {
+    assert.ok(card.includes('REVISÃO COM FLASHCARDS - INGLÊS'));
+    assert.equal(element('headerTitle').textContent, 'REVISÃO COM FLASHCARDS - INGLÊS');
+  }
   if (discipline === 'historia') {
     const brazil = view === 'brazilFlashcards';
     const title = 'REVISÃO COM FLASHCARDS - HISTÓRIA ' + (brazil ? 'DO BRASIL' : 'GERAL');
