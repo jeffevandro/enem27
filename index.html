@@ -7738,7 +7738,31 @@ const DIGITAL_CULTURE_FLASHCARDS = [
   ['Ética e decisão automatizada', 'Um detector de textos gerados por IA atribui alta probabilidade de uso da ferramenta a uma redação. Seria justo aplicar uma punição apenas com esse resultado?', 'Uma estimativa pode estar errada e, sozinha, não comprova como o texto foi escrito. Uma avaliação responsável considera rascunhos e versões anteriores, ouve o estudante e permite que ele explique seu processo de escrita.']
 ];
 
+const CHEMISTRY_FLASHCARDS = [
+  ['Densidade', 'Duas peças têm a mesma massa. A que ocupa menor volume tem maior ou menor densidade?', 'Maior. A densidade é a massa dividida pelo volume. Se duas peças têm 100 g cada, a que ocupa 20 cm³ tem densidade de 5 g/cm³, enquanto a que ocupa 50 cm³ tem densidade de 2 g/cm³.'],
+  ['Separação de misturas', 'Como recuperar, separadamente, a areia e o sal de uma mistura usando água?', 'Adicione água suficiente para dissolver o sal e filtre a mistura. A areia fica retida no filtro. Ao evaporar a água do líquido filtrado, recupera-se o sal sólido.'],
+  ['Conservação da massa', 'Uma reação libera gás dentro de um frasco fechado. O que acontece com a massa total indicada pela balança?', 'Ela permanece a mesma. Pela lei de Lavoisier, a massa total se conserva em uma reação química. O gás formado continua dentro do frasco e também é pesado.'],
+  ['Balanceamento de equações', 'Que números completam a equação “__ H₂ + __ O₂ → __ H₂O” com os menores coeficientes inteiros?', '2 H₂ + O₂ → 2 H₂O. Em cada lado há quatro átomos de hidrogênio e dois de oxigênio. Para balancear, ajustamos os números antes das fórmulas. Alterar os índices mudaria a identidade das substâncias.'],
+  ['Tabela periódica', 'O magnésio tem número atômico 12. Qual informação esse número fornece sobre qualquer átomo ou íon de magnésio?', 'O núcleo contém 12 prótons. O número de prótons identifica o elemento e determina sua posição na sequência da tabela periódica. Ao formar um íon, o magnésio ganha ou perde elétrons e conserva seus prótons.'],
+  ['Ligações químicas', 'Que tipo de ligação mantém unidos os íons do sal de cozinha e que tipo une o oxigênio aos hidrogênios em uma molécula de água?', 'No sal (NaCl), a atração entre íons Na⁺ e Cl⁻ forma uma rede iônica. Na molécula de água (H₂O), oxigênio e hidrogênio compartilham pares de elétrons em ligações covalentes.'],
+  ['Polaridade', 'Por que o óleo de cozinha se mistura tão pouco com a água?', 'A água é polar, enquanto no óleo predominam longas cadeias apolares. As interações entre água e óleo são pouco favoráveis à mistura. Por isso, os líquidos tendem a formar duas fases.'],
+  ['Neutralização', 'Quais produtos se formam quando o ácido clorídrico (HCl) reage com o hidróxido de sódio (NaOH) em água?', 'Formam-se cloreto de sódio e água: HCl + NaOH → NaCl + H₂O. No modelo iônico, H₃O⁺ e OH⁻ reagem formando água, enquanto Na⁺ e Cl⁻ permanecem dissolvidos.'],
+  ['Escala de pH', 'A 25 °C, uma solução tem pH 3 e outra tem pH 5. Qual é mais ácida?', 'A de pH 3. Quanto menor o pH, maior a acidez. Como a escala é logarítmica, em soluções aquosas diluídas essa diferença de duas unidades corresponde a uma concentração de H₃O⁺ aproximadamente 100 vezes maior.'],
+  ['Mol e massa molar', 'Se a massa molar da água é aproximadamente 18 g/mol, quantos mols de água há em 36 g?', 'Há aproximadamente 2 mol de água. Divida a massa da amostra pela massa molar: 36 g ÷ 18 g/mol = 2 mol. O mol expressa a quantidade de matéria.'],
+  ['Concentração comum', 'Uma solução contém 5 g de sal em um volume final de 250 mL. Qual é a concentração em g/L?', '20 g/L. Converta o volume da solução para litros (0,250 L) e divida a massa de sal por esse volume: 5 g ÷ 0,250 L = 20 g/L.'],
+  ['Diluição', 'Uma amostra de suco contém 6 g de açúcar em 100 mL. Adiciona-se água até completar 300 mL. O que muda na massa de açúcar e na concentração?', 'A massa de açúcar continua em 6 g. Como o volume final triplica, a concentração cai para um terço da inicial, passando de 60 g/L para 20 g/L.'],
+  ['Trocas de calor', 'A fusão do gelo e a combustão do etanol absorvem ou liberam calor?', 'O gelo absorve calor do ambiente para passar ao estado líquido. A fusão é um processo endotérmico. Na combustão, o etanol reage com oxigênio e libera calor para o ambiente. Essa reação é exotérmica.'],
+  ['Velocidade das reações', 'Por que a mesma quantidade de um comprimido efervescente reage mais depressa com a água quando está triturada?', 'Ao triturar o comprimido, aumenta-se a superfície exposta à água. Mantidas as demais condições, mais material pode se dissolver e participar da reação ao mesmo tempo.'],
+  ['Oxirredução', 'Na transformação Zn → Zn²⁺ + 2 e⁻, o zinco sofre oxidação ou redução?', 'Oxidação, pois cada átomo de zinco perde dois elétrons. Em uma reação de oxirredução, outra espécie recebe os elétrons e sofre redução.'],
+  ['Pilhas', 'De onde vem a energia que mantém a corrente elétrica em uma pilha ligada a uma lanterna?', 'Uma reação espontânea de oxirredução converte energia química em energia elétrica. A oxidação libera elétrons no ânodo. Eles percorrem o circuito externo até o cátodo, onde ocorre a redução.'],
+  ['Funções orgânicas', 'O etanol (CH₃CH₂OH) e o ácido acético (CH₃COOH) contêm oxigênio. Que grupo permite distinguir suas funções?', 'No etanol, a hidroxila (–OH) ligada a um carbono saturado caracteriza a função álcool. No ácido acético, o grupo carboxila (–COOH) caracteriza a função ácido carboxílico.'],
+  ['Polímeros', 'O que o prefixo “poli” indica no nome polietileno, material usado em muitas embalagens?', 'Indica que a molécula contém muitas unidades repetidas. Na produção do polietileno, moléculas de eteno se unem e formam longas cadeias com a unidade de repetição –CH₂–CH₂–.'],
+  ['Tratamento da água', 'Em uma estação de tratamento, por que a água passa por desinfecção mesmo depois de filtrada?', 'A filtração retém partículas e pode remover parte dos microrganismos. A desinfecção, feita por exemplo com cloro, inativa microrganismos que ainda podem estar presentes. Cada etapa cumpre uma função no tratamento.'],
+  ['Efeito estufa', 'Como o CO₂ liberado na queima de combustíveis fósseis contribui para intensificar o efeito estufa?', 'O CO₂ absorve parte da radiação infravermelha emitida pela superfície terrestre e a reemite em várias direções. O aumento de sua concentração dificulta a perda de energia para o espaço e favorece o aquecimento do planeta.']
+];
+
 const FLASHCARDS = {
+  quimica: CHEMISTRY_FLASHCARDS,
   tics: DIGITAL_CULTURE_FLASHCARDS,
   artes: ART_FLASHCARDS,
   portugues: PORTUGUESE_FLASHCARDS,
@@ -7751,6 +7775,7 @@ const FLASHCARDS = {
 let flashcardIndex = 0;
 
 function flashcardDeck(view, discipline) {
+  if (discipline === 'quimica') return { title: 'REVISÃO COM FLASHCARDS - QUÍMICA', cards: CHEMISTRY_FLASHCARDS };
   if (discipline === 'tics') return { title: 'REVISÃO COM FLASHCARDS - TICs', cards: DIGITAL_CULTURE_FLASHCARDS };
   if (discipline === 'artes') return { title: 'REVISÃO COM FLASHCARDS - ARTES', cards: ART_FLASHCARDS };
   if (discipline === 'portugues') return { title: 'REVISÃO COM FLASHCARDS - LÍNGUA PORTUGUESA', cards: PORTUGUESE_FLASHCARDS };

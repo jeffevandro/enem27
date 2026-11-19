@@ -199,7 +199,8 @@ const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
 for (const [discipline, view] of [
   ['biologia', 'flashcards'], ['sociologia', 'flashcards'], ['filosofia', 'flashcards'],
-  ['literatura', 'flashcards'], ['artes', 'flashcards'], ['tics', 'flashcards'], ['historia', 'flashcards'], ['historia', 'brazilFlashcards']
+  ['literatura', 'flashcards'], ['artes', 'flashcards'], ['tics', 'flashcards'], ['quimica', 'flashcards'],
+  ['historia', 'flashcards'], ['historia', 'brazilFlashcards']
 ]) {
   run(`openDiscipline('${discipline}')`);
   const action = `openFlashcards('${view}')`;
