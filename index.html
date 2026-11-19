@@ -7784,7 +7784,31 @@ const MATH_FLASHCARDS = [
   ['Volume', 'Uma caixa retangular tem dimensões internas de 30 cm, 20 cm e 10 cm. Qual é sua capacidade em litros?', '6 L. Multiplicando as três dimensões, obtemos 6.000 cm³. Como 1.000 cm³ equivalem a 1 L, a caixa comporta 6 L.']
 ];
 
+const PHYSICS_FLASHCARDS = [
+  ['Unidades de velocidade', 'Um ônibus viaja a 72 km/h. Quantos metros ele percorre por segundo nessa velocidade?', '20 metros por segundo (20 m/s). Em uma hora, ele percorre 72.000 m. Como uma hora tem 3.600 s, a divisão é 72.000 ÷ 3.600 = 20.'],
+  ['Distância e deslocamento', 'Uma aluna caminha 300 m para leste e depois 100 m para oeste. Qual é o seu deslocamento em relação ao ponto de partida?', '200 m para leste. O deslocamento considera a posição inicial e a final, com direção e sentido. Já a distância percorrida soma os dois trechos e vale 400 m.'],
+  ['Movimento retilíneo uniforme', 'Um trem segue em linha reta a 15 m/s, com velocidade constante. Que distância percorre em 8 s?', '120 m. No movimento retilíneo uniforme, a distância percorrida é o produto da rapidez pelo tempo: 15 m/s × 8 s = 120 m.'],
+  ['Aceleração', 'Em uma pista reta, a velocidade de um ciclista aumenta de 4 m/s para 10 m/s em 3 s, no mesmo sentido. Qual é a aceleração média nesse intervalo?', '2 m/s² no sentido do movimento. A velocidade aumentou 6 m/s em 3 s. Dividindo a variação da velocidade pelo tempo, obtemos 6 ÷ 3 = 2.'],
+  ['Inércia', 'Por que um passageiro em pé tende a se inclinar para a frente quando o ônibus freia?', 'Por inércia, o corpo tende a manter a velocidade que tinha antes da frenagem. Enquanto os pés desaceleram pelo contato com o piso, a parte superior do corpo tende a continuar avançando.'],
+  ['Força resultante', 'Um carrinho de 4 kg está sujeito a uma força resultante constante de 12 N para a direita. Qual é sua aceleração?', '3 m/s² para a direita. Pela segunda lei de Newton, dividimos a força resultante pela massa: 12 N ÷ 4 kg = 3 m/s². A aceleração tem a direção e o sentido da resultante.'],
+  ['Energia mecânica', 'Uma bola é solta do repouso. Desprezando a resistência do ar, como suas energias variam durante a queda?', 'À medida que a altura diminui, a energia potencial gravitacional do sistema bola–Terra diminui e a energia cinética da bola aumenta. A soma dessas energias permanece constante durante a queda.'],
+  ['Pressão', 'Por que uma pessoa afunda menos na neve quando usa raquetes largas nos pés?', 'As raquetes distribuem a força sobre uma área maior. Para a mesma força perpendicular à superfície, a pressão média diminui quando a área de contato aumenta.'],
+  ['Empuxo', 'Um barco flutua parado em água tranquila. Como o empuxo se compara ao peso do barco?', 'As duas forças têm o mesmo módulo e sentidos opostos. A água exerce empuxo para cima e a Terra exerce a força peso para baixo. O empuxo corresponde ao peso da água deslocada.'],
+  ['Calor e temperatura', 'Uma colher fria é colocada em uma sopa quente. Em que sentido ocorre a transferência espontânea de energia por calor?', 'Da sopa, de maior temperatura, para a colher, de menor temperatura. Calor é a energia transferida em razão dessa diferença de temperatura.'],
+  ['Propagação do calor', 'Como a energia emitida pelo Sol atravessa o espaço e chega à Terra?', 'Por irradiação. A energia é transportada por ondas eletromagnéticas, que podem se propagar no vácuo. Condução e convecção exigem um meio material.'],
+  ['Calor latente', 'Gelo puro e água líquida coexistem a 0 °C sob pressão de 1 atm. Para onde vai a energia fornecida durante a fusão?', 'A energia é usada na passagem do estado sólido para o líquido. Enquanto as duas fases permanecem em equilíbrio nessa pressão, a temperatura continua em 0 °C. Essa transferência de energia está associada ao calor latente de fusão.'],
+  ['Velocidade de uma onda', 'Ondas na superfície da água passam por um ponto com frequência de 3 Hz. A distância entre cristas consecutivas é 2 m. Qual é a velocidade de propagação?', '6 m/s. A distância entre cristas consecutivas é o comprimento de onda. Multiplicamos a frequência pelo comprimento de onda: 3 Hz × 2 m = 6 m/s.'],
+  ['Eco', 'Uma pessoa ouve o eco de um grito 2 s depois de emiti-lo, diante de um paredão. Se o som se propaga a 340 m/s, a que distância está o paredão?', '340 m. Em 2 s, o som percorreu 680 m na ida e na volta. A distância até o paredão corresponde à metade desse percurso.'],
+  ['Espelho plano', 'Uma pessoa está a 1,5 m de um espelho plano. A que distância da pessoa parece estar sua imagem?', '3 m. A imagem é virtual e parece estar 1,5 m atrás do espelho. Somando essa distância aos 1,5 m entre a pessoa e o espelho, obtemos 3 m.'],
+  ['Refração da luz', 'Por que um canudo parcialmente mergulhado na água parece dobrado quando visto de lado?', 'A luz que vem da parte submersa muda de velocidade ao passar da água para o ar. Ao cruzar a superfície obliquamente, ela também muda de direção. Por isso, a parte submersa parece deslocada.'],
+  ['Corrente elétrica', 'Em 3 s, uma carga total de 12 C atravessa uma seção de um fio em um único sentido. Qual é a intensidade média da corrente?', '4 A. Dividimos a carga pelo intervalo de tempo: 12 C ÷ 3 s = 4 A. Um ampere corresponde à passagem de um coulomb por segundo.'],
+  ['Lei de Ohm', 'Um resistor de 6 Ω está submetido a uma tensão de 12 V. Qual é a intensidade da corrente que o atravessa?', '2 A. Pela lei de Ohm, dividimos a tensão pela resistência: 12 V ÷ 6 Ω = 2 A. O símbolo Ω representa o ohm, unidade de resistência elétrica.'],
+  ['Consumo de energia elétrica', 'Um aparelho de potência constante de 1.500 W funciona por 2 h. Qual é o consumo em quilowatt-hora?', '3 kWh. Primeiro, convertemos 1.500 W em 1,5 kW. Depois, multiplicamos a potência pelo tempo: 1,5 kW × 2 h = 3 kWh.'],
+  ['Indução eletromagnética', 'Um ímã se aproxima de uma bobina ligada a um medidor, formando um circuito fechado. Por que o medidor pode indicar corrente durante a aproximação?', 'A aproximação faz variar o fluxo magnético através da bobina. Essa variação induz uma tensão e, como o circuito está fechado, pode circular corrente elétrica.']
+];
+
 const FLASHCARDS = {
+  fisica: PHYSICS_FLASHCARDS,
   matematica: MATH_FLASHCARDS,
   quimica: CHEMISTRY_FLASHCARDS,
   tics: DIGITAL_CULTURE_FLASHCARDS,
@@ -7799,6 +7823,7 @@ const FLASHCARDS = {
 let flashcardIndex = 0;
 
 function flashcardDeck(view, discipline) {
+  if (discipline === 'fisica') return { title: 'REVISÃO COM FLASHCARDS - FÍSICA', cards: PHYSICS_FLASHCARDS };
   if (discipline === 'matematica') return { title: 'REVISÃO COM FLASHCARDS - MATEMÁTICA', cards: MATH_FLASHCARDS };
   if (discipline === 'quimica') return { title: 'REVISÃO COM FLASHCARDS - QUÍMICA', cards: CHEMISTRY_FLASHCARDS };
   if (discipline === 'tics') return { title: 'REVISÃO COM FLASHCARDS - TICs', cards: DIGITAL_CULTURE_FLASHCARDS };
