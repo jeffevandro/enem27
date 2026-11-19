@@ -148,7 +148,6 @@
     outline: 2px solid #71B8F5;
     outline-offset: 3px;
   }
-  .tiles-grid > .video-launch-card { grid-column: 1 / -1; }
   .useful-sites { display: grid; gap: 16px; }
   .sticker-album-intro { margin: 0 0 22px; line-height: 1.6; color: var(--text-muted); }
   .sticker-album-intro h2 { color: var(--text); font-size: 20px; margin: 0 0 10px; }
@@ -10529,14 +10528,7 @@ function render() {
         </button>
       `;
     });
-    html += `
-      <button type="button" class="video-launch-card music-launch-card" onclick="openCurrentAffairs()">
-        <span>
-          <span class="video-launch-badge music-launch-badge">ATUALIDADE</span>
-          <span class="quiz-launch-title" style="display:block">Entenda os principais temas do mundo contemporâneo</span>
-        </span>
-        <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-      </button>`;
+    html += '<button type="button" class="useful-links-tile" onclick="openCurrentAffairs()">ATUALIDADE</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openPastExams()">PROVAS E GABARITOS DE ANOS ANTERIORES</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openStickerAlbum()">ÁLBUM DE FIGURINHAS</button>';
