@@ -323,10 +323,9 @@
   .study-status:empty { margin: 0; }
   .study-status.is-thinking { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden;
     clip-path: inset(50%); white-space: nowrap; }
-  .study-launch { grid-column: 1 / -1; text-align: left; }
   .study-answer { margin-top: 24px; }
   .study-answer p { overflow-wrap: anywhere; }
-  .study-explanation { white-space: pre-line; line-height: 1.65; }
+  .study-answer .study-explanation { font-size: 18px; white-space: pre-line; line-height: 1.65; }
   .study-sources { display: flex; flex-wrap: wrap; gap: 8px; }
   .study-answer button { text-align: left; overflow-wrap: anywhere; }
   .info-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
@@ -13918,13 +13917,7 @@ function render() {
         </button>
       `;
     });
-    html += `<button type="button" class="video-launch-card music-launch-card study-launch" onclick="openStudyHelp()">
-      <span>
-        <span class="video-launch-badge music-launch-badge">Tira-dúvidas do ENEM</span>
-        <span class="quiz-launch-title" style="display:block">Faça perguntas sobre os temas do ENEM</span>
-      </span>
-      <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-    </button>`;
+    html += '<button type="button" class="useful-links-tile" onclick="openStudyHelp()"><span aria-hidden="true">&#10022;</span> TIRE SUAS DÚVIDAS COM NOSSA IA</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openCurrentAffairs()">ATUALIDADES</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openUsefulLinks()">LINKS ÚTEIS - ENEM 2027</button>';
     html += '<button type="button" class="useful-links-tile" onclick="openPastExams()">PROVAS E GABARITOS DE ANOS ANTERIORES</button>';

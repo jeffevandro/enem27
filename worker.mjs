@@ -5,7 +5,7 @@ import { studyTerms } from './tira-duvidas-termos.mjs';
 const validKeys = new Set(VALID_KEYS);
 let keyCache = { issuer: '', until: 0, keys: [] };
 const STUDY_MODEL = '@cf/google/gemma-4-26b-a4b-it';
-const STUDY_ACCOUNT_LIMIT = 8;
+const STUDY_ACCOUNT_LIMIT = 20;
 const STUDY_APP_LIMIT = 200;
 const studyTables = new WeakMap();
 const STUDY_OVERRIDE = /\b(?:ignore|desconsidere|esqueça)\s+(?:(?:todas?|todos?|as|os|suas?|seus?|anteriores)\s+){0,6}(?:instruções|regras|restrições|limites)\b/iu;

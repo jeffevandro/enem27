@@ -143,15 +143,15 @@ assert.equal(db.prepare('SELECT COUNT(*) as total FROM study_quota WHERE length(
 db.prepare('INSERT INTO study_quota (day, account) VALUES (?, ?)').run('2000-01-01', 'old');
 env.AI.run = async () => aiAnswer(mruExplanation, [1]);
 const aliceUsed = db.prepare('SELECT COUNT(*) as total FROM study_quota WHERE day = ?').get(studyDay).total;
-const parallel = await Promise.all(Array.from({ length: 10 }, () => ask(mruQuestion)));
-assert.equal(parallel.filter(response => response.status === 200).length, 8 - aliceUsed);
+const parallel = await Promise.all(Array.from({ length: 22 }, () => ask(mruQuestion)));
+assert.equal(parallel.filter(response => response.status === 200).length, 20 - aliceUsed);
 assert.equal(parallel.filter(response => response.status === 429).length, 2 + aliceUsed);
 assert.equal(db.prepare("SELECT COUNT(*) as total FROM study_quota WHERE account = 'old'").get().total, 0);
 assert.equal((await ask(mruQuestion)).status, 429);
 assert.equal((await ask(mruQuestion, 'fisica', bob)).status, 200);
 db.prepare(`INSERT INTO study_quota (day, account)
   SELECT ?, 'outras-contas' FROM json_each(?)
-`).run(studyDay, JSON.stringify(Array(191).fill(1)));
+`).run(studyDay, JSON.stringify(Array(179).fill(1)));
 assert.equal((await ask(mruQuestion, 'fisica', bob)).status, 429);
 for (const filename of fs.readdirSync(new URL('./public/audio/', import.meta.url)).filter(name => name.endsWith('.mp3'))) {
 const musicPath = '/audio/' + filename;
@@ -296,7 +296,9 @@ const ctx = vm.createContext({ console, AbortController, setTimeout: () => 1, cl
 });
 const run = s => vm.runInContext(s, ctx);
 run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
-assert.match(element('appContainer').innerHTML, /openStudyHelp\(\)/);
+const homeMarkup = element('appContainer').innerHTML;
+assert.match(homeMarkup, /class="useful-links-tile" onclick="openStudyHelp\(\)"><span aria-hidden="true">&#10022;<\/span> TIRE SUAS DÚVIDAS COM NOSSA IA<\/button>/);
+assert.ok(homeMarkup.indexOf('openStudyHelp()') < homeMarkup.indexOf('openCurrentAffairs()'));
 run('openStudyHelp()');
 assert.equal(element('headerTitle').textContent, 'Tira-dúvidas do ENEM');
 const studyMarkup = element('appContainer').innerHTML;
