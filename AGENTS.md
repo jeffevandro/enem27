@@ -4,6 +4,8 @@ Em resumos de qualquer disciplina, sempre que o estudante precisar conhecer a de
 
 Em todos os novos resumos, mantenha os tópicos centrados no conteúdo do tema. Não inclua seções sobre como o assunto cai no ENEM, dicas de prova ou orientações para responder questões.
 
+Em resumos e demais conteúdos do ENEM27, escreva em português do Brasil e use a nomenclatura mais comum nos livros didáticos brasileiros do Ensino Médio. O material é voltado a estudantes brasileiros que vão prestar o ENEM. Em Física, por exemplo, prefira “velocidade escalar média” ao tratar da distância total percorrida dividida pelo intervalo de tempo e explicite a distinção em relação à velocidade vetorial média quando ela for relevante.
+
 Padrão de cards do ENEM27
 
 Em qualquer área do aplicativo, use o card “Quiz de História” em index.html como modelo para cada novo card de navegação. Reutilize a estrutura do botão e as classes do modelo, com o nome na etiqueta superior, a descrição em destaque logo abaixo e a seta à direita. Preserve as cores, a tipografia e o espaçamento definidos pelas classes do modelo.
