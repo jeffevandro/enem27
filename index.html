@@ -303,7 +303,26 @@
   .contact-form button { justify-self: start; }
   .contact-form [role="status"] { color: #ffb4ab; }
   .contact-form [role="status"].sent { color: #84df99; }
-  .study-form select { width: 100%; padding: 12px; background: var(--bg); color: var(--text); border: 1px solid #777; font: inherit; }
+  .study-form { gap: 12px; margin-top: 0; }
+  .study-form label { font-weight: 600; }
+  .study-form textarea { border-radius: 12px; }
+  .study-form button { min-width: 96px; }
+  .study-form button:disabled { opacity: 0.65; cursor: wait; }
+  .study-thinking:not([hidden]) { display: flex; align-items: center; gap: 6px; margin-top: 20px; }
+  .study-thinking span { width: 7px; height: 7px; border-radius: 50%; background: var(--text);
+    animation: study-dot 1.2s ease-in-out infinite; }
+  .study-thinking span:nth-child(2) { animation-delay: 0.15s; }
+  .study-thinking span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes study-dot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .study-thinking span { animation: none; }
+  }
+  .study-status:empty { margin: 0; }
+  .study-status.is-thinking { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap; }
   .study-launch { grid-column: 1 / -1; text-align: left; }
   .study-answer { margin-top: 24px; }
   .study-answer p { overflow-wrap: anywhere; }
@@ -13920,26 +13939,17 @@ function render() {
   if (currentView === 'studyHelp') {
     subEl.textContent = 'Organizador de Estudos';
     titleEl.textContent = 'Tira-dúvidas do ENEM';
-    breadEl.textContent = 'Respostas com base no material do ENEM27';
+    breadEl.textContent = '';
     footer.style.display = 'flex';
     footerBadge.style.display = 'none';
     container.innerHTML = `<section class="useful-site-card">
-      <p>Faça uma pergunta e receba uma explicação escrita pela IA com base nos materiais de estudo do ENEM27.</p>
       <form class="contact-form study-form" onsubmit="submitStudyQuestion(event)">
-        <label>Disciplina
-          <select name="discipline">
-            <option value="">Todas as disciplinas</option>
-            ${CURRICULUM.map(disc => `<option value="${disc.id}">${disc.name}</option>`).join('')}
-          </select>
-        </label>
-        <label>Sua pergunta
-          <textarea name="question" rows="4" minlength="4" maxlength="500" required aria-describedby="studyHelpHint"
-            placeholder="Exemplo: qual é a diferença entre MRU e MRUV?"></textarea>
-        </label>
-        <p id="studyHelpHint">Até 8 consultas por dia, conforme a disponibilidade. Evite incluir dados pessoais.</p>
-        <button type="submit" class="btn-primary">Enviar pergunta</button>
+        <label for="studyQuestion">Faça sua pergunta sobre as disciplinas do ENEM</label>
+        <textarea id="studyQuestion" name="question" rows="4" minlength="4" maxlength="500" required></textarea>
+        <button type="submit" class="btn-primary">Enviar</button>
       </form>
-      <p id="studyStatus" role="status"></p>
+      <div id="studyThinking" class="study-thinking" aria-hidden="true" hidden><span></span><span></span><span></span></div>
+      <p id="studyStatus" class="study-status" role="status"></p>
       <div id="studyAnswer" class="study-answer" role="region" aria-label="Resposta" tabindex="-1" hidden></div>
     </section>`;
     window.scrollTo(0, 0);
@@ -14735,16 +14745,19 @@ async function submitStudyQuestion(event) {
   const submit = form.querySelector('button[type="submit"]');
   if (submit.disabled) return;
   const status = document.getElementById('studyStatus');
+  const thinking = document.getElementById('studyThinking');
   const answer = document.getElementById('studyAnswer');
   const fields = new FormData(form);
   submit.disabled = true;
   answer.hidden = true;
   answer.replaceChildren();
+  thinking.hidden = false;
+  status.classList.add('is-thinking');
   status.textContent = 'Preparando sua resposta…';
   try {
     const result = await api('/api/tira-duvidas', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ discipline: fields.get('discipline'), question: fields.get('question') })
+      body: JSON.stringify({ discipline: '', question: fields.get('question') })
     }, 'A consulta demorou mais que o esperado. Tente novamente.');
     if (!form.isConnected) return;
     if (!result.answer || !result.passages.length) {
@@ -14774,7 +14787,11 @@ async function submitStudyQuestion(event) {
     answer.focus();
   } catch (error) {
     if (form.isConnected) status.textContent = error.message;
-  } finally { submit.disabled = false; }
+  } finally {
+    thinking.hidden = true;
+    status.classList.remove('is-thinking');
+    submit.disabled = false;
+  }
 }
 
 function openUsefulLinks() {
