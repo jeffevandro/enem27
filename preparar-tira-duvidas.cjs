@@ -103,6 +103,11 @@ function buildStudyIndex(html, curriculum, brazilHistory, brazilHistoryComplemen
       add(discipline, `Flashcard · ${topic}`, question, answer, { flashcard: index, view });
     });
   }
+  for (const [, label, definition] of template('history-glossary-content')
+    .matchAll(/<p><strong>([^<]+)<\/strong>:\s*([^<]+)<\/p>/g)) {
+    const term = plainText(label);
+    add('historia', term, 'Definição', plainText(definition), { glossary: term });
+  }
   for (const [id, view, title] of [
     ['essay-guide-content', 'essayGuide', 'Cartilha de redação do ENEM'],
     ['essay-topics-content', 'essayTopics', 'Possíveis temas de redação do ENEM 2027']
