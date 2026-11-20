@@ -11552,6 +11552,13 @@ let activeVideoId = null;
 let toastTimer = null;
 
 const MUSIC_TRACKS = {
+  artes: [
+    {
+      file: 'de-geracao-em-geracao',
+      topic: 'PATRIMÔNIO CULTURAL MATERIAL E IMATERIAL',
+      title: 'De geração em geração'
+    }
+  ],
   portugues: [
     {
       file: 'as-palavras-tem-poesia',
@@ -14089,17 +14096,18 @@ function render() {
       `;
     }
 
-    if (MUSIC_TRACKS[disc.id]) {
-      html += `
+    const musicDescription = disc.id === 'portugues' ? 'MÚSICAS PARA REVISÃO DE LÍNGUA PORTUGUESA'
+      : disc.id === 'artes' ? 'Músicas para revisão de temas de Artes' : `Músicas para revisão de ${disc.name}`;
+    const musicCard = MUSIC_TRACKS[disc.id] ? `
         <button type="button" class="video-launch-card music-launch-card" onclick="openMusic()">
           <span>
-            <span class="video-launch-badge music-launch-badge">Músicas</span>
-            <span class="quiz-launch-title" style="display:block">${disc.id === 'portugues' ? 'MÚSICAS PARA REVISÃO DE LÍNGUA PORTUGUESA' : `Músicas para revisão de ${disc.name}`}</span>
+            <span class="video-launch-badge music-launch-badge">${disc.id === 'artes' ? 'MÚSICAS' : 'Músicas'}</span>
+            <span class="quiz-launch-title" style="display:block">${musicDescription}</span>
           </span>
           <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
         </button>
-      `;
-    }
+      ` : '';
+    if (disc.id !== 'artes') html += musicCard;
 
     if (disc.id === 'historia' && SPEED_QUESTION_BANKS[disc.id]) {
       html += `
@@ -14130,6 +14138,7 @@ function render() {
         </button>`;
       }
     }
+    if (disc.id === 'artes') html += musicCard;
     if (examPage) {
       html += `
         <button type="button" class="video-launch-card music-launch-card" onclick="openExamQuestions()">
