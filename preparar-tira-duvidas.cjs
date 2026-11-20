@@ -10,7 +10,7 @@ const plainText = html => html.replace(/<[^>]+>/g, ' ')
     return code <= 0x10ffff ? String.fromCodePoint(code) : entity;
   }).replace(/\s+/g, ' ').trim();
 
-function addBrazilHistory(text, add) {
+function addBrazilHistory(text, add, filename) {
   let theme = '';
   let subtheme = '';
   let topic = '';
@@ -33,17 +33,26 @@ function addBrazilHistory(text, add) {
       continue;
     }
     if (paragraph === 'História do Brasil') continue;
-    if (!theme || !subtheme) throw new Error('Parágrafo fora de um subtema em historia-do-brasil.txt.');
+    if (!theme || !subtheme) throw new Error('Parágrafo fora de um subtema em ' + filename + '.');
     const title = 'História do Brasil — ' + subtheme;
     const context = [theme, topic].filter(Boolean).join(' · ');
-    for (const passage of paragraph.match(/.{1,750}(?:\s+|$)|.{750}/gu) ?? []) {
-      if (add('historia', title, context, passage.trim(), { reading: subtheme })) count++;
+    const target = { reading: subtheme, filename };
+    let remaining = paragraph;
+    while (remaining.length > 750) {
+      const limit = Math.min(750, remaining.length - 100);
+      const sentences = [...remaining.slice(0, limit + 1).matchAll(/[.!?](?= )/g)];
+      const sentenceEnd = (sentences.at(-1)?.index ?? -1) + 1;
+      const wordEnd = remaining.lastIndexOf(' ', limit);
+      const split = sentenceEnd >= limit / 2 ? sentenceEnd : wordEnd > 0 ? wordEnd : limit;
+      if (add('historia', title, context, remaining.slice(0, split), target)) count++;
+      remaining = remaining.slice(split).trimStart();
     }
+    if (add('historia', title, context, remaining, target)) count++;
   }
-  if (!count) throw new Error('Nenhum trecho aproveitável em historia-do-brasil.txt.');
+  if (!count) throw new Error('Nenhum trecho aproveitável em ' + filename + '.');
 }
 
-function buildStudyIndex(html, curriculum, brazilHistory) {
+function buildStudyIndex(html, curriculum, brazilHistory, brazilHistoryComplement) {
   const summaries = vm.runInNewContext('(' + html.match(/const SUMMARIES = (\{[\s\S]*?\});\s*function openSummary/)[1] + ')');
   const exams = vm.runInNewContext('(' + html.match(/const EXAM_PAGES = (\{[\s\S]*?\n\});/)[1] + ')');
   const flashcards = vm.runInNewContext(
@@ -105,7 +114,10 @@ function buildStudyIndex(html, curriculum, brazilHistory) {
     }
   }
   if (!passages.length) throw new Error('O índice do Tira-dúvidas está vazio.');
-  addBrazilHistory(brazilHistory, add);
+  addBrazilHistory(brazilHistory, add, 'historia-do-brasil.txt');
+  if (brazilHistoryComplement !== undefined) {
+    addBrazilHistory(brazilHistoryComplement, add, 'historia-do-brasil-complemento.txt');
+  }
   return { disciplines: curriculum.map(discipline => discipline.id), passages, postings };
 }
 
