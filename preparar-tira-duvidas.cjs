@@ -10,7 +10,40 @@ const plainText = html => html.replace(/<[^>]+>/g, ' ')
     return code <= 0x10ffff ? String.fromCodePoint(code) : entity;
   }).replace(/\s+/g, ' ').trim();
 
-function buildStudyIndex(html, curriculum) {
+function addBrazilHistory(text, add) {
+  let theme = '';
+  let subtheme = '';
+  let topic = '';
+  let count = 0;
+  for (const block of text.trim().split(/\r?\n(?:[ \t]*\r?\n)+/)) {
+    const paragraph = block.replace(/\s+/g, ' ').trim();
+    const heading = /^(TEMA|SUBTEMA|TÓPICO)(?:\s+\d+(?:\.\d+)*)?\.\s+(.+)$/u.exec(paragraph);
+    if (heading) {
+      const [, level, title] = heading;
+      if (level === 'TEMA') {
+        theme = title.split(':')[0];
+        subtheme = '';
+        topic = '';
+      } else if (level === 'SUBTEMA') {
+        subtheme = title;
+        topic = '';
+      } else {
+        topic = title;
+      }
+      continue;
+    }
+    if (paragraph === 'História do Brasil') continue;
+    if (!theme || !subtheme) throw new Error('Parágrafo fora de um subtema em historia-do-brasil.txt.');
+    const title = 'História do Brasil — ' + subtheme;
+    const context = [theme, topic].filter(Boolean).join(' · ');
+    for (const passage of paragraph.match(/.{1,750}(?:\s+|$)|.{750}/gu) ?? []) {
+      if (add('historia', title, context, passage.trim(), { reading: subtheme })) count++;
+    }
+  }
+  if (!count) throw new Error('Nenhum trecho aproveitável em historia-do-brasil.txt.');
+}
+
+function buildStudyIndex(html, curriculum, brazilHistory) {
   const summaries = vm.runInNewContext('(' + html.match(/const SUMMARIES = (\{[\s\S]*?\});\s*function openSummary/)[1] + ')');
   const exams = vm.runInNewContext('(' + html.match(/const EXAM_PAGES = (\{[\s\S]*?\n\});/)[1] + ')');
   const flashcards = vm.runInNewContext(
@@ -31,6 +64,7 @@ function buildStudyIndex(html, curriculum) {
     for (const term of studyTerms(heading)) terms.set(term, (terms.get(term) ?? 0) + 3);
     for (const term of studyTerms(title)) terms.set(term, (terms.get(term) ?? 0) + 5);
     for (const [term, weight] of terms) (postings[term] ??= []).push(index, weight);
+    return true;
   }
   for (const [key, summary] of Object.entries(summaries)) {
     const [discipline] = key.split('|');
@@ -71,6 +105,7 @@ function buildStudyIndex(html, curriculum) {
     }
   }
   if (!passages.length) throw new Error('O índice do Tira-dúvidas está vazio.');
+  addBrazilHistory(brazilHistory, add);
   return { disciplines: curriculum.map(discipline => discipline.id), passages, postings };
 }
 

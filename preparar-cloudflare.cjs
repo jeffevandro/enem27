@@ -10,7 +10,8 @@ curriculum.forEach(d => d.themes.forEach((t, ti) => t.groups.forEach((g, gi) =>
   g.subthemes.forEach((_, si) => keys.push(`${d.id}|${ti}|${gi}|${si}`)))));
 const banks = vm.runInNewContext(html.match(/const HISTORY_SPEED_QUESTIONS = ([\s\S]*?)let speedRound = null;/)[0].replace('let speedRound = null;', 'SPEED_QUESTION_BANKS;'));
 const { buildStudyIndex } = require('./preparar-tira-duvidas.cjs');
-const study = buildStudyIndex(html, curriculum);
+const brazilHistory = fs.readFileSync('conteudo-ia/historia-do-brasil.txt', 'utf8');
+const study = buildStudyIndex(html, curriculum, brazilHistory);
 const app = `const APP_HTML = ${JSON.stringify(html)};\nconst VALID_KEYS = ${JSON.stringify(keys)};\nconst SPEED_BANKS = ${JSON.stringify(banks)};\nconst STUDY = ${JSON.stringify(study)};\n`;
 fs.mkdirSync('generated', { recursive: true });
 fs.mkdirSync('cloudflare', { recursive: true });

@@ -11489,7 +11489,7 @@ interesses colonialistas ao</strong></p>
 <dialog class="summary-dialog" id="summaryDialog" aria-labelledby="summaryTitle">
   <div class="summary-header">
     <h2 id="summaryTitle">Resumo</h2>
-    <button type="button" class="modal-close" onclick="closeSummary()" aria-label="Fechar resumo" autofocus>&#10005;</button>
+    <button type="button" class="modal-close" onclick="closeSummary()" aria-label="Fechar material" autofocus>&#10005;</button>
   </div>
   <div class="summary-body" id="summaryBody" tabindex="0"></div>
 </dialog>
@@ -14709,7 +14709,32 @@ function openStudyHelp() {
   render();
 }
 
-function openStudyMaterial(passage) {
+function openStudyMaterial(passages) {
+  const [passage] = passages;
+  if (passage.target.reading) {
+    document.getElementById('summaryTitle').textContent = passage.title;
+    const body = document.getElementById('summaryBody');
+    body.replaceChildren();
+    const sections = new Map();
+    for (const excerpt of passages) {
+      let section = sections.get(excerpt.heading);
+      if (!section) {
+        section = document.createElement('section');
+        const heading = document.createElement('h3');
+        heading.textContent = excerpt.heading;
+        section.append(heading);
+        body.append(section);
+        sections.set(excerpt.heading, section);
+      }
+      const text = document.createElement('p');
+      text.textContent = excerpt.text;
+      section.append(text);
+    }
+    const dialog = document.getElementById('summaryDialog');
+    if (!dialog.open) dialog.showModal();
+    body.scrollTop = 0;
+    return;
+  }
   if (passage.target.summary) {
     openSummary(passage.target.summary);
     return;
@@ -14767,12 +14792,18 @@ async function submitStudyQuestion(event) {
     materials.textContent = 'Materiais usados na resposta';
     const sources = document.createElement('div');
     sources.className = 'study-sources';
-    for (const passage of new Map(result.passages.map(passage => [JSON.stringify(passage.target), passage])).values()) {
+    const materialsByTarget = new Map();
+    for (const passage of result.passages) {
+      const key = JSON.stringify(passage.target);
+      if (!materialsByTarget.has(key)) materialsByTarget.set(key, []);
+      materialsByTarget.get(key).push(passage);
+    }
+    for (const passages of materialsByTarget.values()) {
       const source = document.createElement('button');
       source.type = 'button';
       source.className = 'btn-secondary';
-      source.textContent = 'Abrir material — ' + passage.title;
-      source.addEventListener('click', () => openStudyMaterial(passage));
+      source.textContent = 'Abrir material — ' + passages[0].title;
+      source.addEventListener('click', () => openStudyMaterial(passages));
       sources.append(source);
     }
     answer.append(heading, explanation, materials, sources);
