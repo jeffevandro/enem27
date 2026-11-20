@@ -307,7 +307,8 @@
   .study-launch { grid-column: 1 / -1; text-align: left; }
   .study-answer { margin-top: 24px; }
   .study-answer p { overflow-wrap: anywhere; }
-  .study-answer section + section { margin-top: 20px; }
+  .study-explanation { white-space: pre-line; line-height: 1.65; }
+  .study-sources { display: flex; flex-wrap: wrap; gap: 8px; }
   .study-answer button { text-align: left; overflow-wrap: anywhere; }
   .info-footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
   .info-footer a { display: inline-flex; align-items: center; min-height: 44px; color: var(--text-muted); font-size: 13px; text-decoration: none; }
@@ -11426,7 +11427,7 @@ interesses colonialistas ao</strong></p>
 <section class="useful-site-card"><h2>Nosso compromisso</h2><p>O ENEM 2027 busca oferecer um ambiente de estudos organizado, acessível e de fácil utilização. As ferramentas foram pensadas para incentivar a regularidade das revisões, a autonomia dos estudantes e a identificação de dificuldades durante a preparação.</p><p>O aplicativo é uma iniciativa independente e não possui vínculo oficial com o Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep) ou com o Ministério da Educação (MEC). Para informações oficiais sobre inscrições, datas, regras e procedimentos do exame, os usuários devem consultar os canais de comunicação do Inep.</p><p>A proposta é simples: ajudar cada estudante a aproveitar melhor seu tempo, organizar seus estudos e chegar ao ENEM 2027 com uma preparação mais consistente.</p></section>
 </template>
 <template id="info-privacidade">
-  <section class="useful-site-card"><h2>Tira-dúvidas do ENEM</h2><p>A Cloudflare processa o texto da pergunta e trechos do material de estudo para selecionar respostas. O ENEM27 não guarda as perguntas nem as respostas. Para aplicar os limites de uso, o aplicativo guarda o dia da consulta e um identificador derivado da conta, separado do seu progresso. Esses registros são removidos quando o recurso volta a ser usado em outro dia. Evite informar dados pessoais nas perguntas.</p></section>
+  <section class="useful-site-card"><h2>Tira-dúvidas do ENEM</h2><p>A Cloudflare processa o texto da pergunta e trechos do material de estudo para gerar respostas. O ENEM27 não guarda as perguntas nem as respostas. Para aplicar os limites de uso, o aplicativo guarda o dia da consulta e um identificador derivado da conta, separado do seu progresso. Esses registros são removidos quando o recurso volta a ser usado em outro dia. Evite informar dados pessoais nas perguntas.</p></section>
   <section class="useful-site-card"><h2>Seu e-mail e seu progresso</h2><p>O ENEM27 usa o e-mail de acesso para identificar sua conta e mostrar as revisões e figurinhas que pertencem a você. Ao tocar em Salvar, o aplicativo registra na nuvem o tópico, as datas das revisões e informações de atualização usadas para sincronizar seus aparelhos.</p></section>
   <section class="useful-site-card"><h2>Por que o login continua ativo</h2><p>Após a entrada com e-mail e código, o Cloudflare Access grava no navegador do celular ou computador um pequeno registro chamado cookie de autenticação. Com ele, o serviço reconhece a sessão válida quando você volta ao app. A duração depende da configuração de acesso. Quando a sessão expira, você troca de navegador ou apaga os cookies, um novo login pode ser necessário.</p></section>
   <section class="useful-site-card"><h2>Aparelhos compartilhados</h2><p>Quem usa o mesmo navegador pode encontrar sua conta aberta. Ao terminar, abra o painel da conta e toque em “Sair da conta”. Guarde o código recebido por e-mail só para você. Apagar os cookies do aparelho encerra o reconhecimento da sessão nesse navegador e preserva o progresso já salvo na nuvem.</p></section>
@@ -13923,7 +13924,7 @@ function render() {
     footer.style.display = 'flex';
     footerBadge.style.display = 'none';
     container.innerHTML = `<section class="useful-site-card">
-      <p>A inteligência artificial seleciona trechos de resumos, questões comentadas, flashcards e materiais de redação para responder à sua dúvida.</p>
+      <p>Faça uma pergunta e receba uma explicação escrita pela IA com base nos materiais de estudo do ENEM27.</p>
       <form class="contact-form study-form" onsubmit="submitStudyQuestion(event)">
         <label>Disciplina
           <select name="discipline">
@@ -14739,30 +14740,36 @@ async function submitStudyQuestion(event) {
   submit.disabled = true;
   answer.hidden = true;
   answer.replaceChildren();
-  status.textContent = 'Consultando o material do ENEM27…';
+  status.textContent = 'Preparando sua resposta…';
   try {
     const result = await api('/api/tira-duvidas', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ discipline: fields.get('discipline'), question: fields.get('question') })
     }, 'A consulta demorou mais que o esperado. Tente novamente.');
     if (!form.isConnected) return;
-    if (!result.passages.length) {
-      status.textContent = result.message;
+    if (!result.answer || !result.passages.length) {
+      status.textContent = result.message || 'A resposta ainda não está disponível. Atualize a página e tente novamente.';
       return;
     }
-    status.textContent = 'Resposta encontrada no material de estudo.';
-    result.passages.forEach(passage => {
-      const section = document.createElement('section');
-      const excerpt = document.createElement('p');
+    status.textContent = '';
+    const heading = document.createElement('h2');
+    heading.textContent = 'Resposta';
+    const explanation = document.createElement('p');
+    explanation.className = 'study-explanation';
+    explanation.textContent = result.answer;
+    const materials = document.createElement('h3');
+    materials.textContent = 'Materiais usados na resposta';
+    const sources = document.createElement('div');
+    sources.className = 'study-sources';
+    for (const passage of new Map(result.passages.map(passage => [JSON.stringify(passage.target), passage])).values()) {
       const source = document.createElement('button');
-      excerpt.textContent = passage.text;
       source.type = 'button';
       source.className = 'btn-secondary';
       source.textContent = 'Abrir material — ' + passage.title;
       source.addEventListener('click', () => openStudyMaterial(passage));
-      section.append(excerpt, source);
-      answer.append(section);
-    });
+      sources.append(source);
+    }
+    answer.append(heading, explanation, materials, sources);
     answer.hidden = false;
     answer.focus();
   } catch (error) {
