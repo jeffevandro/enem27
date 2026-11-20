@@ -108,6 +108,15 @@ function buildStudyIndex(html, curriculum, brazilHistory, brazilHistoryComplemen
     const term = plainText(label);
     add('historia', term, 'Definição', plainText(definition), { glossary: term });
   }
+  for (const [, id, label, biography] of template('history-people-content')
+    .matchAll(/<details id="(personagem-[a-z0-9-]+)">\s*<summary>([^<]+)<\/summary>([\s\S]*?)<\/details>/g)) {
+    const name = plainText(label);
+    const aliases = plainText(biography.match(/<p class="person-aliases"><strong>Outros nomes<\/strong>\s*([^<]+)<\/p>/)?.[1] || '');
+    for (const [, section, paragraph] of biography.matchAll(/<p><strong>([^<]+)<\/strong>\s*([^<]+)<\/p>/g)) {
+      const heading = [plainText(section), aliases].filter(Boolean).join(' · ');
+      add('historia', name, heading, plainText(paragraph), { person: id });
+    }
+  }
   for (const [id, view, title] of [
     ['essay-guide-content', 'essayGuide', 'Cartilha de redação do ENEM'],
     ['essay-topics-content', 'essayTopics', 'Possíveis temas de redação do ENEM 2027']
