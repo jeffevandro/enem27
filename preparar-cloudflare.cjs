@@ -8,7 +8,10 @@ const curriculum = JSON.parse(html.match(/const CURRICULUM = (.*);/)[1]);
 const keys = [];
 curriculum.forEach(d => d.themes.forEach((t, ti) => t.groups.forEach((g, gi) =>
   g.subthemes.forEach((_, si) => keys.push(`${d.id}|${ti}|${gi}|${si}`)))));
-const banks = vm.runInNewContext(html.match(/const HISTORY_SPEED_QUESTIONS = ([\s\S]*?)let speedRound = null;/)[0].replace('let speedRound = null;', 'SPEED_QUESTION_BANKS;'));
+const quizBanks = html.match(/const HISTORY_SPEED_QUESTIONS = [\s\S]*?(?=let speedRound = null;)/)[0];
+const albumStickers = html.match(/const ALBUM_STICKERS = [\s\S]*?(?=let earnedStickers =)/)[0];
+const banks = vm.runInNewContext(`${quizBanks}${albumStickers}
+  Object.fromEntries(Object.keys(ALBUM_STICKERS).map(id => [id, SPEED_QUESTION_BANKS[id]]));`);
 const app = `const APP_HTML = ${JSON.stringify(html)};\nconst VALID_KEYS = ${JSON.stringify(keys)};\nconst SPEED_BANKS = ${JSON.stringify(banks)};\n`;
 fs.mkdirSync('generated', { recursive: true });
 fs.mkdirSync('cloudflare', { recursive: true });

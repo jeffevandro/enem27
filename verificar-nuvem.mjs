@@ -194,6 +194,7 @@ for (const discipline of ['historia', 'geografia', 'sociologia']) {
 }
 state = await (await request('/api/state', alice)).json();
 assert.deepEqual(state.stickers, { historia: true, geografia: true, sociologia: true });
+assert.equal(Object.hasOwn(SPEED_BANKS, 'filosofia'), false);
 assert.equal(state.data['sticker|geografia'], undefined);
 assert.deepEqual((await (await request('/api/state', bob)).json()).stickers, {});
 globalThis.fetch = originalFetch;
@@ -450,6 +451,28 @@ assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/max-weber\.j
 run("openStickerBiography('sociologia')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Max Weber (1864–1920)');
 run('closeStickerBiography()');
+run("openDiscipline('filosofia')");
+assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('filosofia'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Filosofia<\/span>/);
+run("openSpeedQuiz('filosofia')");
+assert.match(element('appContainer').innerHTML, /onclick="startSpeedQuiz\(\)">/);
+const philosophyBank = run('speedQuestionBank()');
+assert.equal(philosophyBank.length, 20);
+assert(philosophyBank.every(q => q.id.startsWith('filosofia-')));
+for (const letter of 'ABCD') assert.equal(philosophyBank.filter(q => q.answer === letter).length, 5);
+run('startSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /2:30/);
+const philosophyIds = run('speedRound.questions.map(q => q.id)');
+assert.equal(new Set(philosophyIds).size, 10);
+run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
+assert.match(element('appContainer').innerHTML, /Parabéns/);
+assert.equal(run('speedRound.stickerSavePromise'), undefined);
+run('startSpeedQuiz()');
+assert.equal(new Set([...philosophyIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
+run('goBack()');
+assert.equal(run('selectedDisciplineId'), 'filosofia');
+assert.equal(run('currentView'), 'discipline');
+assert.equal(run('speedTimer'), null);
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -478,7 +501,7 @@ assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia', 'sociologia']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
