@@ -129,19 +129,21 @@ env.ASSETS = { async fetch(req) {
 } };
 assert.deepEqual(Buffer.from(await (await request('/figurinhas/milton-santos.jpg', alice)).arrayBuffer()), miltonBytes);
 assert.equal(await (await request('/figurinhas/milton-santos.jpg', alice, undefined, {}, 'HEAD')).text(), '');
-const maxWeberPath = '/figurinhas/max-weber.jpg';
-const maxWeberBytes = fs.readFileSync(new URL('./public' + maxWeberPath, import.meta.url));
-assert.equal(maxWeberBytes.readUInt16BE(0), 0xffd8);
-assert.equal((await request(maxWeberPath)).status, 401);
-env.ASSETS = { async fetch(req) {
-  assert.equal(new URL(req.url).pathname, maxWeberPath);
-  return new Response(req.method === 'HEAD' ? null : maxWeberBytes, { headers: { 'Content-Type': 'image/jpeg' } });
-} };
-const maxWeberResponse = await request(maxWeberPath, alice);
-assert.equal(maxWeberResponse.status, 200);
-assert.equal(maxWeberResponse.headers.get('Content-Type'), 'image/jpeg');
-assert.deepEqual(Buffer.from(await maxWeberResponse.arrayBuffer()), maxWeberBytes);
-assert.equal(await (await request(maxWeberPath, alice, undefined, {}, 'HEAD')).text(), '');
+for (const name of ['max-weber', 'aristoteles']) {
+  const portraitPath = `/figurinhas/${name}.jpg`;
+  const portraitBytes = fs.readFileSync(new URL('./public' + portraitPath, import.meta.url));
+  assert.equal(portraitBytes.readUInt16BE(0), 0xffd8);
+  assert.equal((await request(portraitPath)).status, 401);
+  env.ASSETS = { async fetch(req) {
+    assert.equal(new URL(req.url).pathname, portraitPath);
+    return new Response(req.method === 'HEAD' ? null : portraitBytes, { headers: { 'Content-Type': 'image/jpeg' } });
+  } };
+  const portraitResponse = await request(portraitPath, alice);
+  assert.equal(portraitResponse.status, 200);
+  assert.equal(portraitResponse.headers.get('Content-Type'), 'image/jpeg');
+  assert.deepEqual(Buffer.from(await portraitResponse.arrayBuffer()), portraitBytes);
+  assert.equal(await (await request(portraitPath, alice, undefined, {}, 'HEAD')).text(), '');
+}
 env.ASSETS = audioAssets;
 assert.equal((await request('/api/state')).status, 401);
 assert.equal((await request('/api/state', await token('a@example.com', { exp: 1 }))).status, 401);
@@ -182,7 +184,7 @@ assert.equal((await request('/api/revision', bob, { key, dates, version: 0 })).s
 assert.equal((await request('/api/revision', alice, { key, dates, version: 2, padding: 'x'.repeat(3000) })).status, 413);
 const broken = { ...env, DB: { prepare() { throw new Error('Falha simulada'); } } };
 assert.equal((await worker.fetch(new Request('https://app.example.com/api/state', { headers: { 'Cf-Access-Jwt-Assertion': alice } }), broken)).status, 500);
-for (const discipline of ['historia', 'geografia', 'sociologia']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia']) {
   const award = { discipline, elapsedMs: 149999, answers: SPEED_BANKS[discipline].slice(0, 10).map(q => ({ id: q.id, answer: q.answer })) };
   assert.equal((await request('/api/sticker', alice, { ...award, elapsedMs: 150001 })).status, 400);
   assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.slice(0, 9) })).status, 400);
@@ -193,8 +195,7 @@ for (const discipline of ['historia', 'geografia', 'sociologia']) {
   assert.equal((await request('/api/sticker', alice, award)).status, 200);
 }
 state = await (await request('/api/state', alice)).json();
-assert.deepEqual(state.stickers, { historia: true, geografia: true, sociologia: true });
-assert.equal(Object.hasOwn(SPEED_BANKS, 'filosofia'), false);
+assert.deepEqual(state.stickers, { historia: true, geografia: true, sociologia: true, filosofia: true });
 assert.equal(state.data['sticker|geografia'], undefined);
 assert.deepEqual((await (await request('/api/state', bob)).json()).stickers, {});
 globalThis.fetch = originalFetch;
@@ -448,6 +449,7 @@ run('goBack()');
 assert.equal(run('selectedDisciplineId'), 'sociologia');
 run('openStickerAlbum()');
 assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/max-weber\.jpg"[^>]+alt="Figurinha de Max Weber"/);
+assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/aristoteles\.jpg"/);
 run("openStickerBiography('sociologia')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Max Weber (1864–1920)');
 run('closeStickerBiography()');
@@ -466,13 +468,21 @@ assert.equal(new Set(philosophyIds).size, 10);
 run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
 run('finishSpeedQuiz(false)');
 assert.match(element('appContainer').innerHTML, /Parabéns/);
-assert.equal(run('speedRound.stickerSavePromise'), undefined);
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.filosofia'), true);
+assert.match(element('appContainer').innerHTML, /Figurinha conquistada!/);
 run('startSpeedQuiz()');
 assert.equal(new Set([...philosophyIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
 run('goBack()');
 assert.equal(run('selectedDisciplineId'), 'filosofia');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('speedTimer'), null);
+run('openStickerAlbum()');
+assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/aristoteles\.jpg"[^>]+alt="Figurinha de Aristóteles"/);
+run("openStickerBiography('filosofia')");
+assert.equal(element('stickerBiographyTitle').textContent, 'Aristóteles (384–322 a.C.)');
+assert.match(element('stickerBiographyBody').innerHTML, /Liceu em Atenas/);
+run('closeStickerBiography()');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
