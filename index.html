@@ -18599,6 +18599,18 @@ function restorePage() {
   }
 }
 
+function disciplineCard(action, label, title, detail, primary = false) {
+  return `
+    <button type="button" class="discipline-card${primary ? ' discipline-card-primary' : ''}" onclick="${action}">
+      <span class="discipline-card-info">
+        <span class="discipline-card-label">${label}</span>
+        <span class="discipline-card-title">${title}</span>
+        <span class="discipline-card-meta">${detail}</span>
+      </span>
+      <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
+    </button>`;
+}
+
 function render() {
   const container = document.getElementById("appContainer");
   const titleEl = document.getElementById("headerTitle");
@@ -18785,139 +18797,62 @@ function render() {
     let html = `<div class="theme-list discipline-cards" style="--discipline-color:${disc.color};">`;
     disc.themes.forEach((th, tIdx) => {
       const st = getThemeStats(disc.id, th, tIdx);
-      html += `
-        <button type="button" class="discipline-card discipline-card-primary" onclick="openTheme(${tIdx})">
-          <span class="discipline-card-info">
-            <span class="discipline-card-title">${th.name}</span>
-            <span class="discipline-card-meta">${st.totalSubthemes} subtemas • ${st.totalChecks}/${st.maxChecks} revisões (${st.pct}%)</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-      `;
+      const detail = `${st.totalSubthemes} subtemas • ${st.totalChecks}/${st.maxChecks} revisões (${st.pct}%)`;
+      html += disciplineCard(`openTheme(${tIdx})`, 'Tema de estudo', th.name, detail, true);
     });
 
     if (disc.id === 'redacao') {
-      html += `
-        <button type="button" class="discipline-card" onclick="openEssayTopics()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">DICAS DE TEMAS DE REDAÇÃO</span>
-            <span class="discipline-card-title">20 Possíveis temas de redação do ENEM 2027</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-        <button type="button" class="discipline-card" onclick="openEssayGuide()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">REDAÇÃO DO ENEM - CARTILHA DO(A) PARTICIPANTE</span>
-            <span class="discipline-card-title">Exigências, organização, repertório, competências ...</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-        <button type="button" class="discipline-card" onclick="openPastEssayTopics()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">TEMAS DE REDAÇÃO DE ANOS ANTERIORES</span>
-            <span class="discipline-card-title">De 2020 a 2026.</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-      `;
+      html += disciplineCard('openEssayTopics()', 'DICAS DE TEMAS DE REDAÇÃO',
+        '20 Possíveis temas de redação do ENEM 2027', 'Sugestões de temas para praticar a escrita.');
+      html += disciplineCard('openEssayGuide()', 'REDAÇÃO DO ENEM - CARTILHA DO(A) PARTICIPANTE',
+        'Exigências, organização, repertório, competências ...', 'Resumo das orientações da cartilha oficial.');
+      html += disciplineCard('openPastEssayTopics()', 'TEMAS DE REDAÇÃO DE ANOS ANTERIORES',
+        'De 2020 a 2026.', 'Consulte os temas cobrados nas edições anteriores.');
     }
 
     if (QUIZZES[disc.id] && QUIZZES[disc.id].length > 0) {
-      html += `
-        <button type="button" class="discipline-card" onclick="openQuiz('${disc.id}')">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">Simulado Estilo ENEM</span>
-            <span class="discipline-card-title">Teste seus conhecimentos</span>
-            <span class="discipline-card-meta">${QUIZZES[disc.id].length} questões de múltipla escolha com gabarito comentado</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-      `;
+      html += disciplineCard(`openQuiz('${disc.id}')`, 'Simulado Estilo ENEM', 'Teste seus conhecimentos',
+        `${QUIZZES[disc.id].length} questões de múltipla escolha com gabarito comentado`);
     }
 
     if (REVIEW_VIDEOS[disc.id] && REVIEW_VIDEOS[disc.id].length > 0) {
-      html += `
-        <button type="button" class="discipline-card" onclick="openVideos('${disc.id}')">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">Videoaulas</span>
-            <span class="discipline-card-title">Vídeos indicados para revisão</span>
-            <span class="discipline-card-meta">${REVIEW_VIDEOS[disc.id].length} vídeos selecionados para assistir dentro do aplicativo</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-      `;
+      html += disciplineCard(`openVideos('${disc.id}')`, 'Videoaulas', 'Vídeos indicados para revisão',
+        `${REVIEW_VIDEOS[disc.id].length} vídeos selecionados para assistir dentro do aplicativo`);
     }
 
     const musicDescription = disc.id === 'portugues' ? 'MÚSICAS PARA REVISÃO DE LÍNGUA PORTUGUESA'
       : disc.id === 'artes' ? 'Músicas para revisão de temas de Artes' : `Músicas para revisão de ${disc.name}`;
-    const musicCard = MUSIC_TRACKS[disc.id] ? `
-        <button type="button" class="discipline-card" onclick="openMusic()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">${disc.id === 'artes' ? 'MÚSICAS' : 'Músicas'}</span>
-            <span class="discipline-card-title">${musicDescription}</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-      ` : '';
+    const trackCount = MUSIC_TRACKS[disc.id]?.length ?? 0;
+    const musicCard = trackCount ? disciplineCard('openMusic()', 'Músicas', musicDescription,
+      trackCount === 1 ? '1 faixa disponível' : `${trackCount} faixas disponíveis`) : '';
     if (disc.id !== 'artes') html += musicCard;
 
-    if (['historia', 'sociologia', 'filosofia', 'portugues', 'fisica', 'matematica', 'quimica', 'biologia', 'literatura'].includes(disc.id) && SPEED_QUESTION_BANKS[disc.id]) {
-      html += `
-        <button type="button" class="discipline-card" onclick="openSpeedQuiz('${disc.id}')">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">Quiz de ${disc.name}</span>
-            <span class="discipline-card-title">Responda a 10 perguntas em 2 minutos e 30 segundos</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>`;
-    } else if (SPEED_QUESTION_BANKS[disc.id]) {
-      html += `<button type="button" class="discipline-card" onclick="openSpeedQuiz('${disc.id}')">
-        <span class="discipline-card-info"><span class="discipline-card-title">Quiz de ${disc.name} (dez perguntas em 2 minutos e 30 segundos)</span></span>
-        <span class="theme-card-arrow" aria-hidden="true">&#8250;</span></button>`;
+    if (SPEED_QUESTION_BANKS[disc.id]) {
+      html += disciplineCard(`openSpeedQuiz('${disc.id}')`, `Quiz de ${disc.name}`, 'Responda a 10 perguntas',
+        'Tempo limite de 2 minutos e 30 segundos.');
     }
 
     if (FLASHCARDS[disc.id]) {
       const views = disc.id === 'historia' ? ['flashcards', 'brazilFlashcards'] : ['flashcards'];
       for (const view of views) {
         const deck = flashcardDeck(view, disc.id);
-        html += `
-        <button type="button" class="discipline-card" onclick="openFlashcards('${view}')">
-          <span class="discipline-card-info">
-            <span class="discipline-card-title">${deck.title}</span>
-            <span class="discipline-card-meta">${deck.cards.length} cartões</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>`;
+        html += disciplineCard(`openFlashcards('${view}')`, 'Cartões de estudo', deck.title, `${deck.cards.length} cartões`);
       }
     }
     if (disc.id === 'artes') html += musicCard;
+
     if (examPage) {
-      html += `
-        <button type="button" class="discipline-card" onclick="openExamQuestions()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">QUESTÕES DE ${disc.name.toLocaleUpperCase('pt-BR')} DO ENEM DE ${examPage.startYear ?? 2019} A 2026</span>
-            <span class="discipline-card-title">${examPage.count} QUESTÕES COM GABARITO${examPage.commentedAnswers ? ' COMENTADO' : ''}</span>
-            <span class="discipline-card-meta">${examPage.description ?? 'Excelente material para estudo e revisão'}</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>`;
+      html += disciplineCard('openExamQuestions()',
+        `QUESTÕES DE ${disc.name.toLocaleUpperCase('pt-BR')} DO ENEM DE ${examPage.startYear ?? 2019} A 2026`,
+        `${examPage.count} QUESTÕES COM GABARITO${examPage.commentedAnswers ? ' COMENTADO' : ''}`,
+        examPage.description ?? 'Excelente material para estudo e revisão');
     }
+
     if (disc.id === 'historia') {
-      html += `
-        <button type="button" class="discipline-card" onclick="openHistoryGlossary()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">GLOSSÁRIO DE HISTÓRIA PARA O ENEM</span>
-            <span class="discipline-card-title">Significados de conceitos e verbetes.</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>
-        <button type="button" class="discipline-card" onclick="openHistoryPeople()">
-          <span class="discipline-card-info">
-            <span class="discipline-card-label">PERSONAGENS HISTÓRICOS</span>
-            <span class="discipline-card-title">30 biografias de História Geral e História do Brasil.</span>
-          </span>
-          <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>
-        </button>`;
+      html += disciplineCard('openHistoryGlossary()', 'GLOSSÁRIO DE HISTÓRIA PARA O ENEM',
+        'Significados de conceitos e verbetes.', 'Consulte o vocabulário de História Geral e do Brasil.');
+      html += disciplineCard('openHistoryPeople()', 'PERSONAGENS HISTÓRICOS',
+        '30 biografias de História Geral e História do Brasil.', 'Conheça figuras de diferentes períodos históricos.');
     }
     html += '</div>';
     container.innerHTML = html;

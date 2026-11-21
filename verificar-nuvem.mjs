@@ -236,6 +236,22 @@ run(code); await run('loadState()'); assert.equal(run('cloudReady'), true);
 const homeMarkup = element('appContainer').innerHTML;
 assert.match(homeMarkup, /onclick="openCurrentAffairs\(\)"/);
 assert.doesNotMatch(homeMarkup, /openStudyHelp|TIRE SUAS DÚVIDAS/i);
+let disciplineCardCount = 0;
+for (const { id, themes } of run('CURRICULUM')) {
+  run(`openDiscipline('${id}')`);
+  const page = element('appContainer').innerHTML;
+  const cards = [...page.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)];
+  assert.ok(cards.length >= themes.length, id);
+  for (const [, attributes, card] of cards) {
+    assert.match(attributes, /class="discipline-card(?: discipline-card-primary)?"/, id);
+    const lines = [...card.matchAll(/<span class="discipline-card-(label|title|meta)">([^<]+)<\/span>/g)];
+    assert.deepEqual(lines.map(([, role]) => role), ['label', 'title', 'meta'], `Três linhas no card de ${id}`);
+    assert.ok(lines.every(([, , text]) => text.trim()), `Linhas preenchidas no card de ${id}`);
+  }
+  disciplineCardCount += cards.length;
+}
+console.log(`Cards verificados: ${disciplineCardCount} em ${run('CURRICULUM.length')} disciplinas, todos com três linhas.`);
+run('goHome()');
 const biographies = html.match(/<template id="history-people-content">([\s\S]*?)<\/template>/)[1];
 const [generalBiographies, brazilianBiographies] = biographies.split('<h2>História do Brasil</h2>');
 assert.match(generalBiographies, /<h2>História Geral<\/h2>/);
