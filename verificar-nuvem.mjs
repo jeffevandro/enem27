@@ -129,6 +129,19 @@ env.ASSETS = { async fetch(req) {
 } };
 assert.deepEqual(Buffer.from(await (await request('/figurinhas/milton-santos.jpg', alice)).arrayBuffer()), miltonBytes);
 assert.equal(await (await request('/figurinhas/milton-santos.jpg', alice, undefined, {}, 'HEAD')).text(), '');
+const maxWeberPath = '/figurinhas/max-weber.jpg';
+const maxWeberBytes = fs.readFileSync(new URL('./public' + maxWeberPath, import.meta.url));
+assert.equal(maxWeberBytes.readUInt16BE(0), 0xffd8);
+assert.equal((await request(maxWeberPath)).status, 401);
+env.ASSETS = { async fetch(req) {
+  assert.equal(new URL(req.url).pathname, maxWeberPath);
+  return new Response(req.method === 'HEAD' ? null : maxWeberBytes, { headers: { 'Content-Type': 'image/jpeg' } });
+} };
+const maxWeberResponse = await request(maxWeberPath, alice);
+assert.equal(maxWeberResponse.status, 200);
+assert.equal(maxWeberResponse.headers.get('Content-Type'), 'image/jpeg');
+assert.deepEqual(Buffer.from(await maxWeberResponse.arrayBuffer()), maxWeberBytes);
+assert.equal(await (await request(maxWeberPath, alice, undefined, {}, 'HEAD')).text(), '');
 env.ASSETS = audioAssets;
 assert.equal((await request('/api/state')).status, 401);
 assert.equal((await request('/api/state', await token('a@example.com', { exp: 1 }))).status, 401);
@@ -433,9 +446,9 @@ assert(run('speedRound.questions.map(q => q.id)').every(id => !sociologyIds.incl
 run('goBack()');
 assert.equal(run('selectedDisciplineId'), 'sociologia');
 run('openStickerAlbum()');
-assert.match(element('appContainer').innerHTML, /alt="Figurinha de Florestan Fernandes"/);
+assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/max-weber\.jpg"[^>]+alt="Figurinha de Max Weber"/);
 run("openStickerBiography('sociologia')");
-assert.equal(element('stickerBiographyTitle').textContent, 'Florestan Fernandes (1920-1995)');
+assert.equal(element('stickerBiographyTitle').textContent, 'Max Weber (1864–1920)');
 run('closeStickerBiography()');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');

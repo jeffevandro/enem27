@@ -103,7 +103,8 @@ export default {
       if ((/^\/audio\/[a-z0-9-]+\.mp3$/.test(url.pathname) ||
            url.pathname === '/figurinhas/zumbi-palmares.jpg' ||
            url.pathname === '/figurinhas/zumbi-dos-palmares.jpg' ||
-           url.pathname === '/figurinhas/milton-santos.jpg') &&
+           url.pathname === '/figurinhas/milton-santos.jpg' ||
+           url.pathname === '/figurinhas/max-weber.jpg') &&
           (request.method === 'GET' || request.method === 'HEAD')) {
         if (!env.ASSETS) throw new HttpError(503, 'O arquivo está indisponível. Tente novamente mais tarde.');
         const response = await env.ASSETS.fetch(request);
