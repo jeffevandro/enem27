@@ -106,7 +106,8 @@ export default {
            url.pathname === '/figurinhas/milton-santos.jpg' ||
            url.pathname === '/figurinhas/max-weber.jpg' ||
            url.pathname === '/figurinhas/aristoteles.jpg' ||
-           url.pathname === '/figurinhas/magda-soares.jpg') &&
+           url.pathname === '/figurinhas/magda-soares.jpg' ||
+           url.pathname === '/figurinhas/albert-einstein.jpg') &&
           (request.method === 'GET' || request.method === 'HEAD')) {
         if (!env.ASSETS) throw new HttpError(503, 'O arquivo está indisponível. Tente novamente mais tarde.');
         const response = await env.ASSETS.fetch(request);

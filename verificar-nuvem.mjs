@@ -129,7 +129,7 @@ env.ASSETS = { async fetch(req) {
 } };
 assert.deepEqual(Buffer.from(await (await request('/figurinhas/milton-santos.jpg', alice)).arrayBuffer()), miltonBytes);
 assert.equal(await (await request('/figurinhas/milton-santos.jpg', alice, undefined, {}, 'HEAD')).text(), '');
-for (const name of ['max-weber', 'aristoteles', 'magda-soares']) {
+for (const name of ['max-weber', 'aristoteles', 'magda-soares', 'albert-einstein']) {
   const portraitPath = `/figurinhas/${name}.jpg`;
   const portraitBytes = fs.readFileSync(new URL('./public' + portraitPath, import.meta.url));
   assert.equal(portraitBytes.readUInt16BE(0), 0xffd8);
@@ -184,7 +184,7 @@ assert.equal((await request('/api/revision', bob, { key, dates, version: 0 })).s
 assert.equal((await request('/api/revision', alice, { key, dates, version: 2, padding: 'x'.repeat(3000) })).status, 413);
 const broken = { ...env, DB: { prepare() { throw new Error('Falha simulada'); } } };
 assert.equal((await worker.fetch(new Request('https://app.example.com/api/state', { headers: { 'Cf-Access-Jwt-Assertion': alice } }), broken)).status, 500);
-for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica']) {
   const award = { discipline, elapsedMs: 149999, answers: SPEED_BANKS[discipline].slice(0, 10).map(q => ({ id: q.id, answer: q.answer })) };
   assert.equal((await request('/api/sticker', alice, { ...award, elapsedMs: 150001 })).status, 400);
   assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.slice(0, 9) })).status, 400);
@@ -195,7 +195,7 @@ for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'p
   assert.equal((await request('/api/sticker', alice, award)).status, 200);
 }
 state = await (await request('/api/state', alice)).json();
-assert.deepEqual(state.stickers, { historia: true, geografia: true, sociologia: true, filosofia: true, portugues: true });
+assert.deepEqual(state.stickers, { historia: true, geografia: true, sociologia: true, filosofia: true, portugues: true, fisica: true });
 assert.equal(state.data['sticker|geografia'], undefined);
 assert.deepEqual((await (await request('/api/state', bob)).json()).stickers, {});
 globalThis.fetch = originalFetch;
@@ -515,6 +515,7 @@ run("openStickerBiography('portugues')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Magda Soares (1932–2023)');
 assert.match(element('stickerBiographyBody').innerHTML, /projeto Alfaletrar/);
 run('closeStickerBiography()');
+assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/albert-einstein\.jpg"/);
 run("openDiscipline('fisica')");
 assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('fisica'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Física<\/span>/);
 run("openSpeedQuiz('fisica')");
@@ -528,6 +529,9 @@ const physicsIds = run('speedRound.questions.map(q => q.id)');
 run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
 run('finishSpeedQuiz(false)');
 assert.match(element('appContainer').innerHTML, /Parabéns/);
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.fisica'), true);
+assert.match(element('appContainer').innerHTML, /Figurinha conquistada!/);
 run('startSpeedQuiz()');
 assert.equal(new Set([...physicsIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
 assert.match(firstPhysicsRound + element('appContainer').innerHTML, /vₘ = d \/ Δt/);
@@ -535,6 +539,12 @@ assert.match(firstPhysicsRound + element('appContainer').innerHTML, /Fᵣ = m ·
 run('goBack()');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('selectedDisciplineId'), 'fisica');
+run('openStickerAlbum()');
+assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/albert-einstein\.jpg"[^>]+alt="Figurinha de Albert Einstein"/);
+run("openStickerBiography('fisica')");
+assert.equal(element('stickerBiographyTitle').textContent, 'Albert Einstein (1879–1955)');
+assert.match(element('stickerBiographyBody').innerHTML, /efeito fotoelétrico/);
+run('closeStickerBiography()');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
