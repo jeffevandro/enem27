@@ -15714,6 +15714,60 @@ const SUMMARIES = {
       ]]
     ]
   },
+  'fisica|1|2|4': {
+    title: 'RESUMO: PRINCÍPIO DE PASCAL',
+    sections: [
+      ['1. O que é o princípio de Pascal:', [
+        'Uma variação de pressão aplicada a um fluido confinado e considerado incompressível transmite-se integralmente a todos os pontos do fluido e às paredes do recipiente quando se estabelece o equilíbrio. Esse é o princípio de Pascal, usado para explicar o funcionamento de prensas, macacos e freios hidráulicos.'
+      ]],
+      ['2. Variação de pressão e pressão total:', [
+        'Se um pistão provoca um aumento de 5 000 Pa na pressão de um líquido confinado, a pressão também aumenta em 5 000 Pa nos demais pontos quando se estabelece um novo equilíbrio. Pontos em alturas diferentes podem continuar com pressões totais distintas, conforme o teorema de Stevin.'
+      ]],
+      ['3. Como funciona uma prensa hidráulica:', [
+        'Uma prensa hidráulica pode ser representada por dois pistões ligados por um recipiente cheio de líquido. Uma força perpendicular aplicada ao pistão menor gera um acréscimo de pressão Δp = F₁/A₁. O mesmo acréscimo de pressão produz uma força adicional F₂ = Δp·A₂ no outro pistão.',
+        'No modelo ideal, com pistões à mesma altura e desprezando seus pesos e o atrito, as forças se relacionam por F₁/A₁ = F₂/A₂. Uma área maior permite obter uma força maior com o mesmo acréscimo de pressão.'
+      ]],
+      ['4. Exemplo de ampliação de força:', [
+        'Uma prensa ideal tem pistões de 20 cm² e 200 cm². Como o segundo pistão tem área dez vezes maior, uma força de 100 N aplicada no pistão menor corresponde a uma força de 1 000 N no maior. As duas áreas podem permanecer em cm² nesse cálculo, pois aparecem como uma razão.'
+      ]],
+      ['5. Deslocamento dos pistões e trabalho:', [
+        'Se o líquido é considerado incompressível e o sistema é vedado, o volume deslocado por um pistão corresponde ao volume recebido pelo outro. Em símbolos, A₁·d₁ = A₂·d₂, em que d₁ e d₂ são os módulos dos deslocamentos.',
+        'Com as áreas do exemplo anterior, uma descida de 10 cm no pistão menor eleva o maior em 1 cm. No modelo ideal, o ganho de força é acompanhado de um deslocamento menor, e o trabalho é o mesmo nos dois lados. Nesse exemplo, 100 N × 0,10 m = 1 000 N × 0,01 m = 10 J.'
+      ]],
+      ['6. Aplicações em freios e elevadores hidráulicos:', [
+        'No freio hidráulico, o pedal aciona um pistão que aumenta a pressão do fluido. A pressão adicional chega aos pistões próximos às rodas, que pressionam as pastilhas contra os discos. O atrito entre as pastilhas e os discos ajuda a reduzir a rotação das rodas.',
+        'Em um elevador hidráulico de oficina, a pressão do líquido atua sobre um pistão de grande área, capaz de exercer a força necessária para erguer o veículo.'
+      ]]
+    ]
+  },
+  'fisica|1|2|5': {
+    title: 'RESUMO: EMPUXO: PRINCÍPIO DE ARQUIMEDES',
+    sections: [
+      ['1. O que é empuxo:', [
+        'Empuxo é a força vertical para cima exercida por um fluido em repouso sobre um corpo total ou parcialmente imerso. Surge porque a pressão do fluido aumenta com a profundidade. Vale tanto em líquidos quanto em gases.'
+      ]],
+      ['2. Princípio de Arquimedes:', [
+        'O módulo do empuxo é igual ao peso do fluido deslocado. Para um fluido de densidade uniforme, E = ρ·g·Vd, em que ρ é a densidade do fluido, g é a aceleração da gravidade e Vd é o volume de fluido deslocado. O empuxo é medido em newtons (N).',
+        'Se o corpo está totalmente imerso, o volume deslocado corresponde ao volume do corpo, desde que o fluido não penetre nele. Se está parcialmente imerso, considera-se o volume da parte imersa. Em um líquido de densidade uniforme, um corpo rígido totalmente imerso desloca o mesmo volume ao mudar de profundidade, mantendo o mesmo empuxo.'
+      ]],
+      ['3. Quando o corpo sobe, afunda ou fica em equilíbrio:', [
+        'Para um corpo totalmente imerso, solto do repouso e sujeito apenas ao peso e ao empuxo, a comparação depende da densidade média do corpo. Se ela for menor que a do fluido, o empuxo supera o peso e o corpo começa a subir. Se for maior, o peso supera o empuxo e o corpo começa a afundar.',
+        'Quando as densidades são iguais, peso e empuxo se equilibram e o corpo pode permanecer totalmente imerso. Um corpo que flutua em repouso na superfície também tem empuxo igual ao peso, mas geralmente fica apenas parcialmente imerso.'
+      ]],
+      ['4. Fração submersa na flutuação:', [
+        'Em um corpo que flutua em repouso, desprezando o empuxo do ar, a fração submersa é dada por Vd/V = ρcorpo/ρlíquido. Nessa relação, V é o volume total do corpo, ρcorpo é sua densidade média e ρlíquido é a densidade do líquido.',
+        'Um bloco de densidade média de 600 kg/m³ flutua em água doce de densidade aproximada de 1 000 kg/m³. A fração submersa é 600 ÷ 1 000 = 0,60. Assim, 60% do volume do bloco fica abaixo da superfície.'
+      ]],
+      ['5. Peso aparente e exemplo de cálculo:', [
+        'Um dinamômetro que sustenta um corpo em repouso dentro de um líquido, sem contato com o recipiente, indica uma força menor que o peso do corpo. Essa leitura é o peso aparente. Quando o suporte exerce força para cima, ela é dada por P aparente = P − E.',
+        'Um corpo de peso 50 N totalmente imerso desloca 2 L de água, ou 0,002 m³. Com ρ = 1 000 kg/m³ e g = 10 m/s², o empuxo é 1 000 × 10 × 0,002 = 20 N. O dinamômetro indica 50 − 20 = 30 N.'
+      ]],
+      ['6. Navios, submarinos e balões:', [
+        'Um navio de aço flutua porque o casco e os espaços cheios de ar permitem deslocar um volume de água suficiente para equilibrar seu peso antes que fique totalmente imerso. Ao receber carga, o navio afunda um pouco mais e desloca mais água.',
+        'Um submarino pode admitir água nos tanques de lastro para aumentar sua massa e descer. Para subir, expulsa parte dessa água com ar comprimido. No ar, um balão começa a subir quando o peso do ar deslocado supera o peso total do balão, incluindo seu conteúdo e sua carga.'
+      ]]
+    ]
+  },
   'geografia|0|0|0': {
     title: 'RESUMO: ESCALAS CARTOGRÁFICAS E LEITURA DE CARTAS TOPOGRÁFICAS',
     sections: [
