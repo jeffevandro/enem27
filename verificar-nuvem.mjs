@@ -520,7 +520,7 @@ assert.match(element('appContainer').innerHTML, /class="video-launch-card music-
 run("openSpeedQuiz('fisica')");
 const physicsBank = run('speedQuestionBank()');
 assert.equal(physicsBank.map(q => q.answer).join(''), 'CBDABDACDBADCABCADBC');
-assert.equal(physicsBank.filter(q => q.question.includes('\n\nUse ')).length, 10);
+assert.equal(physicsBank.filter(q => [q.question, ...Object.values(q.options)].some(text => text.includes(' = '))).length, 10);
 run('startSpeedQuiz()');
 assert.match(element('appContainer').innerHTML, /2:30/);
 const firstPhysicsRound = element('appContainer').innerHTML;
@@ -530,7 +530,8 @@ run('finishSpeedQuiz(false)');
 assert.match(element('appContainer').innerHTML, /Parabéns/);
 run('startSpeedQuiz()');
 assert.equal(new Set([...physicsIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
-assert.match(firstPhysicsRound + element('appContainer').innerHTML, /Use vₘ = d \/ Δt\./);
+assert.match(firstPhysicsRound + element('appContainer').innerHTML, /vₘ = d \/ Δt/);
+assert.match(firstPhysicsRound + element('appContainer').innerHTML, /Fᵣ = m · ___/);
 run('goBack()');
 assert.equal(run('currentView'), 'discipline');
 assert.equal(run('selectedDisciplineId'), 'fisica');
