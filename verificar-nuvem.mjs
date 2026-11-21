@@ -625,6 +625,22 @@ run("openStickerBiography('biologia')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Charles Darwin (1809–1882)');
 assert.match(element('stickerBiographyBody').innerHTML, /seleção natural/);
 run('closeStickerBiography()');
+run("openDiscipline('literatura')");
+assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('literatura'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Literatura<\/span>/);
+run("openSpeedQuiz('literatura')");
+assert.equal(run("speedQuestionBank().map(q => q.answer).join('')"), 'BDACBADCDBCABCDACDAB');
+run('startSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /2:30/);
+const literatureIds = run('speedRound.questions.map(q => q.id)');
+assert.equal(new Set(literatureIds).size, 10);
+run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
+assert.match(element('appContainer').innerHTML, /Parabéns/);
+run('startSpeedQuiz()');
+assert.equal(new Set([...literatureIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
+run('goBack()');
+assert.equal(run('selectedDisciplineId'), 'literatura');
+assert.equal(run('currentView'), 'discipline');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -653,7 +669,7 @@ assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica', 'matematica', 'quimica', 'biologia']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica', 'matematica', 'quimica', 'biologia', 'literatura']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
