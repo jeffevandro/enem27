@@ -6,7 +6,6 @@
   "workers_dev": true,
   "preview_urls": false,
   "keep_vars": true,
-  "ai": { "binding": "AI" },
   "send_email": [
     { "name": "CONTACT_MAIL", "destination_address": "jefferson.evandro@gmail.com" }
   ],
