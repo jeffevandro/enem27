@@ -12555,6 +12555,15 @@ const ALBUM_STICKERS = {
       'Milton Santos foi um geógrafo brasileiro, professor e pesquisador reconhecido internacionalmente. Dedicou seus estudos à urbanização, à globalização e às desigualdades sociais e econômicas presentes na organização do espaço geográfico.',
       'Suas ideias ajudam a compreender como a economia, a tecnologia e as relações de poder transformam os territórios. Seus estudos são fundamentais para analisar a globalização, o espaço urbano e as desigualdades socioespaciais.'
     ]
+  },
+  sociologia: {
+    name: 'Florestan Fernandes', title: 'Florestan Fernandes (1920-1995)',
+    image: 'https://www.camara.leg.br/internet/deputado/bandep/133873.jpgmaior.jpg',
+    paragraphs: [
+      'Florestan Fernandes foi sociólogo e professor da Universidade de São Paulo. Em “A integração do negro na sociedade de classes”, investigou as barreiras enfrentadas pela população negra em São Paulo após a Abolição da escravidão.',
+      'Também estudou a educação brasileira e defendeu a escola pública. Como deputado federal, participou da Assembleia Nacional Constituinte que elaborou a Constituição de 1988.',
+      'Crédito da fotografia: Arquivo da Câmara dos Deputados.'
+    ]
   }
 };
 let earnedStickers = {};
@@ -13242,7 +13251,157 @@ const GEOGRAPHY_SPEED_QUESTIONS = [
     "answer": "C"
   }
 ];
-const SPEED_QUESTION_BANKS = { historia: HISTORY_SPEED_QUESTIONS, geografia: GEOGRAPHY_SPEED_QUESTIONS };
+const SOCIOLOGY_SPEED_QUESTIONS = [
+  {
+    id: 'sociologia-01',
+    question: "Em uma escola, os horários já existiam quando os alunos chegaram e atrasos podem gerar advertências. Que propriedades do fato social de Durkheim aparecem no exemplo?",
+    options: { A: "Interioridade e adesão.", B: "Exterioridade e coerção.", C: "Reciprocidade e negociação.", D: "Espontaneidade e adesão voluntária." },
+    answer: 'B'
+  },
+  {
+    id: 'sociologia-02',
+    question: "Em um hospital, o atendimento depende da cooperação entre equipes com funções distintas. Em Durkheim, qual tipo de solidariedade se apoia nessa interdependência?",
+    options: { A: "Solidariedade familiar.", B: "Solidariedade mecânica.", C: "Solidariedade orgânica.", D: "Solidariedade de classe." },
+    answer: 'C'
+  },
+  {
+    id: 'sociologia-03',
+    question: "Uma jovem denuncia fraudes porque considera a honestidade um dever, mesmo correndo o risco de perder o emprego. Como Weber classificaria essa ação?",
+    options: { A: "Racional com relação a valores.", B: "Racional com relação a fins.", C: "Afetiva, guiada por uma reação imediata.", D: "Tradicional, guiada por hábitos enraizados." },
+    answer: 'A'
+  },
+  {
+    id: 'sociologia-04',
+    question: "Em um órgão público, o poder de decidir decorre do cargo e das normas que definem suas atribuições. Qual tipo de dominação sustenta essa burocracia, segundo Weber?",
+    options: { A: "Tradicional, baseada em costumes herdados.", B: "Carismática, baseada no prestígio pessoal.", C: "Patrimonial, baseada na lealdade ao governante.", D: "Racional-legal, baseada em regras impessoais." },
+    answer: 'D'
+  },
+  {
+    id: 'sociologia-05',
+    question: "Em uma fábrica, o valor novo produzido pelos empregados supera o valor da força de trabalho comprada pela empresa. Como Marx denomina essa diferença?",
+    options: { A: "Renda da terra.", B: "Capital constante.", C: "Mais-valia.", D: "Valor de troca." },
+    answer: 'C'
+  },
+  {
+    id: 'sociologia-06',
+    question: "Operários reivindicam o controle do ritmo da produção, decidido pelos proprietários da fábrica. Quais conceitos de Marx ajudam a interpretar o conflito e a perda de controle sobre o trabalho?",
+    options: { A: "Luta de classes e alienação.", B: "Mobilidade social e salário.", C: "Concorrência e valor de troca.", D: "Cooperação e divisão do trabalho." },
+    answer: 'A'
+  },
+  {
+    id: 'sociologia-07',
+    question: "Uma criança aprende a língua na convivência familiar. Anos depois, já adulta, assimila os procedimentos de uma profissão. Que processos predominam, respectivamente?",
+    options: { A: "Socialização secundária e socialização primária.", B: "Socialização primária e socialização secundária.", C: "Socialização primária nos dois contextos.", D: "Socialização secundária nos dois contextos." },
+    answer: 'B'
+  },
+  {
+    id: 'sociologia-08',
+    question: "Uma estudante convive com normas da família, da escola e de uma comunidade religiosa e passa a conhecer leis do Estado. O que permite tratar esses contextos como instituições sociais?",
+    options: { A: "O uso de uma mesma forma de autoridade em todos os grupos.", B: "A existência de regras registradas pelo poder público em cada grupo.", C: "A formação de vínculos pessoais entre todos os seus integrantes.", D: "A presença de normas e papéis que organizam a vida coletiva." },
+    answer: 'D'
+  },
+  {
+    id: 'sociologia-09',
+    question: "Quem estudou a desigualdade racial no pós-Abolição, a sociedade patriarcal escravista e o personalismo na vida pública, respectivamente?",
+    options: { A: "Freyre, Fernandes e Holanda.", B: "Fernandes, Freyre e Holanda.", C: "Holanda, Fernandes e Freyre.", D: "Fernandes, Holanda e Freyre." },
+    answer: 'B'
+  },
+  {
+    id: 'sociologia-10',
+    question: "Uma escola valoriza repertórios de leitura e maneiras de falar aprendidos em algumas famílias. Em Bourdieu, quais conceitos explicam essa vantagem na reprodução das desigualdades?",
+    options: { A: "Capital econômico e ascensão intergeracional.", B: "Capital social e redes de indicação profissional.", C: "Capital cultural e disposições incorporadas no habitus.", D: "Capital político e participação em organizações estudantis." },
+    answer: 'C'
+  },
+  {
+    id: 'sociologia-11',
+    question: "Uma empresa lança várias séries com a mesma fórmula porque ela já provou ser lucrativa. O que a crítica da indústria cultural destaca nesse caso?",
+    options: { A: "A autonomia dos produtores diante dos anunciantes.", B: "A especialização de produtos para atender mercados regionais.", C: "A preservação de repertórios transmitidos entre gerações.", D: "A padronização da produção cultural para o mercado." },
+    answer: 'D'
+  },
+  {
+    id: 'sociologia-12',
+    question: "Um programa de televisão cria referências conhecidas nacionalmente, mas trechos viram paródias diferentes em cada região. O que a situação mostra sobre a cultura de massa?",
+    options: { A: "A difusão em larga escala admite apropriações distintas.", B: "A programação nacional depende de identidades regionais semelhantes.", C: "A recepção do público segue o sentido definido pelos produtores.", D: "A circulação regional impede a formação de referências compartilhadas." },
+    answer: 'A'
+  },
+  {
+    id: 'sociologia-13',
+    question: "Uma pessoa chama um ritual de atrasado por julgá-lo segundo seus próprios costumes. Outra procura entendê-lo pelos sentidos que tem para seus praticantes. Que posturas elas adotam, respectivamente?",
+    options: { A: "Etnocentrismo e relativismo cultural.", B: "Relativismo cultural e etnocentrismo.", C: "Assimilação cultural e hibridização cultural.", D: "Hibridização cultural e assimilação cultural." },
+    answer: 'A'
+  },
+  {
+    id: 'sociologia-14',
+    question: "Moradores querem manter uma celebração transmitida entre gerações, com cantos e saberes culinários. Qual medida favorece a continuidade desse patrimônio imaterial?",
+    options: { A: "Reunir peças antigas em um acervo de objetos da festa.", B: "Apoiar os praticantes na realização e transmissão da celebração.", C: "Adotar um roteiro único para preservar sua forma original.", D: "Delegar o calendário da celebração aos operadores turísticos." },
+    answer: 'B'
+  },
+  {
+    id: 'sociologia-15',
+    question: "Uma banda combina ritmos regionais com gêneros que conheceu por plataformas internacionais. Qual processo cultural a composição exemplifica?",
+    options: { A: "Homogeneização de repertórios musicais.", B: "Assimilação pela cultura dominante.", C: "Hibridização cultural.", D: "Isolamento de circuitos regionais." },
+    answer: 'C'
+  },
+  {
+    id: 'sociologia-16',
+    question: "Decisões públicas passam a seguir critérios independentes de autoridades religiosas, enquanto igrejas mantêm ações comunitárias. Que processo esse cenário exemplifica?",
+    options: { A: "Conversão religiosa coletiva.", B: "Sincretismo de tradições religiosas.", C: "Fundamentalismo no Estado.", D: "Secularização das instituições públicas." },
+    answer: 'D'
+  },
+  {
+    id: 'sociologia-17',
+    question: "A produção de alimentos envolve agricultores, transportadores, técnicos e comerciantes. O que caracteriza a divisão social do trabalho nesse exemplo?",
+    options: { A: "A fragmentação de gestos de um operário na linha de montagem.", B: "A adoção de uma jornada comum em todas as ocupações.", C: "A transferência de postos de trabalho entre diferentes países.", D: "A distribuição de funções produtivas entre ocupações especializadas." },
+    answer: 'D'
+  },
+  {
+    id: 'sociologia-18',
+    question: "Uma indústria usa três métodos: I. Cronometrar cada tarefa. II. Montar em série grandes lotes padronizados. III. Ajustar estoques e ritmos aos pedidos. Qual é a sequência de modelos?",
+    options: { A: "Taylorismo, toyotismo e fordismo.", B: "Fordismo, taylorismo e toyotismo.", C: "Taylorismo, fordismo e toyotismo.", D: "Toyotismo, fordismo e taylorismo." },
+    answer: 'C'
+  },
+  {
+    id: 'sociologia-19',
+    question: "Uma empresa substitui contratos estáveis por convocações esporádicas, com renda imprevisível e menor proteção. Qual conceito descreve a mudança?",
+    options: { A: "Precarização do trabalho.", B: "Divisão do trabalho.", C: "Terceirização de serviços.", D: "Flexibilização com proteção." },
+    answer: 'A'
+  },
+  {
+    id: 'sociologia-20',
+    question: "Dois bairros da mesma cidade têm acesso muito diferente a saneamento e transporte. O que permite identificar uma desigualdade social nesse caso?",
+    options: { A: "A especialização econômica de cada bairro.", B: "A distribuição desigual de recursos e serviços.", C: "A diferença de densidade demográfica entre os bairros.", D: "A existência de formas distintas de organização comunitária." },
+    answer: 'B'
+  },
+  {
+    id: 'sociologia-21',
+    question: "Filha de trabalhadores de baixa renda, uma mulher alcança posição profissional e econômica superior à da geração de seus pais. Como se classifica essa mudança?",
+    options: { A: "Mobilidade vertical descendente.", B: "Mobilidade vertical ascendente.", C: "Mobilidade horizontal entre ocupações.", D: "Migração interna em busca de emprego." },
+    answer: 'B'
+  },
+  {
+    id: 'sociologia-22',
+    question: "Um atendimento público só pode ser agendado pela internet, deixando parte da população sem acesso ao serviço. Qual aspecto da exclusão social está em evidência?",
+    options: { A: "A ampliação da autonomia no uso do serviço.", B: "A mudança de preferências dos usuários.", C: "A existência de barreiras ao exercício de direitos.", D: "A diminuição da demanda por atendimento." },
+    answer: 'C'
+  },
+  {
+    id: 'sociologia-23',
+    question: "Em um setor, a seleção por indicação reproduz redes profissionais formadas ao longo de décadas de exclusão racial. O que esse caso ajuda a explicar?",
+    options: { A: "A reprodução institucional de desigualdades raciais.", B: "O preconceito como atitude consciente de cada recrutador.", C: "A diferença de renda decorrente apenas da qualificação.", D: "A segregação racial instituída por uma lei expressa." },
+    answer: 'A'
+  },
+  {
+    id: 'sociologia-24',
+    question: "Em casais com jornadas remuneradas semelhantes, espera-se que a mulher organize a casa e cuide da maior parte da rotina dos filhos. Que conceito explica essa distribuição?",
+    options: { A: "Mobilidade ocupacional.", B: "Especialização de tarefas.", C: "Segregação no mercado de trabalho.", D: "Divisão sexual do trabalho." },
+    answer: 'D'
+  }
+];
+const SPEED_QUESTION_BANKS = {
+  historia: HISTORY_SPEED_QUESTIONS,
+  geografia: GEOGRAPHY_SPEED_QUESTIONS,
+  sociologia: SOCIOLOGY_SPEED_QUESTIONS
+};
 let speedRound = null;
 let speedTimer = null;
 const previousSpeedIdsByDiscipline = {};
@@ -17642,10 +17801,10 @@ function render() {
     footerBadge.style.display = 'none';
     container.innerHTML = `<section class="sticker-album-intro" aria-labelledby="stickerAlbumInstructions">
       <h2 id="stickerAlbumInstructions">Como ganhar as figurinhas:</h2>
-      <p>Acerte as dez perguntas do quiz de uma matéria dentro do tempo estabelecido para conquistar a figurinha dessa disciplina. Nos quizzes de História e Geografia, o desafio é acertar todas em até dois minutos e trinta segundos.</p>
+      <p>Acerte as dez perguntas do quiz de uma matéria em até dois minutos e trinta segundos para conquistar a figurinha dessa disciplina.</p>
     </section><div class="sticker-album-grid">` + CURRICULUM.map(disc => `<figure class="sticker-album-card">
       ${ALBUM_STICKERS[disc.id] && earnedStickers[disc.id] ? `<button type="button" class="sticker-album-slot" onclick="openStickerBiography('${disc.id}')" aria-label="Ler sobre ${speedQuizEscape(ALBUM_STICKERS[disc.id].name)}" aria-haspopup="dialog">
-        <img src="${ALBUM_STICKERS[disc.id].image}" width="800" height="1040" alt="Figurinha ilustrada de ${speedQuizEscape(ALBUM_STICKERS[disc.id].name)}" decoding="async">
+        <img src="${ALBUM_STICKERS[disc.id].image}" width="800" height="1040" alt="Figurinha de ${speedQuizEscape(ALBUM_STICKERS[disc.id].name)}" decoding="async" referrerpolicy="no-referrer">
       </button>` : `<div class="sticker-album-slot" role="img" aria-label="Figurinha de ${speedQuizEscape(disc.name)} bloqueada">
         <svg viewBox="0 0 48 60" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true" focusable="false">
           <path d="M12 25V16a12 12 0 0 1 24 0v9"/>
@@ -17783,11 +17942,11 @@ function render() {
       ` : '';
     if (disc.id !== 'artes') html += musicCard;
 
-    if (disc.id === 'historia' && SPEED_QUESTION_BANKS[disc.id]) {
+    if ((disc.id === 'historia' || disc.id === 'sociologia') && SPEED_QUESTION_BANKS[disc.id]) {
       html += `
-        <button type="button" class="video-launch-card music-launch-card" onclick="openSpeedQuiz('historia')">
+        <button type="button" class="video-launch-card music-launch-card" onclick="openSpeedQuiz('${disc.id}')">
           <span>
-            <span class="video-launch-badge music-launch-badge">Quiz de História</span>
+            <span class="video-launch-badge music-launch-badge">Quiz de ${disc.name}</span>
             <span class="quiz-launch-title" style="display:block">Responda a 10 perguntas em 2 minutos e 30 segundos</span>
           </span>
           <span class="theme-card-arrow" aria-hidden="true">&#8250;</span>

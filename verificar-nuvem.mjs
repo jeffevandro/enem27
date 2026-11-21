@@ -169,7 +169,7 @@ assert.equal((await request('/api/revision', bob, { key, dates, version: 0 })).s
 assert.equal((await request('/api/revision', alice, { key, dates, version: 2, padding: 'x'.repeat(3000) })).status, 413);
 const broken = { ...env, DB: { prepare() { throw new Error('Falha simulada'); } } };
 assert.equal((await worker.fetch(new Request('https://app.example.com/api/state', { headers: { 'Cf-Access-Jwt-Assertion': alice } }), broken)).status, 500);
-for (const discipline of ['historia', 'geografia']) {
+for (const discipline of ['historia', 'geografia', 'sociologia']) {
   const award = { discipline, elapsedMs: 149999, answers: SPEED_BANKS[discipline].slice(0, 10).map(q => ({ id: q.id, answer: q.answer })) };
   assert.equal((await request('/api/sticker', alice, { ...award, elapsedMs: 150001 })).status, 400);
   assert.equal((await request('/api/sticker', alice, { ...award, answers: award.answers.slice(0, 9) })).status, 400);
@@ -180,7 +180,7 @@ for (const discipline of ['historia', 'geografia']) {
   assert.equal((await request('/api/sticker', alice, award)).status, 200);
 }
 state = await (await request('/api/state', alice)).json();
-assert.deepEqual(state.stickers, { historia: true, geografia: true });
+assert.deepEqual(state.stickers, { historia: true, geografia: true, sociologia: true });
 assert.equal(state.data['sticker|geografia'], undefined);
 assert.deepEqual((await (await request('/api/state', bob)).json()).stickers, {});
 globalThis.fetch = originalFetch;
@@ -413,6 +413,30 @@ assert.match(element('stickerBiographyBody').innerHTML, /Milton Santos foi um ge
 assert.equal((element('stickerBiographyBody').innerHTML.match(/<p>/g) || []).length, 2);
 run('closeStickerBiography()');
 assert.equal(element('stickerBiographyDialog').open, false);
+run("openDiscipline('sociologia')");
+const sociologyPage = element('appContainer').innerHTML;
+assert.match(sociologyPage, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('sociologia'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Sociologia<\/span>/);
+assert.match(sociologyPage, /openQuiz\('sociologia'\)/);
+run("openSpeedQuiz('sociologia')");
+assert.match(element('appContainer').innerHTML, /Quiz de Sociologia/);
+assert.equal(run('speedQuestionBank().length'), 24);
+assert(run('speedQuestionBank().every(q => q.id.startsWith("sociologia-"))'));
+run('startSpeedQuiz()');
+const sociologyIds = run('speedRound.questions.map(q => q.id)');
+assert.equal(new Set(sociologyIds).size, 10);
+run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
+await run('speedRound.stickerSavePromise');
+assert.equal(run('earnedStickers.sociologia'), true);
+run('startSpeedQuiz()');
+assert(run('speedRound.questions.map(q => q.id)').every(id => !sociologyIds.includes(id)));
+run('goBack()');
+assert.equal(run('selectedDisciplineId'), 'sociologia');
+run('openStickerAlbum()');
+assert.match(element('appContainer').innerHTML, /alt="Figurinha de Florestan Fernandes"/);
+run("openStickerBiography('sociologia')");
+assert.equal(element('stickerBiographyTitle').textContent, 'Florestan Fernandes (1920-1995)');
+run('closeStickerBiography()');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -437,11 +461,11 @@ await run('loadState()');
 run('openStickerAlbum()');
 assert.match(element('appContainer').innerHTML, /src="\/figurinhas\/milton-santos.jpg"/);
 assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi-dos-palmares.jpg"/);
-// Confere os limites do cronômetro com relógio controlado nas duas disciplinas.
+// Confere os limites do cronômetro com relógio controlado.
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia']) {
+for (const discipline of ['historia', 'geografia', 'sociologia']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
