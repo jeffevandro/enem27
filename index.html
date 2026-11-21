@@ -15601,6 +15601,63 @@ const SUMMARIES = {
       ]]
     ]
   },
+  'fisica|1|2|0': {
+    title: 'RESUMO: EQUILÍBRIO DE CORPOS EXTENSOS',
+    sections: [
+      ['1. O que é equilíbrio de um corpo extenso:', [
+        'Um corpo é tratado como extenso quando suas dimensões e os pontos de aplicação das forças importam para analisar a situação. Uma mesma força pode produzir efeitos de rotação diferentes conforme o local em que atua, como acontece ao empurrar uma porta perto da dobradiça ou na maçaneta.',
+        'No equilíbrio estático, o corpo permanece em repouso, sem se deslocar nem girar. Para analisar esse equilíbrio, consideramos tanto as forças quanto os torques, também chamados de momentos de força.'
+      ]],
+      ['2. Condições de equilíbrio:', [
+        'A força resultante deve ser nula para que o centro de massa não acelere. Em uma situação plana, a soma das componentes horizontais e a soma das componentes verticais das forças devem ser iguais a zero.',
+        'O torque resultante também deve ser nulo para que o corpo em repouso não comece a girar. Duas forças de mesma intensidade, paralelas e de sentidos opostos podem ter resultante nula e ainda produzir rotação se atuarem em linhas de ação diferentes.'
+      ]],
+      ['3. Peso, centro de massa e reações dos apoios:', [
+        'Em um campo gravitacional aproximadamente uniforme, o peso do corpo pode ser representado por uma força vertical para baixo aplicada no centro de massa. Para uma barra uniforme, esse ponto fica no meio da barra.',
+        'Os apoios exercem forças sobre o corpo. Uma viga apoiada em duas superfícies horizontais pode receber forças verticais de intensidades diferentes. A posição das cargas em relação aos apoios ajuda a determinar quanto cada um sustenta.'
+      ]],
+      ['4. Escolha do ponto de referência:', [
+        'Para calcular os torques de uma viga, é conveniente tomar um dos apoios como referência. A força cuja linha de ação passa por esse ponto tem torque nulo em relação a ele. Assim, a equação dos torques pode ser usada para descobrir a força no outro apoio.',
+        'Depois de encontrada essa força, o equilíbrio vertical permite calcular a reação do primeiro apoio. Em uma viga em repouso com forças exclusivamente verticais, a soma das forças para cima é igual à soma das forças para baixo.'
+      ]],
+      ['5. Exemplo de uma viga com dois apoios:', [
+        'Uma viga de 4 m, com peso desprezível, está apoiada nas duas extremidades. Uma carga de 120 N atua a 1 m do apoio esquerdo. Em relação a esse apoio, a carga tende a girar a viga em um sentido, enquanto a reação do apoio direito tende a girá-la no sentido oposto.',
+        'O equilíbrio dos torques exige que a reação direita, multiplicada por 4 m, seja igual a 120 N × 1 m. A reação direita vale 30 N. Pelo equilíbrio das forças verticais, a reação esquerda vale 120 − 30 = 90 N.'
+      ]],
+      ['6. Base de apoio e tombamento:', [
+        'Para um objeto apoiado no chão e sujeito apenas ao peso e às forças do apoio, a projeção vertical do centro de massa deve ficar dentro da base para que haja margem contra o tombamento. Na borda da base ocorre o limite. Se a projeção passa para fora, o peso tende a girar o objeto em torno dessa borda.',
+        'Uma base mais larga na direção da inclinação ou um centro de massa mais baixo aumenta, em geral, a inclinação que o objeto suporta antes de tombar. É o que ajuda a explicar a estabilidade de uma estante com objetos pesados nas prateleiras de baixo.'
+      ]]
+    ]
+  },
+  'fisica|1|2|1': {
+    title: 'RESUMO: TORQUE (MOMENTO DE FORÇA)',
+    sections: [
+      ['1. O que é torque:', [
+        'O torque, ou momento de força, mede a tendência de uma força produzir rotação em relação a um ponto ou eixo. Seu valor depende da intensidade da força, do ponto em que ela é aplicada e da direção em que atua.',
+        'A unidade de torque no Sistema Internacional é o newton-metro (N·m). O torque descreve uma tendência de rotação. O trabalho, medido em joules, descreve uma transferência de energia.'
+      ]],
+      ['2. Linha de ação e braço de alavanca:', [
+        'A linha de ação é a reta na direção da força que passa pelo ponto de aplicação. Em uma situação plana, o braço de alavanca é a distância perpendicular do ponto de referência a essa reta. O módulo do torque é dado por |τ| = F·d, em que F é o módulo da força e d é o braço de alavanca.',
+        'Se a linha de ação passa pelo ponto de referência, o braço de alavanca é zero. Em uma porta, empurrar a maçaneta na direção da dobradiça produz torque nulo em relação ao eixo de rotação.'
+      ]],
+      ['3. Influência do ângulo:', [
+        'Também podemos calcular o módulo do torque por |τ| = r·F·sen θ. O vetor que vai do ponto de referência ao ponto de aplicação da força tem módulo r. O ângulo θ é formado por esse vetor e pelo vetor força.',
+        'Para a mesma força e a mesma distância r, o torque é máximo quando a força é perpendicular a esse segmento. Em uma chave de 0,25 m, uma força perpendicular de 40 N aplicada na extremidade produz um torque de 10 N·m em relação à porca.'
+      ]],
+      ['4. Sentidos horário e anti-horário:', [
+        'Em problemas planos, é comum adotar como positivo o torque que tende a girar o corpo no sentido anti-horário e como negativo o que tende a girá-lo no sentido horário. A soma algébrica desses valores dá o torque resultante em relação ao ponto escolhido.',
+        'Se uma força produz 12 N·m no sentido anti-horário e outra produz 8 N·m no sentido horário, o torque resultante é de 4 N·m no sentido anti-horário.'
+      ]],
+      ['5. Alavancas e equilíbrio:', [
+        'A alavanca é um corpo rígido que pode girar em torno de um apoio. Aumentar o braço da força aplicada permite produzir o mesmo torque com uma força menor. Em uma gangorra, a pessoa mais leve pode equilibrar uma pessoa mais pesada ficando mais distante do apoio.',
+        'Em uma gangorra horizontal de peso desprezível, uma criança de peso 300 N sentada a 1 m do apoio produz um torque de 300 N·m. Do outro lado, uma criança de peso 200 N equilibra a gangorra sentando-se a 1,5 m do apoio.'
+      ]],
+      ['6. Aplicações em ferramentas:', [
+        'Numa chave de roda, um cabo mais longo aumenta o torque quando se mantém a mesma força perpendicular na extremidade. No carrinho de mão, a roda funciona como apoio e a carga fica entre a roda e as mãos. Posicionar a carga mais perto da roda reduz o torque do peso da carga e a força necessária nas mãos para sustentá-la.'
+      ]]
+    ]
+  },
   'geografia|0|0|0': {
     title: 'RESUMO: ESCALAS CARTOGRÁFICAS E LEITURA DE CARTAS TOPOGRÁFICAS',
     sections: [
