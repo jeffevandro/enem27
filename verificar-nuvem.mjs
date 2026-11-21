@@ -573,6 +573,22 @@ run("openStickerBiography('matematica')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Hipátia de Alexandria (séculos IV e V)');
 assert.match(element('stickerBiographyBody').innerHTML, /seções cônicas/);
 run('closeStickerBiography()');
+run("openDiscipline('quimica')");
+assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('quimica'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Química<\/span>/);
+run("openSpeedQuiz('quimica')");
+assert.equal(run("speedQuestionBank().map(q => q.answer).join('')"), 'DBACBDCACBDABDCACDBA');
+run('startSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /2:30/);
+const chemistryIds = run('speedRound.questions.map(q => q.id)');
+assert.equal(new Set(chemistryIds).size, 10);
+run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
+assert.match(element('appContainer').innerHTML, /Parabéns/);
+run('startSpeedQuiz()');
+assert.equal(new Set([...chemistryIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
+run('goBack()');
+assert.equal(run('selectedDisciplineId'), 'quimica');
+assert.equal(run('currentView'), 'discipline');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -601,7 +617,7 @@ assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica', 'matematica']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica', 'matematica', 'quimica']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
