@@ -545,6 +545,24 @@ run("openStickerBiography('fisica')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Albert Einstein (1879–1955)');
 assert.match(element('stickerBiographyBody').innerHTML, /efeito fotoelétrico/);
 run('closeStickerBiography()');
+run("openDiscipline('matematica')");
+assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('matematica'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Matemática<\/span>/);
+run("openSpeedQuiz('matematica')");
+const mathBank = run('speedQuestionBank()');
+assert.equal(mathBank.map(q => q.answer).join(''), 'BDCABCDADBCABDACADCB');
+assert.equal(mathBank.filter(q => [q.question, ...Object.values(q.options)].some(text => text.includes(' = '))).length, 10);
+run('startSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /2:30/);
+const mathIds = run('speedRound.questions.map(q => q.id)');
+assert.equal(new Set(mathIds).size, 10);
+run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
+assert.match(element('appContainer').innerHTML, /Parabéns/);
+run('startSpeedQuiz()');
+assert.equal(new Set([...mathIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
+run('goBack()');
+assert.equal(run('selectedDisciplineId'), 'matematica');
+assert.equal(run('currentView'), 'discipline');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -573,7 +591,7 @@ assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica', 'matematica']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
