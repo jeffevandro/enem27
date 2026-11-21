@@ -515,6 +515,25 @@ run("openStickerBiography('portugues')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Magda Soares (1932–2023)');
 assert.match(element('stickerBiographyBody').innerHTML, /projeto Alfaletrar/);
 run('closeStickerBiography()');
+run("openDiscipline('fisica')");
+assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('fisica'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Física<\/span>/);
+run("openSpeedQuiz('fisica')");
+const physicsBank = run('speedQuestionBank()');
+assert.equal(physicsBank.map(q => q.answer).join(''), 'CBDABDACDBADCABCADBC');
+assert.equal(physicsBank.filter(q => q.question.includes('\n\nUse ')).length, 10);
+run('startSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /2:30/);
+const firstPhysicsRound = element('appContainer').innerHTML;
+const physicsIds = run('speedRound.questions.map(q => q.id)');
+run('for (let i = 0; i < 10; i++) answerSpeedQuiz(i, speedRound.questions[i].answer)');
+run('finishSpeedQuiz(false)');
+assert.match(element('appContainer').innerHTML, /Parabéns/);
+run('startSpeedQuiz()');
+assert.equal(new Set([...physicsIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
+assert.match(firstPhysicsRound + element('appContainer').innerHTML, /Use vₘ = d \/ Δt\./);
+run('goBack()');
+assert.equal(run('currentView'), 'discipline');
+assert.equal(run('selectedDisciplineId'), 'fisica');
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -543,7 +562,7 @@ assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues', 'fisica']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
