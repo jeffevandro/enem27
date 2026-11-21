@@ -483,6 +483,26 @@ run("openStickerBiography('filosofia')");
 assert.equal(element('stickerBiographyTitle').textContent, 'Aristóteles (384–322 a.C.)');
 assert.match(element('stickerBiographyBody').innerHTML, /Liceu em Atenas/);
 run('closeStickerBiography()');
+run("openDiscipline('portugues')");
+assert.match(element('appContainer').innerHTML, /class="video-launch-card music-launch-card" onclick="openSpeedQuiz\('portugues'\)">\s*<span>\s*<span class="video-launch-badge music-launch-badge">Quiz de Língua Portuguesa<\/span>/);
+run("openSpeedQuiz('portugues')");
+assert.match(element('appContainer').innerHTML, /Quiz de Língua Portuguesa/);
+assert.equal(run("speedQuestionBank().map(q => q.answer).join('')"), 'BDACDACBADCBDABCADBC');
+run('startSpeedQuiz()');
+assert.match(element('appContainer').innerHTML, /2:30/);
+const portugueseIds = run('speedRound.questions.map(q => q.id)');
+assert.equal(new Set(portugueseIds).size, 10);
+const firstPortugueseRound = element('appContainer').innerHTML;
+run("for (let i = 0; i < 10; i++) answerSpeedQuiz(i, i === 0 ? (speedRound.questions[i].answer === 'A' ? 'B' : 'A') : speedRound.questions[i].answer)");
+run('finishSpeedQuiz(false)');
+assert.match(element('appContainer').innerHTML, /Você acertou 9 de 10 questões/);
+run('startSpeedQuiz()');
+assert.equal(new Set([...portugueseIds, ...run('speedRound.questions.map(q => q.id)')]).size, 20);
+assert.match(firstPortugueseRound + element('appContainer').innerHTML, /Leia o texto a seguir\.\n\n&quot;Cada vez mais jovens[\s\S]*?silenciosa\.&quot;\n\nA ideia central do texto é/);
+run('goBack()');
+assert.equal(run('selectedDisciplineId'), 'portugues');
+assert.equal(run('currentView'), 'discipline');
+assert.equal(run('speedTimer'), null);
 // Erros, tempo esgotado, falha ao salvar, nova tentativa e recarga da conta.
 run('earnedStickers = {}');
 run("openSpeedQuiz('geografia'); startSpeedQuiz(); for (let i = 0; i < 10; i++) answerSpeedQuiz(i, 'X')");
@@ -511,7 +531,7 @@ assert.doesNotMatch(element('appContainer').innerHTML, /src="\/figurinhas\/zumbi
 const realDate = run('Date');
 let quizNow = 1000000;
 ctx.Date = class extends realDate { static now() { return quizNow; } };
-for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia']) {
+for (const discipline of ['historia', 'geografia', 'sociologia', 'filosofia', 'portugues']) {
   run(`openSpeedQuiz('${discipline}'); startSpeedQuiz(); finishSpeedQuiz(false)`);
   assert.equal(run('speedRound.finished'), false);
   const startedAt = quizNow;
